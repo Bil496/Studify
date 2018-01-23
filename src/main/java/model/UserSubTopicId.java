@@ -6,31 +6,31 @@ import javax.persistence.ManyToOne;
 @SuppressWarnings("serial")
 @Embeddable
 public class UserSubTopicId implements java.io.Serializable {
-	@ManyToOne
-	private User user;
-	@ManyToOne
-	private Topic topic;
+    @ManyToOne
+    private User user;
 
-	public UserSubTopicId(User user, Topic topic) {
-		super();
-		this.user = user;
-		this.topic = topic;
-	}
+    @ManyToOne
+    private SubTopic subTopic;
 
-	public User getUser() {
-		return user;
-	}
+    public UserSubTopicId(User user, SubTopic subTopic) {
+	super();
+	this.user = user;
+	this.subTopic = subTopic;
+    }
 
-	public void setUser(User user) {
-		this.user = user;
-	}
+    public User getUser() {
+	return user;
+    }
 
-	public Topic getTopic() {
-		return topic;
-	}
+    public void setUser(User user) {
+	this.user = user;
+    }
 
-	public void setTopic(Topic topic) {
-		this.topic = topic;
-	}
+    public SubTopic getSubTopic() {
+	return subTopic;
+    }
 
+    public void setSubTopic(SubTopic subTopic) {
+	this.subTopic = subTopic;
+    }
 }
