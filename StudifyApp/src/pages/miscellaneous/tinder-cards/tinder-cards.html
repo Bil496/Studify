@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Tinder Cards</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+  <div swing-stack #myswing1 [stackConfig]="stackConfig" (throwoutleft)="voteUp(false)" (throwoutright)="voteUp(true)" id="card-stack">
+    <ion-card #mycards1 swing-card *ngFor="let card of cards" class="td-card">
+      <ion-item *ngIf="card.picture">
+        <img *ngIf="card.picture" [src]="card.picture.medium">
+        <h1>{{ card.name.first | capitalize }} {{ card.name.last | capitalize}}</h1>
+        <p>{{ card.email }}</p>
+      </ion-item>
+      <ion-card-content *ngIf="card.location">
+        From {{ card.location.city | capitalize }}, {{ card.location.postcode }}<br> Phone: {{ card.phone }}
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>
+<ion-footer>
+  <div class="tinder-footer">
+    <div id="swipe_dislike" class="rate" (click)="voteUp(false)"></div>
+    <div class="info"></div>
+    <div id="swipe_like" class="rate" (click)="voteUp(true)"></div>
+  </div>
+</ion-footer>

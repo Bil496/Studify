@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Card with Badges</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <ion-card *ngFor="let card of cards">
+    <img [src]="card.imageUrl" (click)="cardTapped(card)" />
+    <ion-card-content>
+      <h2 class="card-title">
+        {{card.title}}
+      </h2>
+      <p>
+        {{card.description}}
+      </p>
+    </ion-card-content>
+    <ion-item (click)="albumsTapped(card)">
+      <ion-icon name='musical-notes' item-start class="albums-icon"></ion-icon>
+      Albums
+      <ion-badge item-end>{{card.albums}}</ion-badge>
+    </ion-item>
+    <ion-item (click)="followersTapped(card)">
+      <ion-icon name='logo-twitter' item-start class="twitter-icon"></ion-icon>
+      Followers
+      <ion-badge item-end>{{card.followers}}</ion-badge>
+    </ion-item>
+  </ion-card>
+</ion-content>
