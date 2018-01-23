@@ -9,35 +9,37 @@ import javax.persistence.ManyToOne;
 
 @Entity(name = "SubTopic")
 public class SubTopic {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	@ManyToOne
-	private Topic topic;
-	@Column(nullable = false)
-	private String title;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	public Long getId() {
-		return id;
-	}
+    @ManyToOne
+    private Topic topic;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    @Column(nullable = false)
+    private String title;
 
-	public Topic getTopic() {
-		return topic;
-	}
+    public Long getId() {
+	return id;
+    }
 
-	public void setTopic(Topic topic) {
-		this.topic = topic;
-	}
+    public void setId(Long id) {
+	this.id = id;
+    }
 
-	public String getTitle() {
-		return title;
-	}
+    public Topic getTopic() {
+	return topic;
+    }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    public void setTopic(Topic topic) {
+	this.topic = topic;
+    }
+
+    public String getTitle() {
+	return title;
+    }
+
+    public void setTitle(String title) {
+	this.title = title;
+    }
 }
