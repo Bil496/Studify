@@ -16,83 +16,77 @@ import javax.validation.constraints.Min;
 
 @Entity(name = "Topic")
 public class Topic {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	@Column(nullable = false)
+	private String title;
+	@Column
+	@Min(2)
+	private Integer minSize = 2;
+	@Column
+	@Min(2)
+	private Integer maxSize = 5;
+	@ManyToOne(cascade = CascadeType.ALL)
+	private User creator;
+	@ManyToMany(mappedBy = "topics")
+	private Set<User> users = new HashSet<User>();
+	@OneToMany(mappedBy = "topic")
+	private Set<SubTopic> subTopics = new HashSet<SubTopic>();
 
-    @Column(nullable = false)
-    private String title;
+	public Long getId() {
+		return id;
+	}
 
-    @Column
-    @Min(2)
-    private Integer minSize = 2;
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    @Column
-    @Min(2)
-    private Integer maxSize = 5;
+	public String getTitle() {
+		return title;
+	}
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    private User creator;
+	public Integer getMinSize() {
+		return minSize;
+	}
 
-    @ManyToMany(mappedBy = "topics")
-    private Set<User> users = new HashSet<User>();
+	public void setMinSize(Integer minSize) {
+		this.minSize = minSize;
+	}
 
-    @OneToMany(mappedBy = "topic")
-    private Set<SubTopic> subTopics = new HashSet<SubTopic>();
+	public Integer getMaxSize() {
+		return maxSize;
+	}
 
-    public Long getId() {
-	return id;
-    }
+	public void setMaxSize(Integer maxSize) {
+		this.maxSize = maxSize;
+	}
 
-    public void setId(Long id) {
-	this.id = id;
-    }
+	public void setTitle(String title) {
+		this.title = title;
+	}
 
-    public String getTitle() {
-	return title;
-    }
+	public User getCreator() {
+		return creator;
+	}
 
-    public Integer getMinSize() {
-	return minSize;
-    }
+	public void setCreator(User creator) {
+		this.creator = creator;
+	}
 
-    public void setMinSize(Integer minSize) {
-	this.minSize = minSize;
-    }
+	public Set<User> getUsers() {
+		return users;
+	}
 
-    public Integer getMaxSize() {
-	return maxSize;
-    }
+	public void setUsers(Set<User> users) {
+		this.users = users;
+	}
 
-    public void setMaxSize(Integer maxSize) {
-	this.maxSize = maxSize;
-    }
+	public Set<SubTopic> getSubTopics() {
+		return subTopics;
+	}
 
-    public void setTitle(String title) {
-	this.title = title;
-    }
-
-    public User getCreator() {
-	return creator;
-    }
-
-    public void setCreator(User creator) {
-	this.creator = creator;
-    }
-
-    public Set<User> getUsers() {
-	return users;
-    }
-
-    public void setUsers(Set<User> users) {
-	this.users = users;
-    }
-
-    public Set<SubTopic> getSubTopics() {
-	return subTopics;
-    }
-
-    public void setSubTopics(Set<SubTopic> subTopics) {
-	this.subTopics = subTopics;
-    }
+	public void setSubTopics(Set<SubTopic> subTopics) {
+		this.subTopics = subTopics;
+	}
 }

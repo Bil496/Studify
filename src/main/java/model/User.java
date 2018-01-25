@@ -15,110 +15,101 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
-// TODO: Fetch types for collections has to change to Lazy after.
 @Entity(name = "User")
 public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	@Column(nullable = false)
+	private String name;
+	@Column(nullable = false)
+	private String surname;
+	@Column(nullable = false)
+	private String email;
+	@Column(nullable = false)
+	private String username;
+	@Column(nullable = false)
+	private String password;
+	@ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
+	@JoinTable(name = "User_Topic", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = {
+			@JoinColumn(name = "topic_id") })
+	private Set<Topic> topics = new HashSet<Topic>();
+	@OneToMany(mappedBy = "userSubTopicId.user", fetch = FetchType.EAGER)
+	private Set<Skill> skills = new HashSet<Skill>();
+	@ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
+	@JoinTable(name = "User_Group", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = {
+			@JoinColumn(name = "group_id") })
+	private Set<Group> groups = new HashSet<Group>();
 
-    @Column(nullable = false)
-    private String name;
+	public Long getId() {
+		return id;
+	}
 
-    @Column(nullable = false)
-    private String surname;
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    @Column(nullable = false)
-    private String email;
+	public String getName() {
+		return name;
+	}
 
-    @Column(nullable = false)
-    private String username;
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    @Column(nullable = false)
-    private String password;
+	public String getSurname() {
+		return surname;
+	}
 
-    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
-    @JoinTable(name = "User_Topic", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = {
-	    @JoinColumn(name = "topic_id") })
-    private Set<Topic> topics = new HashSet<Topic>();
+	public void setSurname(String surname) {
+		this.surname = surname;
+	}
 
-    @OneToMany(mappedBy = "userSubTopicId.user", fetch = FetchType.EAGER)
-    private Set<Talent> talents = new HashSet<Talent>();
+	public String getEmail() {
+		return email;
+	}
 
-    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
-    @JoinTable(name = "User_Team", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = {
-	    @JoinColumn(name = "team_id") })
-    private Set<Team> teams = new HashSet<Team>();
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
-    public Long getId() {
-	return id;
-    }
+	public String getUsername() {
+		return username;
+	}
 
-    public void setId(Long id) {
-	this.id = id;
-    }
+	public void setUsername(String username) {
+		this.username = username;
+	}
 
-    public String getName() {
-	return name;
-    }
+	public String getPassword() {
+		return password;
+	}
 
-    public void setName(String name) {
-	this.name = name;
-    }
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
-    public String getSurname() {
-	return surname;
-    }
+	public Set<Topic> getTopics() {
+		return topics;
+	}
 
-    public void setSurname(String surname) {
-	this.surname = surname;
-    }
+	public void setTopics(Set<Topic> topics) {
+		this.topics = topics;
+	}
 
-    public String getEmail() {
-	return email;
-    }
+	public Set<Skill> getSkills() {
+		return skills;
+	}
 
-    public void setEmail(String email) {
-	this.email = email;
-    }
+	public void setSkills(Set<Skill> skills) {
+		this.skills = skills;
+	}
 
-    public String getUsername() {
-	return username;
-    }
+	public Set<Group> getGroups() {
+		return groups;
+	}
 
-    public void setUsername(String username) {
-	this.username = username;
-    }
-
-    public String getPassword() {
-	return password;
-    }
-
-    public void setPassword(String password) {
-	this.password = password;
-    }
-
-    public Set<Topic> getTopics() {
-	return topics;
-    }
-
-    public void setTopics(Set<Topic> topics) {
-	this.topics = topics;
-    }
-
-    public Set<Talent> getTalents() {
-	return talents;
-    }
-
-    public void setTalents(Set<Talent> talents) {
-	this.talents = talents;
-    }
-
-    public Set<Team> getTeams() {
-	return teams;
-    }
-
-    public void setTeams(Set<Team> teams) {
-	this.teams = teams;
-    }
+	public void setGroups(Set<Group> groups) {
+		this.groups = groups;
+	}
 }
