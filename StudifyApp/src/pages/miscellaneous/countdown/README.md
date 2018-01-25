@@ -1,1 +1,0 @@
-This component was adapted from [this tutorial](http://www.codingandclimbing.co.uk/blog/ionic-2-simple-countdown-timer-25) by [Dave Shirman](www.codingandclimbing.co.uk).
