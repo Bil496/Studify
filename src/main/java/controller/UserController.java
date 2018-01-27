@@ -17,41 +17,42 @@ import service.UserService;
 
 @RestController
 public class UserController {
-    @Autowired
-    private UserService userService;
 
-    /*---Add new user---*/
-    @PostMapping("/user")
-    public ResponseEntity<?> save(@RequestBody User user) {
-	long id = userService.save(user);
-	return ResponseEntity.ok().body("New User has been saved with ID:" + id);
-    }
+	@Autowired
+	private UserService userService;
 
-    /*---Get a user by id---*/
-    @GetMapping("/user/{id}")
-    public ResponseEntity<User> get(@PathVariable("id") long id) {
-	User user = userService.get(id);
-	return ResponseEntity.ok().body(user);
-    }
+	/*---Add new user---*/
+	@PostMapping("/user")
+	public ResponseEntity<?> save(@RequestBody User user) {
+		long id = userService.save(user);
+		return ResponseEntity.ok().body("New User has been saved with ID:" + id);
+	}
 
-    /*---get all books---*/
-    @GetMapping("/user")
-    public ResponseEntity<List<User>> list() {
-	List<User> users = userService.list();
-	return ResponseEntity.ok().body(users);
-    }
+	/*---Get a user by id---*/
+	@GetMapping("/user/{id}")
+	public ResponseEntity<User> get(@PathVariable("id") long id) {
+		User user = userService.get(id);
+		return ResponseEntity.ok().body(user);
+	}
 
-    /*---Update a user by id---*/
-    @PutMapping("/user/{id}")
-    public ResponseEntity<?> update(@PathVariable("id") long id, @RequestBody User user) {
-	userService.update(id, user);
-	return ResponseEntity.ok().body("User has been updated successfully.");
-    }
+	/*---get all books---*/
+	@GetMapping("/user")
+	public ResponseEntity<List<User>> list() {
+		List<User> users = userService.list();
+		return ResponseEntity.ok().body(users);
+	}
 
-    /*---Delete a user by id---*/
-    @DeleteMapping("/user/{id}")
-    public ResponseEntity<?> delete(@PathVariable("id") long id) {
-	userService.delete(id);
-	return ResponseEntity.ok().body("User has been deleted successfully.");
-    }
+	/*---Update a user by id---*/
+	@PutMapping("/user/{id}")
+	public ResponseEntity<?> update(@PathVariable("id") long id, @RequestBody User user) {
+		userService.update(id, user);
+		return ResponseEntity.ok().body("User has been updated successfully.");
+	}
+
+	/*---Delete a user by id---*/
+	@DeleteMapping("/user/{id}")
+	public ResponseEntity<?> delete(@PathVariable("id") long id) {
+		userService.delete(id);
+		return ResponseEntity.ok().body("User has been deleted successfully.");
+	}
 }

@@ -1,1 +1,0 @@
-This was adapted from this amazing [codepen](https://codepen.io/dudleystorey/pen/yaWzzR).

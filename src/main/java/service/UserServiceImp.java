@@ -12,30 +12,31 @@ import model.User;
 @Service
 @Transactional(readOnly = true)
 public class UserServiceImp implements UserService {
-    @Autowired
-    UserDao userDao;
 
-    @Transactional
-    public long save(User user) {
-	return userDao.save(user);
-    }
+	@Autowired
+	UserDao userDao;
 
-    public User get(long id) {
-	return userDao.get(id);
-    }
+	@Transactional
+	public long save(User user) {
+		return userDao.save(user);
+	}
 
-    public List<User> list() {
-	return userDao.list();
-    }
+	public User get(long id) {
+		return userDao.get(id);
+	}
 
-    @Transactional
-    public void update(long id, User user) {
-	userDao.update(id, user);
+	public List<User> list() {
+		return userDao.list();
+	}
 
-    }
+	@Transactional
+	public void update(long id, User user) {
+		userDao.update(id, user);
 
-    @Transactional
-    public void delete(long id) {
-	userDao.delete(id);
-    }
+	}
+
+	@Transactional
+	public void delete(long id) {
+		userDao.delete(id);
+	}
 }
