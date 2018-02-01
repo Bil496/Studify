@@ -10,7 +10,7 @@ import dao.UserDao;
 import model.User;
 
 @Service
-@Transactional(readOnly = true)
+@Transactional
 public class UserServiceImp implements UserService {
     @Autowired
     UserDao userDao;
