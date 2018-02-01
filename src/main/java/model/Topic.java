@@ -1,5 +1,6 @@
 package model;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -30,6 +31,21 @@ public class Topic {
     @Column
     @Min(2)
     private Integer maxSize = 5;
+
+    @Column
+    private Date createDate;
+
+    @Column
+    private Integer enrolledNumber;
+
+    @Column
+    private Integer waitingToGrouped;
+
+    @Column
+    private Integer totalGroupNumber;
+
+    @Column
+    private Date nextGroupingTime;
 
     @ManyToOne(cascade = CascadeType.ALL)
     private User creator;
@@ -94,5 +110,45 @@ public class Topic {
 
     public void setSubTopics(Set<SubTopic> subTopics) {
         this.subTopics = subTopics;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public Integer getEnrolledNumber() {
+        return enrolledNumber;
+    }
+
+    public void setEnrolledNumber(Integer enrolledNumber) {
+        this.enrolledNumber = enrolledNumber;
+    }
+
+    public Integer getWaitingToGrouped() {
+        return waitingToGrouped;
+    }
+
+    public void setWaitingToGrouped(Integer waitingToGrouped) {
+        this.waitingToGrouped = waitingToGrouped;
+    }
+
+    public Integer getTotalGroupNumber() {
+        return totalGroupNumber;
+    }
+
+    public void setTotalGroupNumber(Integer totalGroupNumber) {
+        this.totalGroupNumber = totalGroupNumber;
+    }
+
+    public Date getNextGroupingTime() {
+        return nextGroupingTime;
+    }
+
+    public void setNextGroupingTime(Date nextGroupingTime) {
+        this.nextGroupingTime = nextGroupingTime;
     }
 }
