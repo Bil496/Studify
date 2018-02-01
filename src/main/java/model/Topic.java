@@ -2,7 +2,6 @@ package model;
 
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,81 +11,83 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
 @Entity(name = "Topic")
 public class Topic {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	@Column(nullable = false)
-	private String title;
-	@Column
-	@Min(2)
-	private Integer minSize = 2;
-	@Column
-	@Max(5)
-	private Integer maxSize = 5;
-	@ManyToOne(cascade = CascadeType.ALL)
-	private User creator;
-	@ManyToMany(mappedBy = "topics")
-	private Set<User> users = new HashSet<User>();
-	@OneToMany(mappedBy = "topic")
-	private Set<SubTopic> subTopics = new HashSet<SubTopic>();
 
-	public Long getId() {
-		return id;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(nullable = false)
+    private String title;
+    @Column
+    @Min(2)
+    private Integer minSize = 2;
+    @Column
+    @Max(5)
+    private Integer maxSize = 5;
+    @ManyToOne(cascade = CascadeType.ALL)
+    private User creator;
+    @ManyToMany(mappedBy = "topics")
+    private Set<User> users = new HashSet<User>();
+    @OneToMany(mappedBy = "topic")
+    private Set<SubTopic> subTopics = new HashSet<SubTopic>();
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public String getTitle() {
-		return title;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public Integer getMinSize() {
-		return minSize;
-	}
+    public String getTitle() {
+        return title;
+    }
 
-	public void setMinSize(Integer minSize) {
-		this.minSize = minSize;
-	}
+    public Integer getMinSize() {
+        return minSize;
+    }
 
-	public Integer getMaxSize() {
-		return maxSize;
-	}
+    public void setMinSize(Integer minSize) {
+        this.minSize = minSize;
+    }
 
-	public void setMaxSize(Integer maxSize) {
-		this.maxSize = maxSize;
-	}
+    public Integer getMaxSize() {
+        return maxSize;
+    }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    public void setMaxSize(Integer maxSize) {
+        this.maxSize = maxSize;
+    }
 
-	public User getCreator() {
-		return creator;
-	}
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-	public void setCreator(User creator) {
-		this.creator = creator;
-	}
+    public User getCreator() {
+        return creator;
+    }
 
-	public Set<User> getUsers() {
-		return users;
-	}
+    public void setCreator(User creator) {
+        this.creator = creator;
+    }
 
-	public void setUsers(Set<User> users) {
-		this.users = users;
-	}
+    public Set<User> getUsers() {
+        return users;
+    }
 
-	public Set<SubTopic> getSubTopics() {
-		return subTopics;
-	}
+    public void setUsers(Set<User> users) {
+        this.users = users;
+    }
 
-	public void setSubTopics(Set<SubTopic> subTopics) {
-		this.subTopics = subTopics;
-	}
+    public Set<SubTopic> getSubTopics() {
+        return subTopics;
+    }
+
+    public void setSubTopics(Set<SubTopic> subTopics) {
+        this.subTopics = subTopics;
+    }
 }
