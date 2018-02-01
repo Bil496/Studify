@@ -5,13 +5,11 @@ import model.Topic;
 
 public interface TopicDao {
 
+    List<Topic> list();
+
     long save(Topic topic);
 
     Topic get(long id);
 
-    List<Topic> list();
-
-    void update(long id, Topic topic);
-
-    void delete(long id);
+    public void enroll(long topicID, long userId);
 }
