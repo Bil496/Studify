@@ -6,13 +6,18 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.Min;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 @Entity(name = "Topic")
 public class Topic {
@@ -31,19 +36,22 @@ public class Topic {
     @Column
     @Min(2)
     private Integer maxSize = 5;
-
+    
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
     @Column
     private Date createDate;
 
     @Column
-    private Integer enrolledNumber;
+    private Integer enrolledNumber = 0;
 
     @Column
-    private Integer waitingToGrouped;
+    private Integer waitingToGrouped = 0;
 
     @Column
-    private Integer totalGroupNumber;
+    private Integer totalGroupNumber = 0;
 
+    @Temporal(TemporalType.TIMESTAMP)
     @Column
     private Date nextGroupingTime;
 
@@ -53,7 +61,8 @@ public class Topic {
     @ManyToMany(mappedBy = "topics")
     private Set<User> users = new HashSet<User>();
 
-    @OneToMany(mappedBy = "topic")
+    @OneToMany(mappedBy = "topic", fetch = FetchType.EAGER)
+    @org.hibernate.annotations.Cascade( {org.hibernate.annotations.CascadeType.SAVE_UPDATE})
     private Set<SubTopic> subTopics = new HashSet<SubTopic>();
 
     public Long getId() {
