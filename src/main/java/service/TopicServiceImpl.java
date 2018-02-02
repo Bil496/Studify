@@ -4,7 +4,11 @@ import dao.TopicDao;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
+
 import model.Topic;
+import model.User;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +19,8 @@ public class TopicServiceImpl implements TopicService {
 
     @Autowired
     TopicDao topicDao;
+    @Autowired
+    UserService userService;
 
     @Override
     public List<Topic> list() {
@@ -33,7 +39,10 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
-    public void enroll(long topicId, long userId) {
-        topicDao.enroll(topicId, userId);
+    public void enroll(Topic topic, User user) {
+        Set<Topic> topics = user.getTopics();
+        topics.add(topic);
+        user.setTopics(topics);
+        topicDao.enroll(topic, user);
     }
 }

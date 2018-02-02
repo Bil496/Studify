@@ -2,6 +2,7 @@ package service;
 
 import java.util.List;
 import model.Topic;
+import model.User;
 
 public interface TopicService {
 
@@ -11,5 +12,5 @@ public interface TopicService {
 
     Topic get(long id);
 
-    public void enroll(long topicID, long userId);
+    public void enroll(Topic topic, User user);
 }
