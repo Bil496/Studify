@@ -9,6 +9,8 @@ import model.Topic;
 import model.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -20,8 +22,6 @@ public class TopicDaoImp implements TopicDao {
 
     @Autowired
     private SessionFactory sessionFactory;
-    @Autowired
-    private UserService userService;
 
     @Override
     public List<Topic> list() {
@@ -46,12 +46,12 @@ public class TopicDaoImp implements TopicDao {
     }
 
     @Override
-    public void enroll(long topicId, long userId) {
-        Topic topic = get(topicId);
-        Set<User> users = topic.getUsers();
-        User user = userService.get(userId);
-        users.add(user);
-        topic.setUsers(users);
-        sessionFactory.getCurrentSession().update(topic);
+    public void enroll(Topic topic, User user) {
+        Session session = sessionFactory.getCurrentSession();
+        NativeQuery query = session.createNativeQuery(String.format("insert into user_topic (user_id, topic_id) values (%d, %d)", user.getId(), topic.getId()));
+        query.executeUpdate();
+        topic.setEnrolledNumber(topic.getEnrolledNumber() + 1);
+        topic.setWaitingToGrouped(topic.getWaitingToGrouped() + 1);
+        session.update(topic);
     }
 }
