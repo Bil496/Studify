@@ -59,27 +59,33 @@ public class TopicController {
 
     @PostMapping("/topic/{id}")
     public ResponseEntity<?> enroll(@PathVariable("id") long topicId, @RequestBody String strTalents, @RequestHeader("X-Auth") String token) {
-        // throw new UnsupportedOperationException("Not supported yet.");
         Long userId = 1l; // TODO get userId from token
         User user = userService.get(userId);
         Topic topic = topicService.get(topicId);
+
         Map<Long, SubTopic> subTopicsMap = new HashMap<>();
         for (SubTopic subTopic : topic.getSubTopics()) {
             subTopicsMap.put(subTopic.getId(), subTopic);
         }
+
         JSONObject rootObj = new JSONObject(strTalents);
         JSONArray arrTalents = rootObj.getJSONArray("talents");
         for (int i = 0; i < arrTalents.length(); i++) {
             JSONObject talentObj = arrTalents.getJSONObject(i);
             Talent talent = new Talent();
             talent.setScore(talentObj.getInt("score"));
-            UserSubTopicId userSubTopicId = new UserSubTopicId(user, subTopicsMap.get(talentObj.getLong("subTopic"))); // TODO: After SubTopic Service is ready, fix it
+            UserSubTopicId userSubTopicId = new UserSubTopicId(user, subTopicsMap.get(talentObj.getLong("subTopic")));
             talent.setUserSubTopicId(userSubTopicId);
             user.getTalents().add(talent);
+            subTopicsMap.remove(talentObj.getLong("subTopic"));
+        }
+
+        if (subTopicsMap.isEmpty() == false) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Not all subtopics has covered");
         }
         try {
             topicService.enroll(topic, user);
-            return ResponseEntity.ok().body("User has enrolled to the topic successfully.");
+            return ResponseEntity.ok().body("Successfully enrolled to topic");
         } catch (ConstraintViolationException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("User has already enrolled.");
         }
