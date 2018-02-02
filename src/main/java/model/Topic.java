@@ -19,6 +19,10 @@ import javax.validation.constraints.Min;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity(name = "Topic")
 public class Topic {
 
@@ -37,6 +41,8 @@ public class Topic {
     @Min(2)
     private Integer maxSize = 5;
     
+    @JsonFormat
+    (shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss.0")
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     @Column
@@ -50,17 +56,21 @@ public class Topic {
 
     @Column
     private Integer totalGroupNumber = 0;
-
+    
+    @JsonFormat
+    (shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss.0")
     @Temporal(TemporalType.TIMESTAMP)
     @Column
     private Date nextGroupingTime;
-
+    
+    @JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL)
     private User creator;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "topics")
     private Set<User> users = new HashSet<User>();
-
+    
     @OneToMany(mappedBy = "topic", fetch = FetchType.EAGER)
     @org.hibernate.annotations.Cascade( {org.hibernate.annotations.CascadeType.SAVE_UPDATE})
     private Set<SubTopic> subTopics = new HashSet<SubTopic>();
@@ -96,19 +106,19 @@ public class Topic {
     public void setTitle(String title) {
         this.title = title;
     }
-
+    @JsonIgnore
     public User getCreator() {
         return creator;
     }
-
+    @JsonProperty
     public void setCreator(User creator) {
         this.creator = creator;
     }
-
+    @JsonIgnore
     public Set<User> getUsers() {
         return users;
     }
-
+    @JsonProperty
     public void setUsers(Set<User> users) {
         this.users = users;
     }
