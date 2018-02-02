@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
 @Entity(name = "Topic")
@@ -25,7 +26,7 @@ public class Topic {
 	@Min(2)
 	private Integer minSize = 2;
 	@Column
-	@Min(2)
+	@Max(5)
 	private Integer maxSize = 5;
 	@ManyToOne(cascade = CascadeType.ALL)
 	private User creator;
