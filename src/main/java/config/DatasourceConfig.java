@@ -3,7 +3,6 @@ package config;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
@@ -25,14 +24,12 @@ import java.beans.PropertyVetoException;
 
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories(basePackages = "repository")
 public class DatasourceConfig {
     @Bean
     public DataSource datasource() throws PropertyVetoException {
         EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
         EmbeddedDatabase dataSource = builder
                 .setType(EmbeddedDatabaseType.H2)
-                .addScript("sql-scripts/schema.sql")
                 .addScript("sql-scripts/data.sql")
                 .build();
 
