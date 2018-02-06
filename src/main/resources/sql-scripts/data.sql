@@ -1,0 +1,2 @@
+INSERT INTO app_roles (id, role_name, role_desc) VALUES (1, 'STANDARD_USER', 'Standard User - Has no admin rights');
+INSERT INTO app_roles (id, role_name, role_desc) VALUES (2, 'ADMIN_USER', 'Admin User - Has permission to perform admin tasks');
