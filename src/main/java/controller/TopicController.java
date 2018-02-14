@@ -49,8 +49,7 @@ public class TopicController {
     }
 
     @PostMapping("/topic/{id}")
-    public ResponseEntity<?> enroll(@PathVariable("id") long topicId, @RequestBody String strTalents, @RequestHeader("X-Auth") String token) {
-        Long userId = 1l; // TODO get userId from token
+    public ResponseEntity<?> enroll(@PathVariable("id") long topicId, @RequestHeader("userId") long userId,@RequestBody String strTalents) {
         User user = userService.get(userId);
         Topic topic = topicService.get(topicId);
 

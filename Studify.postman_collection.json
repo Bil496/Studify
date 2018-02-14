@@ -1,8 +1,7 @@
 {
 	"info": {
 		"name": "Studify",
-		"_postman_id": "04c197c5-18cf-6a4b-37dc-4a007b02c915",
-		"description": "",
+		"_postman_id": "fdf9dcf4-f286-2262-49c2-d741846031b2",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -67,7 +66,10 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"url": {
 					"raw": "http://localhost:8080/user/1",
 					"protocol": "http",
@@ -79,8 +81,7 @@
 						"user",
 						"1"
 					]
-				},
-				"description": ""
+				}
 			},
 			"response": []
 		},
@@ -185,14 +186,28 @@
 		{
 			"name": "Enroll Topic",
 			"request": {
-				"method": "GET",
-				"header": [],
+				"method": "POST",
+				"header": [
+					{
+						"key": "userId",
+						"value": "1"
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": ""
+					"raw": "{\n\t\"talents\": [\n\t\t{\n\t\t\t\"subTopic\": 1,\n\t\t\t\"score\": 4\n\t\t},\n\t\t{\n\t\t\t\"subTopic\": 2,\n\t\t\t\"score\": 7\n\t\t},\n\t\t{\n\t\t\t\"subTopic\": 3,\n\t\t\t\"score\": 8\n\t\t}\n\t]\n}"
 				},
 				"url": {
-					"raw": ""
+					"raw": "http://localhost:8080/topic/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"topic",
+						"1"
+					]
 				}
 			},
 			"response": []
