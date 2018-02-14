@@ -1,7 +1,7 @@
 {
 	"info": {
 		"name": "Studify",
-		"_postman_id": "d0141308-89b4-a85b-a122-60ef2bef1d76",
+		"_postman_id": "04c197c5-18cf-6a4b-37dc-4a007b02c915",
 		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -58,6 +58,27 @@
 					"path": [
 						"user"
 					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User with ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/user/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"user",
+						"1"
+					]
 				},
 				"description": ""
 			},
@@ -68,7 +89,10 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"url": {
 					"raw": "http://localhost:8080/user",
 					"protocol": "http",
@@ -144,7 +168,16 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": ""
+					"raw": "http://localhost:8080/topic/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"topic",
+						"1"
+					]
 				}
 			},
 			"response": []
