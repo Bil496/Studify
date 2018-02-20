@@ -2,6 +2,7 @@ package controller;
 
 import java.util.List;
 
+import model.Team;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,12 +14,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import model.User;
+import service.TeamService;
 import service.UserService;
 
 @RestController
 public class UserController {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private TeamService teamService;
 
     /*---Add new user---*/
     @PostMapping("/user")
@@ -39,6 +44,13 @@ public class UserController {
     public ResponseEntity<List<User>> list() {
 	List<User> users = userService.list();
 	return ResponseEntity.ok().body(users);
+    }
+
+    /*---get all teams of user---*/
+    @GetMapping("/user/{id}/teams")
+    public ResponseEntity<List<Team>> list(@PathVariable("id") long id) {
+        List<Team> teams = teamService.teamsOfUser(id);
+        return ResponseEntity.ok().body(teams);
     }
 
     /*---Update a user by id---*/

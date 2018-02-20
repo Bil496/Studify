@@ -1,23 +1,31 @@
 package service;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import dao.TeamDao;
+import dao.UserDao;
 import model.Team;
+
 @Service
 @Transactional
 public class TeamServiceImpl implements TeamService {
 
     @Autowired
     TeamDao teamDao;
+
+    @Autowired
+    UserDao userDao;
+
     @Override
     public List<Team> teamsOfUser(long userId) {
-        // TODO Auto-generated method stub
-        return null;
+        User user = userDao.get(userId);
+        return new ArrayList<>(user.getTeams());
     }
 
     @Override
@@ -27,8 +35,7 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public Team get(long id) {
-        // TODO Auto-generated method stub
-        return null;
+        return teamDao.get(id);
     }
 
 }
