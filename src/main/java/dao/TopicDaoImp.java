@@ -1,5 +1,6 @@
 package dao;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -12,6 +13,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
+import org.hibernate.type.LongType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -53,5 +55,21 @@ public class TopicDaoImp implements TopicDao {
         topic.setEnrolledNumber(topic.getEnrolledNumber() + 1);
         topic.setWaitingToGrouped(topic.getWaitingToGrouped() + 1);
         session.update(topic);
+    }
+    
+    @Override
+    public Set<User> getUsersWithoutTeam(Topic topic){
+        Set<User> users = new HashSet<User>();
+        Session session = sessionFactory.getCurrentSession();
+        
+        NativeQuery query = session.createNativeQuery("select user_id from user_topic t where t.topic_id = :topic_id and t.user_id not in (select u.user_id from team tt, user_team u where tt.topic_id = :topic_id and tt.id = u.team_id)")
+                .addScalar("user_id", new LongType());
+        List<Long> rows = query.setParameter("topic_id", topic.getId()).list();
+        for (Long userId : rows) {
+            User user = new User();
+            user.setId(userId);
+            users.add(user);
+        }
+        return users;
     }
 }

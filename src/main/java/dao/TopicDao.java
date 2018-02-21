@@ -1,6 +1,8 @@
 package dao;
 
 import java.util.List;
+import java.util.Set;
+
 import model.Topic;
 import model.User;
 
@@ -13,4 +15,6 @@ public interface TopicDao {
     Topic get(long id);
 
     public void enroll(Topic topic, User user);
+    
+    Set<User> getUsersWithoutTeam(Topic topic);
 }

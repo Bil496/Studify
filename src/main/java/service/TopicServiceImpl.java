@@ -1,6 +1,7 @@
 package service;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ScheduledFuture;
@@ -56,6 +57,9 @@ public class TopicServiceImpl implements TopicService {
         topicDao.enroll(topic, user);
     }
     
-    
+    @Override
+    public Set<User> getUsersWithoutTeam(Topic topic){
+        return topicDao.getUsersWithoutTeam(topic);
+    }
     
 }
