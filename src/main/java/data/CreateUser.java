@@ -38,21 +38,26 @@ public class CreateUser {
         user.setName("User1");
         user.setSurname("User1");
 
+        //topic.setCreator(user); // TODO: Causes problem? WHY
+
         //User 1 details
         Talent talent = new Talent();
         talent.setScore(1);
         UserSubTopicId userSubTopicId = new UserSubTopicId(user, subTopic);
         talent.setUserSubTopicId(userSubTopicId);
+        user.getTalents().add(talent);
 
         talent = new Talent();
         talent.setScore(2);
         userSubTopicId = new UserSubTopicId(user, subTopic2);
         talent.setUserSubTopicId(userSubTopicId);
+        user.getTalents().add(talent);
 
         talent = new Talent();
         talent.setScore(4);
         userSubTopicId = new UserSubTopicId(user, subTopic3);
         talent.setUserSubTopicId(userSubTopicId);
+        user.getTalents().add(talent);
 
         topic.getUsers().add(user);
 
@@ -70,16 +75,19 @@ public class CreateUser {
         talent.setScore(2);
         userSubTopicId = new UserSubTopicId(user, subTopic);
         talent.setUserSubTopicId(userSubTopicId);
+        user.getTalents().add(talent);
 
         talent = new Talent();
         talent.setScore(3);
         userSubTopicId = new UserSubTopicId(user, subTopic2);
         talent.setUserSubTopicId(userSubTopicId);
+        user.getTalents().add(talent);
 
         talent = new Talent();
         talent.setScore(1);
         userSubTopicId = new UserSubTopicId(user, subTopic3);
         talent.setUserSubTopicId(userSubTopicId);
+        user.getTalents().add(talent);
 
         topic.getUsers().add(user);
 
@@ -97,16 +105,19 @@ public class CreateUser {
         talent.setScore(4);
         userSubTopicId = new UserSubTopicId(user, subTopic);
         talent.setUserSubTopicId(userSubTopicId);
+        user.getTalents().add(talent);
 
         talent = new Talent();
         talent.setScore(1);
         userSubTopicId = new UserSubTopicId(user, subTopic2);
         talent.setUserSubTopicId(userSubTopicId);
+        user.getTalents().add(talent);
 
         talent = new Talent();
         talent.setScore(5);
         userSubTopicId = new UserSubTopicId(user, subTopic3);
         talent.setUserSubTopicId(userSubTopicId);
+        user.getTalents().add(talent);
 
         topic.getUsers().add(user);
 
@@ -124,16 +135,19 @@ public class CreateUser {
         talent.setScore(1);
         userSubTopicId = new UserSubTopicId(user, subTopic);
         talent.setUserSubTopicId(userSubTopicId);
+        user.getTalents().add(talent);
 
         talent = new Talent();
         talent.setScore(0);
         userSubTopicId = new UserSubTopicId(user, subTopic2);
         talent.setUserSubTopicId(userSubTopicId);
+        user.getTalents().add(talent);
 
         talent = new Talent();
         talent.setScore(3);
         userSubTopicId = new UserSubTopicId(user, subTopic3);
         talent.setUserSubTopicId(userSubTopicId);
+        user.getTalents().add(talent);
 
         topic.getUsers().add(user);
 
@@ -151,16 +165,19 @@ public class CreateUser {
         talent.setScore(5);
         userSubTopicId = new UserSubTopicId(user, subTopic);
         talent.setUserSubTopicId(userSubTopicId);
+        user.getTalents().add(talent);
 
         talent = new Talent();
         talent.setScore(5);
         userSubTopicId = new UserSubTopicId(user, subTopic2);
         talent.setUserSubTopicId(userSubTopicId);
+        user.getTalents().add(talent);
 
         talent = new Talent();
         talent.setScore(0);
         userSubTopicId = new UserSubTopicId(user, subTopic3);
         talent.setUserSubTopicId(userSubTopicId);
+        user.getTalents().add(talent);
 
         topic.getUsers().add(user);
 
@@ -178,16 +195,19 @@ public class CreateUser {
         talent.setScore(2);
         userSubTopicId = new UserSubTopicId(user, subTopic);
         talent.setUserSubTopicId(userSubTopicId);
+        user.getTalents().add(talent);
 
         talent = new Talent();
         talent.setScore(4);
         userSubTopicId = new UserSubTopicId(user, subTopic2);
         talent.setUserSubTopicId(userSubTopicId);
+        user.getTalents().add(talent);
 
         talent = new Talent();
         talent.setScore(2);
         userSubTopicId = new UserSubTopicId(user, subTopic3);
         talent.setUserSubTopicId(userSubTopicId);
+        user.getTalents().add(talent);
 
         topic.getUsers().add(user);
 
@@ -205,16 +225,19 @@ public class CreateUser {
         talent.setScore(4);
         userSubTopicId = new UserSubTopicId(user, subTopic);
         talent.setUserSubTopicId(userSubTopicId);
+        user.getTalents().add(talent);
 
         talent = new Talent();
         talent.setScore(3);
         userSubTopicId = new UserSubTopicId(user, subTopic2);
         talent.setUserSubTopicId(userSubTopicId);
+        user.getTalents().add(talent);
 
         talent = new Talent();
         talent.setScore(2);
         userSubTopicId = new UserSubTopicId(user, subTopic3);
         talent.setUserSubTopicId(userSubTopicId);
+        user.getTalents().add(talent);
 
         topic.getUsers().add(user);
 
@@ -232,16 +255,19 @@ public class CreateUser {
         talent.setScore(3);
         userSubTopicId = new UserSubTopicId(user, subTopic);
         talent.setUserSubTopicId(userSubTopicId);
+        user.getTalents().add(talent);
 
         talent = new Talent();
         talent.setScore(1);
         userSubTopicId = new UserSubTopicId(user, subTopic2);
         talent.setUserSubTopicId(userSubTopicId);
+        user.getTalents().add(talent);
 
         talent = new Talent();
         talent.setScore(4);
         userSubTopicId = new UserSubTopicId(user, subTopic3);
         talent.setUserSubTopicId(userSubTopicId);
+        user.getTalents().add(talent);
 
         topic.getUsers().add(user);
 
@@ -259,16 +285,19 @@ public class CreateUser {
         talent.setScore(1);
         userSubTopicId = new UserSubTopicId(user, subTopic);
         talent.setUserSubTopicId(userSubTopicId);
+        user.getTalents().add(talent);
 
         talent = new Talent();
         talent.setScore(1);
         userSubTopicId = new UserSubTopicId(user, subTopic2);
         talent.setUserSubTopicId(userSubTopicId);
+        user.getTalents().add(talent);
 
         talent = new Talent();
         talent.setScore(2);
         userSubTopicId = new UserSubTopicId(user, subTopic3);
         talent.setUserSubTopicId(userSubTopicId);
+        user.getTalents().add(talent);
 
         topic.getUsers().add(user);
 
@@ -286,16 +315,19 @@ public class CreateUser {
         talent.setScore(2);
         userSubTopicId = new UserSubTopicId(user, subTopic);
         talent.setUserSubTopicId(userSubTopicId);
+        user.getTalents().add(talent);
 
         talent = new Talent();
         talent.setScore(2);
         userSubTopicId = new UserSubTopicId(user, subTopic2);
         talent.setUserSubTopicId(userSubTopicId);
+        user.getTalents().add(talent);
 
         talent = new Talent();
         talent.setScore(5);
         userSubTopicId = new UserSubTopicId(user, subTopic3);
         talent.setUserSubTopicId(userSubTopicId);
+        user.getTalents().add(talent);
 
         topic.getUsers().add(user);
 
@@ -313,16 +345,19 @@ public class CreateUser {
         talent.setScore(0);
         userSubTopicId = new UserSubTopicId(user, subTopic);
         talent.setUserSubTopicId(userSubTopicId);
+        user.getTalents().add(talent);
 
         talent = new Talent();
         talent.setScore(2);
         userSubTopicId = new UserSubTopicId(user, subTopic2);
         talent.setUserSubTopicId(userSubTopicId);
+        user.getTalents().add(talent);
 
         talent = new Talent();
         talent.setScore(3);
         userSubTopicId = new UserSubTopicId(user, subTopic3);
         talent.setUserSubTopicId(userSubTopicId);
+        user.getTalents().add(talent);
 
         topic.getUsers().add(user);
 
@@ -340,16 +375,19 @@ public class CreateUser {
         talent.setScore(2);
         userSubTopicId = new UserSubTopicId(user, subTopic);
         talent.setUserSubTopicId(userSubTopicId);
+        user.getTalents().add(talent);
 
         talent = new Talent();
         talent.setScore(5);
         userSubTopicId = new UserSubTopicId(user, subTopic2);
         talent.setUserSubTopicId(userSubTopicId);
+        user.getTalents().add(talent);
 
         talent = new Talent();
         talent.setScore(0);
         userSubTopicId = new UserSubTopicId(user, subTopic3);
         talent.setUserSubTopicId(userSubTopicId);
+        user.getTalents().add(talent);
 
         topic.getUsers().add(user);
 
@@ -367,16 +405,19 @@ public class CreateUser {
         talent.setScore(2);
         userSubTopicId = new UserSubTopicId(user, subTopic);
         talent.setUserSubTopicId(userSubTopicId);
+        user.getTalents().add(talent);
 
         talent = new Talent();
         talent.setScore(4);
         userSubTopicId = new UserSubTopicId(user, subTopic2);
         talent.setUserSubTopicId(userSubTopicId);
+        user.getTalents().add(talent);
 
         talent = new Talent();
         talent.setScore(1);
         userSubTopicId = new UserSubTopicId(user, subTopic3);
         talent.setUserSubTopicId(userSubTopicId);
+        user.getTalents().add(talent);
 
         topic.getUsers().add(user);
 
@@ -394,16 +435,19 @@ public class CreateUser {
         talent.setScore(1);
         userSubTopicId = new UserSubTopicId(user, subTopic);
         talent.setUserSubTopicId(userSubTopicId);
+        user.getTalents().add(talent);
 
         talent = new Talent();
         talent.setScore(0);
         userSubTopicId = new UserSubTopicId(user, subTopic2);
         talent.setUserSubTopicId(userSubTopicId);
+        user.getTalents().add(talent);
 
         talent = new Talent();
         talent.setScore(2);
         userSubTopicId = new UserSubTopicId(user, subTopic3);
         talent.setUserSubTopicId(userSubTopicId);
+        user.getTalents().add(talent);
 
         topic.getUsers().add(user);
 
@@ -421,16 +465,19 @@ public class CreateUser {
         talent.setScore(3);
         userSubTopicId = new UserSubTopicId(user, subTopic);
         talent.setUserSubTopicId(userSubTopicId);
+        user.getTalents().add(talent);
 
         talent = new Talent();
         talent.setScore(1);
         userSubTopicId = new UserSubTopicId(user, subTopic2);
         talent.setUserSubTopicId(userSubTopicId);
+        user.getTalents().add(talent);
 
         talent = new Talent();
         talent.setScore(4);
         userSubTopicId = new UserSubTopicId(user, subTopic3);
         talent.setUserSubTopicId(userSubTopicId);
+        user.getTalents().add(talent);
 
         topic.getUsers().add(user);
 
@@ -448,16 +495,19 @@ public class CreateUser {
         talent.setScore(0);
         userSubTopicId = new UserSubTopicId(user, subTopic);
         talent.setUserSubTopicId(userSubTopicId);
+        user.getTalents().add(talent);
 
         talent = new Talent();
         talent.setScore(0);
         userSubTopicId = new UserSubTopicId(user, subTopic2);
         talent.setUserSubTopicId(userSubTopicId);
+        user.getTalents().add(talent);
 
         talent = new Talent();
         talent.setScore(0);
         userSubTopicId = new UserSubTopicId(user, subTopic3);
         talent.setUserSubTopicId(userSubTopicId);
+        user.getTalents().add(talent);
 
         topic.getUsers().add(user);
 
@@ -475,16 +525,19 @@ public class CreateUser {
         talent.setScore(5);
         userSubTopicId = new UserSubTopicId(user, subTopic);
         talent.setUserSubTopicId(userSubTopicId);
+        user.getTalents().add(talent);
 
         talent = new Talent();
         talent.setScore(5);
         userSubTopicId = new UserSubTopicId(user, subTopic2);
         talent.setUserSubTopicId(userSubTopicId);
+        user.getTalents().add(talent);
 
         talent = new Talent();
         talent.setScore(5);
         userSubTopicId = new UserSubTopicId(user, subTopic3);
         talent.setUserSubTopicId(userSubTopicId);
+        user.getTalents().add(talent);
 
         topic.getUsers().add(user);
 
@@ -502,16 +555,19 @@ public class CreateUser {
         talent.setScore(1);
         userSubTopicId = new UserSubTopicId(user, subTopic);
         talent.setUserSubTopicId(userSubTopicId);
+        user.getTalents().add(talent);
 
         talent = new Talent();
         talent.setScore(4);
         userSubTopicId = new UserSubTopicId(user, subTopic2);
         talent.setUserSubTopicId(userSubTopicId);
+        user.getTalents().add(talent);
 
         talent = new Talent();
         talent.setScore(2);
         userSubTopicId = new UserSubTopicId(user, subTopic3);
         talent.setUserSubTopicId(userSubTopicId);
+        user.getTalents().add(talent);
 
         topic.getUsers().add(user);
 
@@ -529,16 +585,19 @@ public class CreateUser {
         talent.setScore(1);
         userSubTopicId = new UserSubTopicId(user, subTopic);
         talent.setUserSubTopicId(userSubTopicId);
+        user.getTalents().add(talent);
 
         talent = new Talent();
         talent.setScore(3);
         userSubTopicId = new UserSubTopicId(user, subTopic2);
         talent.setUserSubTopicId(userSubTopicId);
+        user.getTalents().add(talent);
 
         talent = new Talent();
         talent.setScore(0);
         userSubTopicId = new UserSubTopicId(user, subTopic3);
         talent.setUserSubTopicId(userSubTopicId);
+        user.getTalents().add(talent);
 
         topic.getUsers().add(user);
 
@@ -556,16 +615,19 @@ public class CreateUser {
         talent.setScore(1);
         userSubTopicId = new UserSubTopicId(user, subTopic);
         talent.setUserSubTopicId(userSubTopicId);
+        user.getTalents().add(talent);
 
         talent = new Talent();
         talent.setScore(2);
         userSubTopicId = new UserSubTopicId(user, subTopic2);
         talent.setUserSubTopicId(userSubTopicId);
+        user.getTalents().add(talent);
 
         talent = new Talent();
         talent.setScore(3);
         userSubTopicId = new UserSubTopicId(user, subTopic3);
         talent.setUserSubTopicId(userSubTopicId);
+        user.getTalents().add(talent);
 
         topic.getUsers().add(user);
 
