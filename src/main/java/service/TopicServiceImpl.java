@@ -40,7 +40,7 @@ public class TopicServiceImpl implements TopicService {
     @Override
     public long save(Topic topic) {
         topic.setNextGroupingTime(new Date(System.currentTimeMillis() +  (1000 * 60 * 60 * 24)));
-        scheduledFuture = taskScheduler.scheduleAtFixedRate(new CreateTeamsTask(topic.getId()), 1000);
+        scheduledFuture = taskScheduler.scheduleAtFixedRate(new CreateTeamsTask(topic.getId()), (1000 * 60 * 60 * 24));
         return topicDao.save(topic);
     }
 
