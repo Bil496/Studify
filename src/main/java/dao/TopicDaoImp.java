@@ -1,23 +1,21 @@
 package dao;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import model.Topic;
 import model.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 import org.hibernate.type.LongType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import service.UserService;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Repository
 public class TopicDaoImp implements TopicDao {
@@ -50,19 +48,19 @@ public class TopicDaoImp implements TopicDao {
     @Override
     public void enroll(Topic topic, User user) {
         Session session = sessionFactory.getCurrentSession();
-        NativeQuery query = session.createNativeQuery(String.format("insert into user_topic (user_id, topic_id) values (%d, %d)", user.getId(), topic.getId()));
+        NativeQuery query = session.createNativeQuery(String.format("insert into User_Topic (user_id, topic_id) values (%d, %d)", user.getId(), topic.getId()));
         query.executeUpdate();
         topic.setEnrolledNumber(topic.getEnrolledNumber() + 1);
         topic.setWaitingToGrouped(topic.getWaitingToGrouped() + 1);
         session.update(topic);
     }
-    
+
     @Override
     public Set<User> getUsersWithoutTeam(Topic topic){
         Set<User> users = new HashSet<User>();
         Session session = sessionFactory.getCurrentSession();
-        
-        NativeQuery query = session.createNativeQuery("select user_id from user_topic t where t.topic_id = :topic_id and t.user_id not in (select u.user_id from team tt, user_team u where tt.topic_id = :topic_id and tt.id = u.team_id)")
+
+        NativeQuery query = session.createNativeQuery("select user_id from User_Topic t where t.topic_id = :topic_id and t.user_id not in (select u.user_id from Team tt, User_Team u where tt.topic_id = :topic_id and tt.id = u.team_id)")
                 .addScalar("user_id", new LongType());
         List<Long> rows = query.setParameter("topic_id", topic.getId()).list();
         for (Long userId : rows) {
