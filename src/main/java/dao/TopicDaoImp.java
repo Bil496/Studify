@@ -1,5 +1,6 @@
 package dao;
 
+import model.Talent;
 import model.Topic;
 import model.User;
 import org.hibernate.Session;
@@ -53,6 +54,9 @@ public class TopicDaoImp implements TopicDao {
         topic.setEnrolledNumber(topic.getEnrolledNumber() + 1);
         topic.setWaitingToGrouped(topic.getWaitingToGrouped() + 1);
         session.update(topic);
+        for (Talent talent : user.getTalents()){
+            session.save(talent);
+        }
     }
 
     @Override
