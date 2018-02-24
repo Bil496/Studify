@@ -10,10 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 import service.TopicService;
 import service.UserService;
 
-import java.util.Comparator;
-import java.util.Set;
-import java.util.TreeSet;
-
 @RestController
 public class MockDataController {
     @Autowired
@@ -24,16 +20,11 @@ public class MockDataController {
     @GetMapping("/init")
     public ResponseEntity<String> getTalentsByTopicId() {
         Topic topicWithEnrolledUsers = CreateUser.getTopicWithEnrolledUsers();
-        topicService.save(topicWithEnrolledUsers);
-        Set<User> users = new TreeSet<>(new Comparator<User>() {
-            @Override
-            public int compare(User o1, User o2) {
-                return o1.getId().compareTo(o2.getId());
-            }
-        });
-        users.addAll(topicWithEnrolledUsers.getUsers());
-        for(User user : users){
+        for (User user : topicWithEnrolledUsers.getUsers()) {
             userService.save(user);
+        }
+        topicService.save(topicWithEnrolledUsers);
+        for (User user : topicWithEnrolledUsers.getUsers()) {
             topicService.enroll(topicWithEnrolledUsers, user);
         }
         return ResponseEntity.ok().body("ok");
