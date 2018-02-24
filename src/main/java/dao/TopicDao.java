@@ -14,7 +14,7 @@ public interface TopicDao {
 
     Topic get(long id);
 
-    public void enroll(Topic topic, User user);
+    void enroll(Topic topic, User user);
     
-    Set<User> getUsersWithoutTeam(Topic topic);
+    List<User> getUsersWithoutTeam(Topic topic);
 }
