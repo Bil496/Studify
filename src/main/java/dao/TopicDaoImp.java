@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -60,8 +61,8 @@ public class TopicDaoImp implements TopicDao {
     }
 
     @Override
-    public Set<User> getUsersWithoutTeam(Topic topic){
-        Set<User> users = new HashSet<User>();
+    public List<User> getUsersWithoutTeam(Topic topic){
+        List<User> users = new ArrayList<>();
         Session session = sessionFactory.getCurrentSession();
 
         NativeQuery query = session.createNativeQuery("select user_id from User_Topic t where t.topic_id = :topic_id and t.user_id not in (select u.user_id from Team tt, User_Team u where tt.topic_id = :topic_id and tt.id = u.team_id)")

@@ -57,7 +57,7 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
-    public Set<User> getUsersWithoutTeam(Topic topic) {
+    public List<User> getUsersWithoutTeam(Topic topic) {
         return topicDao.getUsersWithoutTeam(topic);
     }
 
