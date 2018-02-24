@@ -1,20 +1,18 @@
 package service;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.ScheduledFuture;
-
+import dao.TopicDao;
+import model.Topic;
+import model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import dao.TopicDao;
-import model.Topic;
-import model.User;
 import task.CreateTeamsTask;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ScheduledFuture;
 
 @Service
 @Transactional
@@ -22,13 +20,13 @@ public class TopicServiceImpl implements TopicService {
 
     @Autowired
     TopicDao topicDao;
-    
+
     @Autowired
     TaskScheduler taskScheduler;
-    
+
     ScheduledFuture<?> scheduledFuture;
-    
-    
+
+
     @Autowired
     UserService userService;
 
@@ -39,9 +37,10 @@ public class TopicServiceImpl implements TopicService {
 
     @Override
     public long save(Topic topic) {
-        topic.setNextGroupingTime(new Date(System.currentTimeMillis() +  (1000 * 60 * 60 * 24)));
-        scheduledFuture = taskScheduler.scheduleAtFixedRate(new CreateTeamsTask(topic.getId()), (1000 * 60 * 60 * 24));
-        return topicDao.save(topic);
+        topic.setNextGroupingTime(new Date(System.currentTimeMillis() + (1000 * 60 * 60 * 24)));
+        long topicId = topicDao.save(topic);
+        scheduledFuture = taskScheduler.scheduleAtFixedRate(new CreateTeamsTask(topicId), (1000 * 60 * 60 * 24));
+        return topicId;
     }
 
     @Override
@@ -56,10 +55,10 @@ public class TopicServiceImpl implements TopicService {
         user.setTopics(topics);
         topicDao.enroll(topic, user);
     }
-    
+
     @Override
-    public Set<User> getUsersWithoutTeam(Topic topic){
+    public Set<User> getUsersWithoutTeam(Topic topic) {
         return topicDao.getUsersWithoutTeam(topic);
     }
-    
+
 }
