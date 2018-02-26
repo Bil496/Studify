@@ -1,6 +1,8 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -10,8 +12,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
@@ -43,7 +45,7 @@ public class User {
     private Set<Topic> topics = new HashSet<Topic>();
 
     @OneToMany(mappedBy = "userSubTopicId.user", fetch = FetchType.EAGER)
-    private Set<Talent> talents = new HashSet<Talent>();
+    private List<Talent> talents = new ArrayList<Talent>();
 
     @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
     @JoinTable(name = "User_Team", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = {
@@ -106,11 +108,11 @@ public class User {
 	this.topics = topics;
     }
 
-    public Set<Talent> getTalents() {
+    public List<Talent> getTalents() {
 	return talents;
     }
 
-    public void setTalents(Set<Talent> talents) {
+    public void setTalents(List<Talent> talents) {
 	this.talents = talents;
     }
 

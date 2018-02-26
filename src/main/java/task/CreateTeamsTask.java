@@ -1,19 +1,23 @@
 package task;
 
-import algorithm.BasicAlgorithm;
-import algorithm.TeamCreateAlgorithm;
-import model.Team;
-import model.Topic;
-import model.User;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import service.TalentService;
-import service.TopicService;
-import service.UserService;
-
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import algorithm.BasicAlgorithm;
+import algorithm.TeamCreateAlgorithm;
+import model.Talent;
+import model.Team;
+import model.Topic;
+import model.User;
+import service.TalentService;
+import service.TopicService;
+import service.UserService;
 
 @Component
 public class CreateTeamsTask implements Runnable {
@@ -34,8 +38,10 @@ public class CreateTeamsTask implements Runnable {
         TeamCreateAlgorithm algorithm = new BasicAlgorithm();
         Topic topic = topicService.get(topicId);
         List<User> usersWithoutTeam = topicService.getUsersWithoutTeam(topic);
-        for (User user : usersWithoutTeam){
-            user.setTalents(new HashSet<>(talentService.getTalentsByTopicId(user.getId(), topic.getId())));
+        for (User user : usersWithoutTeam) {
+            List<Talent> talents; 
+            talents = new ArrayList<>(talentService.getTalentsByTopicId(user.getId(), topic.getId()));
+            user.setTalents(talents);
         }
         List<Team> teams = algorithm.createTeams(topic, usersWithoutTeam);
         topic.setWaitingToGrouped(usersWithoutTeam.size() - getTotalUsersInTeams(teams));
