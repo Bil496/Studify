@@ -11,6 +11,7 @@ import org.apache.commons.math3.util.Combinations;
 import model.Team;
 import model.Topic;
 import model.User;
+import util.RandomStringGenerator;
 
 public class GreedyStrongNashEquilibriumAlgorithm extends MatchingAlgorithm {
     
@@ -52,6 +53,20 @@ public class GreedyStrongNashEquilibriumAlgorithm extends MatchingAlgorithm {
 	    for (int i = 0; i < topic.getMaxSize(); i++) {
 		jointUtility += jointTalent[i];
 	    }
+	}
+	
+	public void choose() {
+	    Team team = new Team();
+            team.setTopic(topic);
+            team.setSize(topic.getMaxSize());
+        
+            Set<User> users = new HashSet<>();
+            for (int i: members) {
+        	users.add(GreedyStrongNashEquilibriumAlgorithm.this.users.get(i));
+            }
+            
+            team.setUsers(users);
+            team.setUtility(jointUtility);
 	}
 
 	@Override
