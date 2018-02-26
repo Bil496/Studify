@@ -55,11 +55,13 @@ public class GreedyStrongNashEquilibriumAlgorithm extends MatchingAlgorithm {
 	    }
 	}
 	
+	private static final int TEAM_NAME_WORD_COUNT = 3;
+	   
 	public void choose() {
 	    Team team = new Team();
             team.setTopic(topic);
             team.setSize(topic.getMaxSize());
-        
+            team.setName(RandomStringGenerator.getSentence(TEAM_NAME_WORD_COUNT));
             Set<User> users = new HashSet<>();
             for (int i: members) {
         	users.add(GreedyStrongNashEquilibriumAlgorithm.this.users.get(i));
