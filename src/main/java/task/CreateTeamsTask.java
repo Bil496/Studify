@@ -41,6 +41,7 @@ public class CreateTeamsTask implements Runnable {
         for (User user : usersWithoutTeam) {
             List<Talent> talents; 
             talents = new ArrayList<>(talentService.getTalentsByTopicId(user.getId(), topic.getId()));
+            Collections.sort(talents);
             user.setTalents(talents);
         }
         List<Team> teams = algorithm.createTeams(topic, usersWithoutTeam);
