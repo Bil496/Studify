@@ -8,8 +8,8 @@ import model.User;
 
 public abstract class MatchingAlgorithm {
 
-    private Topic topic;
-    private List<User> users;
+    protected Topic topic;
+    protected List<User> users;
     
     public MatchingAlgorithm(Topic topic, List<User> users) {
 	this.topic = topic;
