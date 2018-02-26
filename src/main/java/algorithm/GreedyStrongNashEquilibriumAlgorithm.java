@@ -74,6 +74,10 @@ public class GreedyStrongNashEquilibriumAlgorithm extends MatchingAlgorithm {
 		Collections.swap(candidates, i, i - 1);
 	    }
 	}
+	
+	public boolean isEmpty() {
+	    return candidates.isEmpty();
+	}
 
     }
 
