@@ -3,6 +3,7 @@ package algorithm;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.math3.util.Combinations;
 
@@ -11,7 +12,7 @@ import model.Topic;
 import model.User;
 
 public class GreedyStrongNashEquilibriumAlgorithm extends MatchingAlgorithm {
-
+    
     public GreedyStrongNashEquilibriumAlgorithm(Topic topic, List<User> users) {
 	super(topic, users);
     }
@@ -96,7 +97,7 @@ public class GreedyStrongNashEquilibriumAlgorithm extends MatchingAlgorithm {
     }
 
     @Override
-    public List<Team> match() {
+    public Set<Team> match() {
 	// Add all possible subsets of maximumum size to candidate bag.
 	for (int[] combination : new Combinations(users.size(), topic.getMaxSize())) {
 	    Candidate candidate = new Candidate(combination);

@@ -1,6 +1,7 @@
 package algorithm;
 
 import java.util.List;
+import java.util.Set;
 
 import model.Team;
 import model.Topic;
@@ -16,6 +17,6 @@ public abstract class MatchingAlgorithm {
 	this.users = users;
     }
     
-    public abstract List<Team> match();
+    public abstract Set<Team> match();
 
 }
