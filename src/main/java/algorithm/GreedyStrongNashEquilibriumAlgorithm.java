@@ -2,6 +2,7 @@ package algorithm;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -12,6 +13,8 @@ import model.Topic;
 import model.User;
 
 public class GreedyStrongNashEquilibriumAlgorithm extends MatchingAlgorithm {
+    
+    private Set<Team> teams = new HashSet<>();
     
     public GreedyStrongNashEquilibriumAlgorithm(Topic topic, List<User> users) {
 	super(topic, users);
@@ -104,7 +107,7 @@ public class GreedyStrongNashEquilibriumAlgorithm extends MatchingAlgorithm {
 	    candidateBag.add(candidate);
 	}
 	
-	return null;
+	return teams;
     }
 
 }
