@@ -86,6 +86,11 @@ public class GreedyStrongNashEquilibriumAlgorithm extends MatchingAlgorithm {
 	    }
 	}
 	
+	public void removeCandidatesWithMembersOf(Candidate candidate) {
+	    candidates.removeIf(o -> candidate.intersects(o));
+	}
+	
+	
 	public boolean isEmpty() {
 	    return candidates.isEmpty();
 	}
