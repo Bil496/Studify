@@ -6,8 +6,6 @@ import java.util.List;
 
 import org.apache.commons.math3.util.Combinations;
 
-import GreedyStrongNashAlgorithm.Candidate;
-import GreedyStrongNashAlgorithm.CandidateBag;
 import model.Team;
 import model.Topic;
 import model.User;
