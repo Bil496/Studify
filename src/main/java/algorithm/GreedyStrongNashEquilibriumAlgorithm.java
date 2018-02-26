@@ -8,6 +8,7 @@ import java.util.Set;
 
 import org.apache.commons.math3.util.Combinations;
 
+import GreedyStrongNashAlgorithm.Candidate;
 import model.Team;
 import model.Topic;
 import model.User;
@@ -123,6 +124,15 @@ public class GreedyStrongNashEquilibriumAlgorithm extends MatchingAlgorithm {
 	    Candidate candidate = new Candidate(combination);
 	    candidateBag.add(candidate);
 	}
+	
+	while (!candidateBag.isEmpty()) {
+	    Candidate candidate = candidateBag.getCandidateWithGreatestJointUtility();
+	    candidate.choose();
+	    
+	    candidateBag.removeCandidatesWithMembersOf(candidate);
+	}
+	
+	// TODO: Match removing players together
 	
 	return teams;
     }
