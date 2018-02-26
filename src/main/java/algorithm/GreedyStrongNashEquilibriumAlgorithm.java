@@ -12,7 +12,7 @@ public class GreedyStrongNashEquilibriumAlgorithm extends MatchingAlgorithm {
 	super(topic, users);
     }
     
-    private class Candidate {
+    private class Candidate implements Comparable<Candidate> {
 
 	private int[] members;
 	private int jointUtility;
@@ -44,6 +44,11 @@ public class GreedyStrongNashEquilibriumAlgorithm extends MatchingAlgorithm {
 	    for (int i = 0; i < topic.getMaxSize(); i++) {
 		jointUtility += jointTalent[i];
 	    }
+	}
+
+	@Override
+	public int compareTo(Candidate o) {
+	    return Integer.compare(jointUtility, o.jointUtility);
 	}
 
     }
