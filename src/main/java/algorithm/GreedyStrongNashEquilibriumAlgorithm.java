@@ -1,7 +1,10 @@
 package algorithm;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import GreedyStrongNashAlgorithm.CandidateBag;
 import model.Team;
 import model.Topic;
 import model.User;
@@ -50,8 +53,27 @@ public class GreedyStrongNashEquilibriumAlgorithm extends MatchingAlgorithm {
 	public int compareTo(Candidate o) {
 	    return Integer.compare(jointUtility, o.jointUtility);
 	}
+    }
+    
+    private CandidateBag candidateBag = new CandidateBag();
+    
+    private class CandidateBag {
+
+	private ArrayList<Candidate> candidates = new ArrayList<>();
+
+	public Candidate getCandidateWithGreatestJointUtility() {
+	    return candidates.get(candidates.size() - 1);
+	}
+	
+	public void add(Candidate candidate) {
+	    candidates.add(candidate);
+	    for (int i = candidates.size() - 1; i > 0 && candidate.compareTo(candidates.get(i - 1)) < 0; i--) {
+		Collections.swap(candidates, i, i - 1);
+	    }
+	}
 
     }
+
 
     @Override
     public List<Team> match() {
