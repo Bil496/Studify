@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.math3.util.Combinations;
+
+import GreedyStrongNashAlgorithm.Candidate;
 import GreedyStrongNashAlgorithm.CandidateBag;
 import model.Team;
 import model.Topic;
@@ -74,9 +77,14 @@ public class GreedyStrongNashEquilibriumAlgorithm extends MatchingAlgorithm {
 
     }
 
-
     @Override
     public List<Team> match() {
+	// Add all possible subsets of maximumum size to candidate bag.
+	for (int[] combination : new Combinations(users.size(), topic.getMaxSize())) {
+	    Candidate candidate = new Candidate(combination);
+	    candidateBag.add(candidate);
+	}
+	
 	return null;
     }
 
