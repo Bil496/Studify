@@ -56,6 +56,17 @@ public class GreedyStrongNashEquilibriumAlgorithm extends MatchingAlgorithm {
 	public int compareTo(Candidate o) {
 	    return Integer.compare(jointUtility, o.jointUtility);
 	}
+	
+	public boolean intersects(Candidate o) {
+	    for (int i: members) {
+		for (int j: o.members) {
+		    if (i == j) {
+			return true;
+		    }
+		}
+	    }
+	    return false;
+	}
     }
     
     private CandidateBag candidateBag = new CandidateBag();
