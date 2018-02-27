@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import service.TopicService;
 import service.UserService;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,6 +52,7 @@ public class TopicController {
     @PostMapping("/topic/{id}")
     public ResponseEntity<?> enroll(@PathVariable("id") long topicId, @RequestHeader("userId") long userId,@RequestBody String strTalents) {
         User user = userService.get(userId);
+        user.setTalents(new ArrayList<>());
         Topic topic = topicService.get(topicId);
 
         Map<Long, SubTopic> subTopicsMap = new HashMap<>();

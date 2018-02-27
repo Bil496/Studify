@@ -32,7 +32,7 @@ public class UserController {
         return ResponseEntity.ok().body(user);
     }
 
-    /*---get all books---*/
+    /*---get all users---*/
     @GetMapping("/user")
     public ResponseEntity<List<User>> list() {
         List<User> users = userService.list();

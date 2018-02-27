@@ -9,9 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import task.CreateTeamsTask;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ScheduledFuture;
 
 @Service
@@ -50,9 +48,7 @@ public class TopicServiceImpl implements TopicService {
 
     @Override
     public void enroll(Topic topic, User user) {
-        Set<Topic> topics = user.getTopics();
-        topics.add(topic);
-        user.setTopics(topics);
+        user.setTopics(new HashSet<>(Arrays.asList(topic)));
         topicDao.enroll(topic, user);
     }
 
