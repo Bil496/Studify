@@ -1,6 +1,7 @@
 package dao;
 
-import model.*;
+import model.Talent;
+import model.UserSubTopicId;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -14,12 +15,12 @@ import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 
+@Transactional
 @Repository
 public class TalentDaoImp implements TalentDao {
     @Autowired
     private SessionFactory sessionFactory;
 
-    @Transactional
     @Override
     public List<Talent> getTalentsByTopicId(long userId, long topicId) {
         Session session = sessionFactory.getCurrentSession();
@@ -38,5 +39,10 @@ public class TalentDaoImp implements TalentDao {
             }
         }
         return talents;
+    }
+
+    @Override
+    public void save(Talent talent) {
+        sessionFactory.getCurrentSession().save(talent);
     }
 }

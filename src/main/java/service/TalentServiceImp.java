@@ -16,4 +16,9 @@ public class TalentServiceImp implements TalentService {
     public List<Talent> getTalentsByTopicId(long userId, long topicId) {
         return talentDao.getTalentsByTopicId(userId, topicId);
     }
+
+    @Override
+    public void save(Talent talent) {
+        talentDao.save(talent);
+    }
 }
