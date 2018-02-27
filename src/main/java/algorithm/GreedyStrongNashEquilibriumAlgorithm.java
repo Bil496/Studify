@@ -8,20 +8,19 @@ import java.util.Set;
 
 import org.apache.commons.math3.util.Combinations;
 
-import GreedyStrongNashAlgorithm.Candidate;
 import model.Team;
 import model.Topic;
 import model.User;
 import util.RandomStringGenerator;
 
 public class GreedyStrongNashEquilibriumAlgorithm extends MatchingAlgorithm {
-    
+
     private Set<Team> teams = new HashSet<>();
-    
+
     public GreedyStrongNashEquilibriumAlgorithm(Topic topic, List<User> users) {
 	super(topic, users);
     }
-    
+
     private class Candidate implements Comparable<Candidate> {
 
 	private int[] members;
@@ -42,9 +41,9 @@ public class GreedyStrongNashEquilibriumAlgorithm extends MatchingAlgorithm {
 		    User user = users.get(i);
 		    //List<Talent> talents = user.getTalents();
 		    int[] talents = user.getTalents().stream().mapToInt(t -> t.getScore()).toArray();
-		    
+
 		    if (talents[i] > jointTalent[j]) {
-			jointTalent[j] = talents[i]; 
+			jointTalent[j] = talents[i];
 		    }
 		}
 	    }
@@ -55,9 +54,9 @@ public class GreedyStrongNashEquilibriumAlgorithm extends MatchingAlgorithm {
 		jointUtility += jointTalent[i];
 	    }
 	}
-	
+
 	private static final int TEAM_NAME_WORD_COUNT = 3;
-	   
+
 	public void choose() {
 	    Team team = new Team();
             team.setTopic(topic);
@@ -67,7 +66,7 @@ public class GreedyStrongNashEquilibriumAlgorithm extends MatchingAlgorithm {
             for (int i: members) {
         	users.add(GreedyStrongNashEquilibriumAlgorithm.this.users.get(i));
             }
-            
+
             team.setUsers(users);
             team.setUtility(jointUtility);
 	}
@@ -76,7 +75,7 @@ public class GreedyStrongNashEquilibriumAlgorithm extends MatchingAlgorithm {
 	public int compareTo(Candidate o) {
 	    return Integer.compare(jointUtility, o.jointUtility);
 	}
-	
+
 	public boolean intersects(Candidate o) {
 	    for (int i: members) {
 		for (int j: o.members) {
@@ -88,9 +87,9 @@ public class GreedyStrongNashEquilibriumAlgorithm extends MatchingAlgorithm {
 	    return false;
 	}
     }
-    
+
     private CandidateBag candidateBag = new CandidateBag();
-    
+
     private class CandidateBag {
 
 	private ArrayList<Candidate> candidates = new ArrayList<>();
@@ -98,19 +97,19 @@ public class GreedyStrongNashEquilibriumAlgorithm extends MatchingAlgorithm {
 	public Candidate getCandidateWithGreatestJointUtility() {
 	    return candidates.get(candidates.size() - 1);
 	}
-	
+
 	public void add(Candidate candidate) {
 	    candidates.add(candidate);
 	    for (int i = candidates.size() - 1; i > 0 && candidate.compareTo(candidates.get(i - 1)) < 0; i--) {
 		Collections.swap(candidates, i, i - 1);
 	    }
 	}
-	
+
 	public void removeCandidatesWithMembersOf(Candidate candidate) {
 	    candidates.removeIf(o -> candidate.intersects(o));
 	}
-	
-	
+
+
 	public boolean isEmpty() {
 	    return candidates.isEmpty();
 	}
@@ -124,16 +123,16 @@ public class GreedyStrongNashEquilibriumAlgorithm extends MatchingAlgorithm {
 	    Candidate candidate = new Candidate(combination);
 	    candidateBag.add(candidate);
 	}
-	
+
 	while (!candidateBag.isEmpty()) {
 	    Candidate candidate = candidateBag.getCandidateWithGreatestJointUtility();
 	    candidate.choose();
-	    
+
 	    candidateBag.removeCandidatesWithMembersOf(candidate);
 	}
-	
+
 	// TODO: Match removing players together
-	
+
 	return teams;
     }
 
