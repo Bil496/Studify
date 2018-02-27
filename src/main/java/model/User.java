@@ -1,5 +1,7 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -39,15 +41,18 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
+    @JsonIgnore
+    @ManyToMany(cascade = { CascadeType.ALL })
     @JoinTable(name = "User_Topic", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = {
 	    @JoinColumn(name = "topic_id") })
     private Set<Topic> topics = new HashSet<Topic>();
 
-    @OneToMany(mappedBy = "userSubTopicId.user", fetch = FetchType.EAGER)
+    @JsonIgnore
+    @OneToMany(mappedBy = "userSubTopicId.user")
     private List<Talent> talents = new ArrayList<Talent>();
 
-    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
+    @JsonIgnore
+    @ManyToMany(cascade = { CascadeType.ALL })
     @JoinTable(name = "User_Team", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = {
 	    @JoinColumn(name = "team_id") })
     private Set<Team> teams = new HashSet<Team>();

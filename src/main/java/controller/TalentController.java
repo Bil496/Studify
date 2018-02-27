@@ -3,8 +3,8 @@ package controller;
 import model.Talent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import service.TalentService;
 
@@ -15,8 +15,8 @@ public class TalentController {
     @Autowired
     private TalentService talentService;
 
-    @PostMapping("/talent")
-    public ResponseEntity<List<Talent>> getTalentsByTopicId(@RequestBody long userId, @RequestBody long topicId) {
+    @GetMapping("/talent")
+    public ResponseEntity<List<Talent>> getTalentsByTopicId(@RequestHeader long userId, @RequestHeader long topicId) {
         List<Talent> talents = talentService.getTalentsByTopicId(userId, topicId);
         return ResponseEntity.ok().body(talents);
     }

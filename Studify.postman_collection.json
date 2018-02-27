@@ -1,16 +1,14 @@
 {
-	"variables": [],
 	"info": {
 		"name": "Studify",
-		"_postman_id": "1c29c3e2-224f-28bb-ca5f-244b06c49a20",
+		"_postman_id": "66135ad1-7afb-cd6d-e209-46937a09caf8",
 		"description": "",
-		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
 			"name": "Create User 1",
 			"request": {
-				"url": "http://localhost:8080/user",
 				"method": "POST",
 				"header": [
 					{
@@ -22,14 +20,23 @@
 					"mode": "raw",
 					"raw": "{\n\t\"name\" : \"Burak\",\n\t\"surname\" : \"Uyar\",\n\t\"password\" : \"woow\",\n\t\"email\" : \"burakuyar25@gmail.com\",\n\t\"username\" : \"burak\"\n}"
 				},
-				"description": ""
+				"url": {
+					"raw": "http://localhost:8080/user",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"user"
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "Create User 2",
 			"request": {
-				"url": "http://localhost:8080/user",
 				"method": "POST",
 				"header": [
 					{
@@ -41,42 +48,70 @@
 					"mode": "raw",
 					"raw": "{\n\t\"name\" : \"Görkem\",\n\t\"surname\" : \"Mülayim\",\n\t\"password\" : \"asdf1234\",\n\t\"email\" : \"mail@mail.com\",\n\t\"username\" : \"gorkem\"\n}"
 				},
-				"description": ""
+				"url": {
+					"raw": "http://localhost:8080/user",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"user"
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "Get User with ID",
 			"request": {
-				"url": "http://localhost:8080/user/1",
 				"method": "GET",
 				"header": [],
 				"body": {
 					"mode": "raw",
 					"raw": ""
 				},
-				"description": ""
+				"url": {
+					"raw": "http://localhost:8080/user/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"user",
+						"1"
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "List Users",
 			"request": {
-				"url": "http://localhost:8080/user",
 				"method": "GET",
 				"header": [],
 				"body": {
 					"mode": "raw",
 					"raw": ""
 				},
-				"description": ""
+				"url": {
+					"raw": "http://localhost:8080/user",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"user"
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "Create Topic",
 			"request": {
-				"url": "http://localhost:8080/topic",
 				"method": "POST",
 				"header": [
 					{
@@ -88,42 +123,70 @@
 					"mode": "raw",
 					"raw": "{\r\n  \"title\": \"Sample Topic 1\",\r\n  \"minSize\": 3,\r\n  \"maxSize\": 5,\r\n  \"subTopics\": [\r\n    {\r\n      \"title\": \"Unit 1\"\r\n    },\r\n    {\r\n      \"title\": \"Unit 2\"\r\n    },\r\n    {\r\n      \"title\": \"Unit 3\"\r\n    }\r\n  ]\r\n}"
 				},
-				"description": ""
+				"url": {
+					"raw": "http://localhost:8080/topic",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"topic"
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "List Topics",
 			"request": {
-				"url": "http://localhost:8080/topic",
 				"method": "GET",
 				"header": [],
 				"body": {
 					"mode": "raw",
 					"raw": ""
 				},
-				"description": ""
+				"url": {
+					"raw": "http://localhost:8080/topic",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"topic"
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "Get Topic with ID",
 			"request": {
-				"url": "http://localhost:8080/topic/1",
 				"method": "GET",
 				"header": [],
 				"body": {
 					"mode": "raw",
 					"raw": ""
 				},
-				"description": ""
+				"url": {
+					"raw": "http://localhost:8080/topic/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"topic",
+						"1"
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "Enroll Topic",
 			"request": {
-				"url": "http://localhost:8080/topic/1",
 				"method": "POST",
 				"header": [
 					{
@@ -135,6 +198,63 @@
 					"mode": "raw",
 					"raw": "{\n\t\"talents\": [\n\t\t{\n\t\t\t\"subTopic\": 1,\n\t\t\t\"score\": 4\n\t\t},\n\t\t{\n\t\t\t\"subTopic\": 2,\n\t\t\t\"score\": 7\n\t\t},\n\t\t{\n\t\t\t\"subTopic\": 3,\n\t\t\t\"score\": 8\n\t\t}\n\t]\n}"
 				},
+				"url": {
+					"raw": "http://localhost:8080/topic/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"topic",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Talents by Topic ID",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "userId",
+						"value": "1"
+					},
+					{
+						"key": "topicId",
+						"value": "1"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "userId",
+							"value": "",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "topicId",
+							"value": "",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/talent",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"talent"
+					]
+				},
 				"description": ""
 			},
 			"response": []
@@ -142,10 +262,20 @@
 		{
 			"name": "Init",
 			"request": {
-				"url": "",
 				"method": "GET",
 				"header": [],
 				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/init",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"init"
+					]
+				},
 				"description": ""
 			},
 			"response": []
