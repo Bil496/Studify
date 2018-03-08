@@ -44,7 +44,7 @@ public class CreateTeamsTask implements Runnable {
             user.setTalents(talents);
         }
         MatchingAlgorithm algorithm = new GreedyStrongNashEquilibriumAlgorithm(topic, usersWithoutTeam);
-        Set<Team> teams = algorithm.match();
+        Set<Team> teams = algorithm.getTeams();
         topic.setWaitingToGrouped(usersWithoutTeam.size() - getTotalUsersInTeams(teams));
         topic.setTotalGroupNumber(topic.getTotalGroupNumber() + teams.size());
         topic.setNextGroupingTime(new Date(topic.getNextGroupingTime().getTime() + (1000 * 60 * 60 * 24)));

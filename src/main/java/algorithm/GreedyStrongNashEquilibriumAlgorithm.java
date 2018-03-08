@@ -24,6 +24,26 @@ public class GreedyStrongNashEquilibriumAlgorithm extends MatchingAlgorithm {
     public GreedyStrongNashEquilibriumAlgorithm(Topic topic, List<User> users) {
 	super(topic, users);
 	unmatchedUserIndices = IntStream.range(0, users.size()).boxed().collect(Collectors.toCollection(HashSet::new));
+	
+	// Add all possible subsets of maximumum size to candidate bag.
+	for (int[] combination : new Combinations(users.size(), topic.getMaxSize())) {
+	    Candidate candidate = new Candidate(combination);
+	    candidateBag.add(candidate);
+	}
+
+	while (!candidateBag.isEmpty()) {
+	    Candidate candidate = candidateBag.getCandidateWithGreatestJointUtility();
+	    formTeam(candidate.memberIndices);
+	    removeFromUnmatchedUserIndices(candidate.memberIndices);
+	    candidateBag.removeCandidatesWithMembersOf(candidate);
+	}
+	
+	if (unmatchedUserIndices.size() >= topic.getMinSize()) {
+	    int[] userIndices = unmatchedUserIndices.stream().mapToInt(i -> i).toArray();
+	    formTeam(userIndices);
+	    removeFromUnmatchedUserIndices(userIndices);
+	}
+	
     }
 
     private class Candidate implements Comparable<Candidate> {
@@ -106,26 +126,7 @@ public class GreedyStrongNashEquilibriumAlgorithm extends MatchingAlgorithm {
     }
 
     @Override
-    public Set<Team> match() {
-	// Add all possible subsets of maximumum size to candidate bag.
-	for (int[] combination : new Combinations(users.size(), topic.getMaxSize())) {
-	    Candidate candidate = new Candidate(combination);
-	    candidateBag.add(candidate);
-	}
-
-	while (!candidateBag.isEmpty()) {
-	    Candidate candidate = candidateBag.getCandidateWithGreatestJointUtility();
-	    formTeam(candidate.memberIndices);
-	    removeFromUnmatchedUserIndices(candidate.memberIndices);
-	    candidateBag.removeCandidatesWithMembersOf(candidate);
-	}
-	
-	if (unmatchedUserIndices.size() >= topic.getMinSize()) {
-	    int[] userIndices = unmatchedUserIndices.stream().mapToInt(i -> i).toArray();
-	    formTeam(userIndices);
-	    removeFromUnmatchedUserIndices(userIndices);
-	}
-	
+    public Set<Team> getTeams() {	
 	return teams;
     }
     

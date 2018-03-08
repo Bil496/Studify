@@ -17,6 +17,6 @@ public abstract class MatchingAlgorithm {
 	this.users = users;
     }
     
-    public abstract Set<Team> match();
+    public abstract Set<Team> getTeams();
 
 }
