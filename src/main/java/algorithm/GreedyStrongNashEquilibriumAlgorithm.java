@@ -119,9 +119,13 @@ public class GreedyStrongNashEquilibriumAlgorithm extends MatchingAlgorithm {
 	    removeFromUnmatchedUserIndices(candidate.memberIndices);
 	    candidateBag.removeCandidatesWithMembersOf(candidate);
 	}
-
-	// TODO: Match removing players together
-
+	
+	if (unmatchedUserIndices.size() >= topic.getMinSize()) {
+	    int[] userIndices = unmatchedUserIndices.stream().mapToInt(i -> i).toArray();
+	    formTeam(userIndices);
+	    removeFromUnmatchedUserIndices(userIndices);
+	}
+	
 	return teams;
     }
     
