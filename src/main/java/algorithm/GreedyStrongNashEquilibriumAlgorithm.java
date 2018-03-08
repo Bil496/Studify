@@ -16,7 +16,7 @@ import util.RandomStringGenerator;
 public class GreedyStrongNashEquilibriumAlgorithm extends MatchingAlgorithm {
 
     private Set<Team> teams = new HashSet<>();
-
+    
     public GreedyStrongNashEquilibriumAlgorithm(Topic topic, List<User> users) {
 	super(topic, users);
     }
@@ -53,22 +53,6 @@ public class GreedyStrongNashEquilibriumAlgorithm extends MatchingAlgorithm {
 	    for (int i = 0; i < topic.getMaxSize(); i++) {
 		jointUtility += jointTalent[i];
 	    }
-	}
-
-	private static final int TEAM_NAME_WORD_COUNT = 3;
-
-	public void choose() {
-	    Team team = new Team();
-            team.setTopic(topic);
-            team.setSize(topic.getMaxSize());
-            team.setName(RandomStringGenerator.getSentence(TEAM_NAME_WORD_COUNT));
-            Set<User> users = new HashSet<>();
-            for (int i: members) {
-        	users.add(GreedyStrongNashEquilibriumAlgorithm.this.users.get(i));
-            }
-
-            team.setUsers(users);
-            team.setUtility(jointUtility);
 	}
 
 	@Override
@@ -126,7 +110,7 @@ public class GreedyStrongNashEquilibriumAlgorithm extends MatchingAlgorithm {
 
 	while (!candidateBag.isEmpty()) {
 	    Candidate candidate = candidateBag.getCandidateWithGreatestJointUtility();
-	    candidate.choose();
+	    formTeam(candidate.members);
 
 	    candidateBag.removeCandidatesWithMembersOf(candidate);
 	}
@@ -134,6 +118,20 @@ public class GreedyStrongNashEquilibriumAlgorithm extends MatchingAlgorithm {
 	// TODO: Match removing players together
 
 	return teams;
+    }
+    
+    private static final int TEAM_NAME_WORD_COUNT = 3;
+    
+    private void formTeam(int[] membersIndices) {
+	Team team = new Team();
+	team.setTopic(topic);
+        team.setSize(membersIndices.length);
+        team.setName(RandomStringGenerator.getSentence(TEAM_NAME_WORD_COUNT));
+        Set<User> members = new HashSet<>();
+        for (int i: membersIndices) {
+            users.add(users.get(i));
+        }
+        team.setUsers(members);
     }
 
 }
