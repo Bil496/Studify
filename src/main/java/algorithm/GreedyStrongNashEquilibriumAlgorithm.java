@@ -28,11 +28,11 @@ public class GreedyStrongNashEquilibriumAlgorithm extends MatchingAlgorithm {
 
     private class Candidate implements Comparable<Candidate> {
 
-	private int[] members;
+	private int[] memberIndices;
 	private int jointUtility;
 
-	public Candidate(int[] members) {
-	    this.members = members;
+	public Candidate(int[] memberIndices) {
+	    this.memberIndices = memberIndices;
 
 	    // Initialize joint talent vector
 	    Integer[] jointTalent = new Integer[topic.getMaxSize()];
@@ -41,7 +41,7 @@ public class GreedyStrongNashEquilibriumAlgorithm extends MatchingAlgorithm {
 	    }
 
 	    // Calculate joint talent vector
-	    for (int i : members) {
+	    for (int i : memberIndices) {
 		for (int j = 0; j < topic.getMaxSize(); j++) {
 		    User user = users.get(i);
 		    //List<Talent> talents = user.getTalents();
@@ -66,8 +66,8 @@ public class GreedyStrongNashEquilibriumAlgorithm extends MatchingAlgorithm {
 	}
 
 	public boolean intersects(Candidate o) {
-	    for (int i: members) {
-		for (int j: o.members) {
+	    for (int i: memberIndices) {
+		for (int j: o.memberIndices) {
 		    if (i == j) {
 			return true;
 		    }
@@ -115,8 +115,8 @@ public class GreedyStrongNashEquilibriumAlgorithm extends MatchingAlgorithm {
 
 	while (!candidateBag.isEmpty()) {
 	    Candidate candidate = candidateBag.getCandidateWithGreatestJointUtility();
-	    formTeam(candidate.members);
-	    removeFromUnmatchedUserIndices(candidate.members);
+	    formTeam(candidate.memberIndices);
+	    removeFromUnmatchedUserIndices(candidate.memberIndices);
 	    candidateBag.removeCandidatesWithMembersOf(candidate);
 	}
 
