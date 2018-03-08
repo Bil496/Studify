@@ -130,6 +130,11 @@ public class GreedyStrongNashEquilibriumAlgorithm extends MatchingAlgorithm {
 	return teams;
     }
     
+    @Override
+    public Set<User> getUnmatchedUsers() {
+	return unmatchedUserIndices.stream().map(i -> users.get(i)).collect(Collectors.toCollection(HashSet::new));
+    }
+    
     private static final int TEAM_NAME_WORD_COUNT = 3;
     
     private void formTeam(int[] membersIndices) {

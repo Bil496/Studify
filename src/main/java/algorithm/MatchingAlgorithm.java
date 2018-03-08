@@ -18,5 +18,7 @@ public abstract class MatchingAlgorithm {
     }
     
     public abstract Set<Team> getTeams();
+    
+    public abstract Set<User> getUnmatchedUsers();
 
 }
