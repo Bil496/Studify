@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import org.apache.commons.math3.util.Combinations;
 
@@ -17,8 +19,11 @@ public class GreedyStrongNashEquilibriumAlgorithm extends MatchingAlgorithm {
 
     private Set<Team> teams = new HashSet<>();
     
+    private Set<Integer> unmatchedUserIndices;
+    
     public GreedyStrongNashEquilibriumAlgorithm(Topic topic, List<User> users) {
 	super(topic, users);
+	unmatchedUserIndices = IntStream.range(0, users.size()).boxed().collect(Collectors.toCollection(HashSet::new));
     }
 
     private class Candidate implements Comparable<Candidate> {
