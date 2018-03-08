@@ -29,9 +29,6 @@ public class Team {
     @Column(nullable = false)
     private Integer size;
 
-    @Column(nullable = false)
-    private Integer utility = 0;
-
     @ManyToMany(mappedBy = "teams")
     private Set<User> users = new HashSet<User>();
 
@@ -65,14 +62,6 @@ public class Team {
 
     public void setSize(Integer size) {
 	this.size = size;
-    }
-
-    public Integer getUtility() {
-	return utility;
-    }
-
-    public void setUtility(Integer utility) {
-	this.utility = utility;
     }
 
     public Set<User> getUsers() {
