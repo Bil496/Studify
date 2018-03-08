@@ -116,7 +116,7 @@ public class GreedyStrongNashEquilibriumAlgorithm extends MatchingAlgorithm {
 	while (!candidateBag.isEmpty()) {
 	    Candidate candidate = candidateBag.getCandidateWithGreatestJointUtility();
 	    formTeam(candidate.members);
-
+	    removeFromUnmatchedUserIndices(candidate.members);
 	    candidateBag.removeCandidatesWithMembersOf(candidate);
 	}
 
@@ -137,6 +137,12 @@ public class GreedyStrongNashEquilibriumAlgorithm extends MatchingAlgorithm {
             users.add(users.get(i));
         }
         team.setUsers(members);
+    }
+    
+    private void removeFromUnmatchedUserIndices(int[] userIndices) {
+	for (int i: userIndices) {
+	    unmatchedUserIndices.remove(i);
+	}
     }
 
 }
