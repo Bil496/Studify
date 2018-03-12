@@ -37,9 +37,9 @@ import org.apache.log4j.Logger;
  * Created by ask on 13.03.2018
  */
 public class FirebaseService {
-    protected static final Logger LOGGER = Logger.getRootLogger();
+    private static final Logger LOGGER = Logger.getRootLogger();
 
-    public static final String FIREBASE_API_JSON_EXTENSION = ".json";
+    private static final String FIREBASE_API_JSON_EXTENSION = ".json";
 
     // PROPERTIES & CONSTRUCTORS
     private final String baseUrl;
@@ -55,7 +55,7 @@ public class FirebaseService {
             throw new FirebaseException( msg );
         }
         this.baseUrl = baseUrl.trim();
-        query = new ArrayList<NameValuePair>();
+        query = new ArrayList<>();
         LOGGER.info( "intialized with base-url: " + this.baseUrl );
     }
 
@@ -67,7 +67,7 @@ public class FirebaseService {
         }
         this.secureToken = secureToken;
         this.baseUrl = baseUrl.trim();
-        query = new ArrayList<NameValuePair>();
+        query = new ArrayList<>();
         LOGGER.info( "intialized with base-url: " + this.baseUrl );
     }
 
@@ -99,9 +99,7 @@ public class FirebaseService {
         HttpResponse httpResponse = this.makeRequest( request );
 
         // process the response
-        FirebaseResponse response = this.processResponse( FirebaseRestMethod.GET, httpResponse );
-
-        return response;
+        return this.processResponse( FirebaseRestMethod.GET, httpResponse );
     }
 
     /**
@@ -129,7 +127,7 @@ public class FirebaseService {
      * @throws UnsupportedEncodingException
      */
 
-    public FirebaseResponse patch(String path, Map<String, Object> data) throws FirebaseException, JacksonUtilityException, UnsupportedEncodingException {
+    private FirebaseResponse patch(String path, Map<String, Object> data) throws FirebaseException, JacksonUtilityException, UnsupportedEncodingException {
         // make the request
         String url = this.buildFullUrlFromRelativePath( path );
         //HttpPut request = new HttpPut( url );
@@ -138,9 +136,7 @@ public class FirebaseService {
         HttpResponse httpResponse = this.makeRequest( request );
 
         // process the response
-        FirebaseResponse response = this.processResponse( FirebaseRestMethod.PATCH, httpResponse );
-
-        return response;
+        return this.processResponse( FirebaseRestMethod.PATCH, httpResponse );
     }
 
     /**
@@ -164,7 +160,7 @@ public class FirebaseService {
      * @throws FirebaseException
      */
 
-    public FirebaseResponse patch(String path, String jsonData) throws UnsupportedEncodingException, FirebaseException {
+    private FirebaseResponse patch(String path, String jsonData) throws UnsupportedEncodingException, FirebaseException {
         // make the request
         String url = this.buildFullUrlFromRelativePath( path );
         HttpPatch request = new HttpPatch( url );
@@ -172,9 +168,7 @@ public class FirebaseService {
         HttpResponse httpResponse = this.makeRequest( request );
 
         // process the response
-        FirebaseResponse response = this.processResponse( FirebaseRestMethod.PATCH, httpResponse );
-
-        return response;
+        return this.processResponse( FirebaseRestMethod.PATCH, httpResponse );
     }
 
     /**
@@ -213,9 +207,7 @@ public class FirebaseService {
         HttpResponse httpResponse = this.makeRequest( request );
 
         // process the response
-        FirebaseResponse response = this.processResponse( FirebaseRestMethod.PUT, httpResponse );
-
-        return response;
+        return this.processResponse( FirebaseRestMethod.PUT, httpResponse );
     }
 
     /**
@@ -243,7 +235,7 @@ public class FirebaseService {
      * @throws UnsupportedEncodingException
      * @throws {@link FirebaseException}
      */
-    public FirebaseResponse put( String path, String jsonData ) throws FirebaseException, UnsupportedEncodingException {
+    private FirebaseResponse put( String path, String jsonData ) throws FirebaseException, UnsupportedEncodingException {
 
         // make the request
         String url = this.buildFullUrlFromRelativePath( path );
@@ -252,9 +244,7 @@ public class FirebaseService {
         HttpResponse httpResponse = this.makeRequest( request );
 
         // process the response
-        FirebaseResponse response = this.processResponse( FirebaseRestMethod.PUT, httpResponse );
-
-        return response;
+        return this.processResponse( FirebaseRestMethod.PUT, httpResponse );
     }
 
     /**
@@ -299,9 +289,7 @@ public class FirebaseService {
         HttpResponse httpResponse = this.makeRequest( request );
 
         // process the response
-        FirebaseResponse response = this.processResponse( FirebaseRestMethod.POST, httpResponse );
-
-        return response;
+        return this.processResponse( FirebaseRestMethod.POST, httpResponse );
     }
 
     /**
@@ -335,7 +323,7 @@ public class FirebaseService {
      * @throws UnsupportedEncodingException
      * @throws {@link FirebaseException}
      */
-    public FirebaseResponse post( String path, String jsonData ) throws FirebaseException, UnsupportedEncodingException {
+    private FirebaseResponse post( String path, String jsonData ) throws FirebaseException, UnsupportedEncodingException {
 
         // make the request
         String url = this.buildFullUrlFromRelativePath( path );
@@ -344,9 +332,7 @@ public class FirebaseService {
         HttpResponse httpResponse = this.makeRequest( request );
 
         // process the response
-        FirebaseResponse response = this.processResponse( FirebaseRestMethod.POST, httpResponse );
-
-        return response;
+        return this.processResponse( FirebaseRestMethod.POST, httpResponse );
     }
 
     /**
@@ -389,9 +375,7 @@ public class FirebaseService {
         HttpResponse httpResponse = this.makeRequest( request );
 
         // process the response
-        FirebaseResponse response = this.processResponse( FirebaseRestMethod.DELETE, httpResponse );
-
-        return response;
+        return this.processResponse( FirebaseRestMethod.DELETE, httpResponse );
     }
 
     // PRIVATE API
@@ -404,7 +388,7 @@ public class FirebaseService {
 
     private StringEntity buildEntityFromJsonData( String jsonData ) throws FirebaseException {
 
-        StringEntity result = null;
+        StringEntity result;
         try {
 
             result = new StringEntity( jsonData );
@@ -464,7 +448,7 @@ public class FirebaseService {
 
     private HttpResponse makeRequest( HttpRequestBase request ) throws FirebaseException {
 
-        HttpResponse response = null;
+        HttpResponse response;
 
         // sanity-check
         if( request == null ) {
@@ -492,7 +476,7 @@ public class FirebaseService {
 
     private FirebaseResponse processResponse( FirebaseRestMethod method, HttpResponse httpResponse ) throws FirebaseException {
 
-        FirebaseResponse response = null;
+        FirebaseResponse response;
 
         // sanity-checks
         if( method == null ) {
