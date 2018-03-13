@@ -1,8 +1,8 @@
 package demo.model;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 public class User implements Serializable {
     
@@ -18,7 +18,7 @@ public class User implements Serializable {
     private Topic currentTopic;    
     private Team currentTeam;
     
-    private Set<Talent> talents = new HashSet<>();
+    private Map<SubTopic, Integer> talents;
 
     public User() {
 	
@@ -87,12 +87,19 @@ public class User implements Serializable {
 	if (!topic.getLocation().equals(getCurrentLocation())) {
 	    throw new RuntimeException("Location of user and topic does not match!");
 	}
-	
+
 	currentTopic = topic;
+	topic.incrementUserCount();
+	talents = new HashMap<>();
+	for (SubTopic subTopic : topic.getSubTopics()) {
+	    talents.put(subTopic, 0);
+	}
     }
     
     public void quitCurrentTopic() {
+	currentTopic.decrementUserCount();
 	currentTopic = null;
+	talents = null;
     }
     
     // team
@@ -126,19 +133,16 @@ public class User implements Serializable {
 	previousTeam.removeMember(this);
     }
     
-    // ------------------------------------------------ //
-
-    public Set<Talent> getTalents() {
-        return talents;
-    }
-
-    public void setTalents(Set<Talent> talents) {
-        this.talents = talents;
+    // talent
+    
+    public void setTalentLevelOfSubTopic(SubTopic subTopic, Integer score) {
+	talents.put(subTopic, score);
     }
     
-    public void addTalent(Talent talent) {
-	talents.add(talent);
+    public Integer getTalentLevel(SubTopic subTopic) {
+	return talents.get(subTopic);
     }
+
 
     @Override
     public boolean equals(Object o) {

@@ -12,7 +12,7 @@ public class Topic implements Serializable {
     
     private String title;
     private Location location; 
-    private Integer userCount;
+    private Integer userCount = 0;
     
     
     private Set<Team> teams = new HashSet<>();
@@ -66,8 +66,12 @@ public class Topic implements Serializable {
         return userCount;
     }
 
-    public void setUserCount(Integer userCount) {
-        this.userCount = userCount;
+    public void incrementUserCount() {
+        userCount++;
+    }
+    
+    public void decrementUserCount() {
+        userCount--;
     }
 
     public Set<SubTopic> getSubTopics() {

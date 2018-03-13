@@ -6,7 +6,6 @@ import java.util.Map;
 
 import demo.model.Location;
 import demo.model.SubTopic;
-import demo.model.Talent;
 import demo.model.Team;
 import demo.model.Topic;
 import demo.model.User;
@@ -113,15 +112,6 @@ public class Stash {
 	
 	return index;
     }
-    
-    public void addTalentToUser(Integer userId, Integer subtopicId, Talent talent) {
-	User user = users.get(userId);
-	user.addTalent(talent);
-	
-	SubTopic subTopic = getSubTopic(subtopicId);
-	talent.setSubTopic(subTopic);
-    }
-    
 
     public void addUserToTeam(Integer teamId, Integer userId) {
 	Team team = getTeam(teamId);
