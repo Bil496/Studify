@@ -46,4 +46,7 @@ public class SubTopic implements Serializable {
     public int hashCode() {
         return id.hashCode();
     }
+    
+    private static final long serialVersionUID = 1L;
+    
 }

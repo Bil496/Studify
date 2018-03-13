@@ -74,13 +74,13 @@ public class Team implements Serializable {
 	if (!user.getCurrentTopic().equals(getTopic())) {
 	    throw new RuntimeException("Topic of user and team does not match!");
 	}
-	if (!user.getCurrentTeam().equals(this) && user.getCurrentTeam() != null) {
+	if (user.getCurrentTeam() != null && !user.getCurrentTeam().equals(this)) {
 	    throw new RuntimeException("User is already in another team!");
 	}
 
 	members.add(user);
 	
-	if (!user.getCurrentTeam().equals(this)) {
+	if (user.getCurrentTeam() == null) {
 	    user.setCurrentTeam(this);
 	}
     }
