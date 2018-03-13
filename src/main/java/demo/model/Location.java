@@ -1,9 +1,11 @@
-package model;
+package demo.model;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import model.Topic;
 
 public class Location {
     
