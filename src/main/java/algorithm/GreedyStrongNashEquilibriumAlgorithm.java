@@ -53,16 +53,17 @@ public class GreedyStrongNashEquilibriumAlgorithm extends MatchingAlgorithm {
 
 	public Candidate(int[] memberIndices) {
 	    this.memberIndices = memberIndices;
+	    int m = topic.getSubTopics().size();
 
 	    // Initialize joint talent vector
-	    Integer[] jointTalent = new Integer[topic.getMaxSize()];
-	    for (int i = 0; i < topic.getMaxSize(); i++) {
+	    Integer[] jointTalent = new Integer[m];
+	    for (int i = 0; i < m; i++) {
 		jointTalent[i] = 0;
 	    }
 
 	    // Calculate joint talent vector
 	    for (int i : memberIndices) {
-		for (int j = 0; j < topic.getMaxSize(); j++) {
+		for (int j = 0; j < m; j++) {
 		    User user = users.get(i);
 		    //List<Talent> talents = user.getTalents();
 		    int[] talents = user.getTalents().stream().mapToInt(t -> t.getScore()).toArray();
@@ -75,7 +76,7 @@ public class GreedyStrongNashEquilibriumAlgorithm extends MatchingAlgorithm {
 
 	    // Calculate joint utility
 	    jointUtility = 0;
-	    for (int i = 0; i < topic.getMaxSize(); i++) {
+	    for (int i = 0; i < m; i++) {
 		jointUtility += jointTalent[i];
 	    }
 	}
