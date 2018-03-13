@@ -1,0 +1,118 @@
+package demo.model;
+
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+
+public class Topic implements Serializable {
+    
+    private Boolean userEnrolled = false;
+    
+    private Integer id;
+    
+    private String title;
+    private Location location; 
+    private Integer userCount;
+    
+    
+    private Set<Team> teams = new HashSet<>();
+    private Set<SubTopic> subTopics = new HashSet<>();
+    
+    public Topic() {
+	
+    }
+
+    public Topic(Integer id, String title, Integer userCount, Set<SubTopic> subTopics, Set<Team> teams) {
+        this.id = id;
+        this.title = title;
+        this.userCount = userCount;
+        this.subTopics = subTopics;
+        this.teams = teams;
+    }
+
+    public Boolean getUserEnrolled() {
+        return userEnrolled;
+    }
+
+    public void setUserEnrolled(Boolean userEnrolled) {
+        this.userEnrolled = userEnrolled;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+    
+    public Location getLocation() {
+	return location;
+    }
+
+    public void setLocation(Location location) {
+	this.location = location;
+    }
+    
+    public Integer getUserCount() {
+        return userCount;
+    }
+
+    public void setUserCount(Integer userCount) {
+        this.userCount = userCount;
+    }
+
+    public Set<SubTopic> getSubTopics() {
+        return subTopics;
+    }
+
+    public void setSubTopics(Set<SubTopic> subtopics) {
+        this.subTopics = subtopics;
+    }
+    
+    public void addSubTopic(SubTopic subTopic) {
+	subTopics.add(subTopic);
+    }
+
+    public Set<Team> getTeams() {
+        return teams;
+    }
+
+    public void setTeams(Set<Team> teams) {
+        this.teams = teams;
+    }
+    
+    public void addTeam(Team team) {
+	if (!team.getTopic().equals(this)) {
+	    throw new RuntimeException("Topic of team does not match!");
+	}
+	teams.add(team);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Topic topic = (Topic) o;
+
+        return id.equals(topic.id);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
+    
+    private static final long serialVersionUID = 1L;
+    
+}

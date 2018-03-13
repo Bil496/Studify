@@ -1,24 +1,24 @@
 package demo.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import model.Topic;
-
-public class Location {
+public class Location implements Serializable {
     
     private Integer id;
     private String title;
     
     @JsonIgnore
-    private List<Topic> topics = new ArrayList<>();
+    private Set<Topic> topics = new HashSet<>();
 
     public Location() {
+	
     }
 
-    public Location(Integer id, String title, List<Topic> topics) {
+    public Location(Integer id, String title, Set<Topic> topics) {
         this.id = id;
         this.title = title;
         this.topics = topics;
@@ -40,12 +40,15 @@ public class Location {
         this.title = title;
     }
 
-    public List<Topic> getTopics() {
+    public Set<Topic> getTopics() {
         return topics;
     }
 
-    public void setTopics(List<Topic> topics) {
-        this.topics = topics;
+    public void addTopic(Topic topic) {
+	if (!topic.getLocation().equals(this)) {
+	    throw new RuntimeException("Location of topic does not match!");
+	}
+        topics.add(topic);
     }
 
     @Override
@@ -62,5 +65,7 @@ public class Location {
     public int hashCode() {
         return id.hashCode();
     }
+    
+    private static final long serialVersionUID = 1L;
 
 }
