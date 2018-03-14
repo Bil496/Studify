@@ -6,8 +6,6 @@ import java.util.Set;
 
 public class Topic implements Serializable {
     
-    private Boolean userEnrolled = false;
-    
     private Integer id;
     
     private String title;
@@ -28,14 +26,6 @@ public class Topic implements Serializable {
         this.userCount = userCount;
         this.subTopics = subTopics;
         this.teams = teams;
-    }
-
-    public Boolean getUserEnrolled() {
-        return userEnrolled;
-    }
-
-    public void setUserEnrolled(Boolean userEnrolled) {
-        this.userEnrolled = userEnrolled;
     }
 
     public Integer getId() {

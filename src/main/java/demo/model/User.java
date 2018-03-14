@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 public class User implements Serializable {
     
     private Integer id;
@@ -15,10 +17,12 @@ public class User implements Serializable {
     
     // studying data
     private Location currentLocation;
+    
     private Topic currentTopic;    
+    @JsonIgnoreProperties("members")
     private Team currentTeam;
     
-    private Map<SubTopic, Integer> talents;
+    private Map<SubTopic, Integer> talentLevels;
 
     public User() {
 	
@@ -90,16 +94,19 @@ public class User implements Serializable {
 
 	currentTopic = topic;
 	topic.incrementUserCount();
-	talents = new HashMap<>();
+	talentLevels = new HashMap<>();
 	for (SubTopic subTopic : topic.getSubTopics()) {
-	    talents.put(subTopic, 0);
+	    talentLevels.put(subTopic, 0);
 	}
     }
     
     public void quitCurrentTopic() {
+	if (getCurrentTeam() != null) {
+	    throw new RuntimeException("You need to first quit from team to quit from topic!");
+	}
 	currentTopic.decrementUserCount();
 	currentTopic = null;
-	talents = null;
+	talentLevels = null;
     }
     
     // team
@@ -136,11 +143,11 @@ public class User implements Serializable {
     // talent
     
     public void setTalentLevelOfSubTopic(SubTopic subTopic, Integer score) {
-	talents.put(subTopic, score);
+	talentLevels.put(subTopic, score);
     }
     
     public Integer getTalentLevel(SubTopic subTopic) {
-	return talents.get(subTopic);
+	return talentLevels.get(subTopic);
     }
 
 
