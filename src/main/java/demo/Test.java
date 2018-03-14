@@ -20,7 +20,7 @@ public class Test {
         Team team1 = stash.findTeamByName("Team 1");
         
         team1.removeMember(ferdem);
-        team1.removeMember(oyildiz);
+        oyildiz.quitCurrentTeam();
         
         System.out.println("USERS");
         System.out.println("------------------------------------------------------------");
