@@ -75,8 +75,8 @@ public class Topic implements Serializable {
 	teams.add(team);
     }
     
-    public boolean removeTeam(Team team) {
-	return teams.remove(team);
+    public void removeTeam(Team team) {
+	teams.remove(team);
     }
        
     public Integer getUserCount() {
