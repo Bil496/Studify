@@ -134,7 +134,10 @@ public class Team implements Serializable {
 	    jointUtility += jointUtilityMap.get(subTopic);
 	}
 	
-	// TODO if no member left delete team
+	// if no member left delete team
+	if (getSize() == 0) {
+	    getTopic().removeTeam(this);
+	}
 	// TODO else send notitification to other members
 
 	user.quitCurrentTeam();
