@@ -6,18 +6,24 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Team implements Serializable {
     
     private Integer id;
     
-    private String name;
+    @JsonIgnore
     private Topic topic;
+    private String name;
     
     private Integer jointUtility;
     private Integer totalUtility;
     
     private Set<User> members = new HashSet<>();
     
+    private Boolean isLocked = false;
+    
+    @JsonIgnore
     private Map<SubTopic, Integer> jointUtilityMap;
 
     public Team() {
@@ -57,6 +63,7 @@ public class Team implements Serializable {
 	for (SubTopic subTopic : topic.getSubTopics()) {
 	    jointUtilityMap.put(subTopic, 0);
 	}
+	
 	jointUtility = 0;
 	totalUtility = 0;
     }
@@ -64,17 +71,9 @@ public class Team implements Serializable {
     public Integer getJointUtility() {
         return jointUtility;
     }
-
-    public void setJointUtility(Integer jointUtility) {
-        this.jointUtility = jointUtility;
-    }
     
     public Integer getTotalUtility() {
 	return totalUtility;
-    }
-
-    public void setTotalUtility(Integer totalUtility) {
-	this.totalUtility = totalUtility;
     }
 
     public Set<User> getMembers() {
@@ -88,19 +87,25 @@ public class Team implements Serializable {
 	if (user.getCurrentTeam() != null && !user.getCurrentTeam().equals(this)) {
 	    throw new RuntimeException("User is already in another team!");
 	}
+	if (isLocked()) {
+	    throw new RuntimeException("Team does not accept any more member!");
+	}
 
 	members.add(user);
 	
+	// update utilities
 	for (SubTopic subTopic : topic.getSubTopics()) {
-	    Integer userScore = user.getTalentLevel(subTopic);
-	    totalUtility += userScore;
+	    Integer userTalentLevel = user.getTalentLevel(subTopic);
+	    totalUtility += userTalentLevel;
 	    
-	    Integer teamScore = jointUtilityMap.get(subTopic);
-	    if (userScore > teamScore) {
-		jointUtilityMap.put(subTopic, userScore);
-		jointUtility += (userScore - teamScore);
+	    Integer teamTalentLevel = jointUtilityMap.get(subTopic);
+	    if (userTalentLevel > teamTalentLevel) {
+		jointUtilityMap.put(subTopic, userTalentLevel);
+		jointUtility += (userTalentLevel - teamTalentLevel);
 	    }
 	}
+	
+	// TODO send notitification to other members
 	
 	if (user.getCurrentTeam() == null) {
 	    user.setCurrentTeam(this);
@@ -111,7 +116,27 @@ public class Team implements Serializable {
 	if (!getMembers().contains(user)) {
 	    return;
 	}
+	
 	members.remove(user);
+	
+	// update utilities
+	jointUtility = 0;
+	for (SubTopic subTopic : topic.getSubTopics()) {
+	    jointUtilityMap.put(subTopic, 0);
+	    totalUtility -= user.getTalentLevel(subTopic);
+	    for (User member : getMembers()) {
+		Integer memberTalentLevel = member.getTalentLevel(subTopic);
+		Integer teamTalentLevel = jointUtilityMap.get(subTopic);
+		if (memberTalentLevel > teamTalentLevel) {
+		    jointUtilityMap.put(subTopic, memberTalentLevel);	 
+		}
+	    }
+	    jointUtility += jointUtilityMap.get(subTopic);
+	}
+	
+	// TODO if no member left delete team
+	// TODO else send notitification to other members
+
 	user.quitCurrentTeam();
     }
     
@@ -135,6 +160,18 @@ public class Team implements Serializable {
         return id.hashCode();
     }
     
+    public Boolean isLocked() {
+	return isLocked;
+    }
+
+    public void lock() {
+	isLocked = true;
+    }
+    
+    public void unlock() {
+	isLocked = false;
+    }
+
     private static final long serialVersionUID = 1L;
 
 }
