@@ -30,7 +30,7 @@ public class MainController {
 	try {
 	    return ResponseEntity.ok().body(Stash.getInstance().findUserByUsername(username));
 	} catch (RuntimeException e) {
-	    return ResponseEntity.badRequest().body(e.getMessage());
+	    return ResponseEntity.badRequest().body(new APIError(401, e.getMessage()));
 	}
     }
 
@@ -52,7 +52,7 @@ public class MainController {
 
 	    return ResponseEntity.ok().body(location.getTopics());
 	} catch (RuntimeException e) {
-	    return ResponseEntity.badRequest().body(e.getMessage());
+	    return ResponseEntity.badRequest().body(new APIError(401, e.getMessage()));
 	}
     }
 
@@ -85,7 +85,7 @@ public class MainController {
 	    treeSet.addAll(teams);
 	    return ResponseEntity.ok().body(treeSet);
 	} catch (RuntimeException e) {
-	    return ResponseEntity.badRequest().body(e.getMessage());
+	    return ResponseEntity.badRequest().body(new APIError(401, e.getMessage()));
 	}
     }
 
@@ -109,7 +109,7 @@ public class MainController {
 
 	    return ResponseEntity.ok().body(stash.getTopic(topicId));
 	} catch (RuntimeException e) {
-	    return ResponseEntity.badRequest().body(e.getMessage());
+	    return ResponseEntity.badRequest().body(new APIError(401, e.getMessage()));
 	}
     }
 
@@ -128,7 +128,7 @@ public class MainController {
 	    }
 	    return ResponseEntity.ok().body(1);
 	} catch (RuntimeException e) {
-	    return ResponseEntity.badRequest().body(e.getMessage());
+	    return ResponseEntity.badRequest().body(new APIError(401, e.getMessage()));
 	}
     }
 
@@ -148,7 +148,7 @@ public class MainController {
 	    Integer teamId = stash.addTeamToTopic(topicId, team);
 	    return ResponseEntity.ok().body(teamId);
 	} catch (RuntimeException e) {
-	    return ResponseEntity.badRequest().body(e.getMessage());
+	    return ResponseEntity.badRequest().body(new APIError(401, e.getMessage()));
 	}
     }
 
@@ -169,7 +169,7 @@ public class MainController {
 	    team.lock();
 	    return ResponseEntity.ok().body(1);
 	} catch (RuntimeException e) {
-	    return ResponseEntity.badRequest().body(e.getMessage());
+	    return ResponseEntity.badRequest().body(new APIError(401, e.getMessage()));
 	}
     }
 
@@ -190,7 +190,7 @@ public class MainController {
 	    team.unlock();
 	    return ResponseEntity.ok().body(1);
 	} catch (RuntimeException e) {
-	    return ResponseEntity.badRequest().body(e.getMessage());
+	    return ResponseEntity.badRequest().body(new APIError(401, e.getMessage()));
 	}
     }
 
@@ -211,7 +211,7 @@ public class MainController {
 	    team.removeMember(kickedUser);
 	    return ResponseEntity.ok().body(1);
 	} catch (RuntimeException e) {
-	    return ResponseEntity.badRequest().body(e.getMessage());
+	    return ResponseEntity.badRequest().body(new APIError(401, e.getMessage()));
 	}
     }
 
