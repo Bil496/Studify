@@ -8,12 +8,19 @@ import demo.model.User;
 public class Test {
 
     public Test() {
-	// TODO Auto-generated constructor stub
+
     }
 
     public static void main(String[] args) {
 	Reader.createStash();
         Stash stash = Stash.getInstance();
+        
+        User ferdem = stash.findUserByUsername("ferdem");
+        User oyildiz = stash.findUserByUsername("oyildiz");
+        Team team1 = stash.findTeamByName("Team 1");
+        
+        team1.removeMember(ferdem);
+        team1.removeMember(oyildiz);
         
         System.out.println("USERS");
         System.out.println("------------------------------------------------------------");
@@ -21,8 +28,11 @@ public class Test {
             System.out.println("Username: " + user.getUserName());
             System.out.println("Location: " + user.getCurrentLocation().getTitle());
             System.out.println("Topic: " + user.getCurrentTopic().getTitle());
-            if (user.getCurrentTeam() != null)
+            if (user.getCurrentTeam() != null) {
         	System.out.println("Team:" + user.getCurrentTeam().getName());
+            } else {
+        	System.out.println("Not in a team!");
+            }
             System.out.println();
         }
         

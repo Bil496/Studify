@@ -133,5 +133,13 @@ public class Stash {
 	}
 	return null;
     }
+    
+    public Team findTeamByName(String name) {
+	for (Team team : teams.values()) {
+	    if (team.getName().equals(name))
+		return team;
+	}
+	return null;
+    }
 
 }
