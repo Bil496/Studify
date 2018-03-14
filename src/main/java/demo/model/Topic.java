@@ -12,11 +12,11 @@ public class Topic implements Serializable {
     
     private String title;
     private Location location; 
-    private Integer userCount = 0;
     
-    
-    private Set<Team> teams = new HashSet<>();
     private Set<SubTopic> subTopics = new HashSet<>();
+    private Set<Team> teams = new HashSet<>();
+    
+    private Integer userCount = 0;
     
     public Topic() {
 	
@@ -61,27 +61,11 @@ public class Topic implements Serializable {
     public void setLocation(Location location) {
 	this.location = location;
     }
-    
-    public Integer getUserCount() {
-        return userCount;
-    }
-
-    public void incrementUserCount() {
-        userCount++;
-    }
-    
-    public void decrementUserCount() {
-        userCount--;
-    }
 
     public Set<SubTopic> getSubTopics() {
         return subTopics;
     }
 
-    public void setSubTopics(Set<SubTopic> subtopics) {
-        this.subTopics = subtopics;
-    }
-    
     public void addSubTopic(SubTopic subTopic) {
 	subTopics.add(subTopic);
     }
@@ -99,6 +83,18 @@ public class Topic implements Serializable {
 	    throw new RuntimeException("Topic of team does not match!");
 	}
 	teams.add(team);
+    }
+       
+    public Integer getUserCount() {
+        return userCount;
+    }
+
+    public void incrementUserCount() {
+        userCount++;
+    }
+    
+    public void decrementUserCount() {
+        userCount--;
     }
 
     @Override

@@ -118,8 +118,9 @@ public class Reader {
 	    JSONObject userTeamObj = user_team.getJSONObject(i);
 	    Integer userId = userTeamObj.getInt("userId");
 	    Integer teamId = userTeamObj.getInt("teamId");
-
-	    stash.addUserToTeam(teamId, userId);
+	    Team team = stash.getTeam(teamId);
+	    User user = stash.getUser(userId);
+	    team.addMember(user);
 	}
 
     }

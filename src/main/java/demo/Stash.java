@@ -96,7 +96,6 @@ public class Stash {
 	topics.put(index, topic);
 	
 	Location location = getLocation(locationId);
-	//topic.setLocation(location);
 	location.addTopic(topic);
 
 	return index;
@@ -111,12 +110,6 @@ public class Stash {
 	topic.addSubTopic(subTopic);
 	
 	return index;
-    }
-
-    public void addUserToTeam(Integer teamId, Integer userId) {
-	Team team = getTeam(teamId);
-	User user = getUser(userId);
-	team.addMember(user);
     }
     
     public Integer addTeamToTopic(Integer topicId, Team team) {
