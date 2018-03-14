@@ -31,23 +31,43 @@ public class Stash {
     // GET METHODS
 
     public User getUser(Integer userId) {
-	return users.get(userId);
+	User user = users.get(userId);
+	if (user == null) {
+	    throw new RuntimeException("User not found in stash!");
+	}
+	return user;
     }
     
     public Team getTeam(Integer teamId) {
-	return teams.get(teamId);
+	Team team = teams.get(teamId);
+	if (team == null) {
+	    throw new RuntimeException("Team not found in stash!");
+	}
+	return team;
     }
 
     public Topic getTopic(Integer topicId) {
-	return topics.get(topicId);
+	Topic topic = topics.get(topicId);
+	if (topic == null) {
+	    throw new RuntimeException("Topic not found in stash!");
+	}
+	return topic;
     }
     
     public SubTopic getSubTopic(Integer subTopicId) {
-	return subTopics.get(subTopicId);
+	SubTopic subTopic = subTopics.get(subTopicId);
+	if (subTopic == null) {
+	    throw new RuntimeException("Sub-Topic not found in stash!");
+	}
+	return subTopic;
     }
     
     public Location getLocation(Integer locationId) {
-	return locations.get(locationId);
+	Location location = locations.get(locationId);
+	if (location == null) {
+	    throw new RuntimeException("Location not found in stash!");
+	}
+	return location;
     }
     
     // GET COLLECTION METHODS
@@ -131,7 +151,7 @@ public class Stash {
 	    if (user.getUserName().equals(username))
 		return user;
 	}
-	return null;
+	throw new RuntimeException("User does not exist!");
     }
     
     public Team findTeamByName(String name) {
@@ -139,7 +159,7 @@ public class Stash {
 	    if (team.getName().equals(name))
 		return team;
 	}
-	return null;
+	throw new RuntimeException("Team does not exist!");
     }
 
 }

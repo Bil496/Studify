@@ -26,8 +26,12 @@ import util.RandomStringGenerator;
 public class MainController {
 
     @GetMapping("/users/{username}")
-    ResponseEntity<User> getUser(@PathVariable("username") String username) {
-	return ResponseEntity.ok().body(Stash.getInstance().findUserByUsername(username));
+    ResponseEntity<?> getUser(@PathVariable("username") String username) {
+	try {
+	    return ResponseEntity.ok().body(Stash.getInstance().findUserByUsername(username));
+	} catch (RuntimeException e) {
+	    return ResponseEntity.badRequest().body(e.getMessage());
+	}
     }
 
     @GetMapping("/locations")
@@ -36,165 +40,179 @@ public class MainController {
     }
 
     @GetMapping("/locations/{locationId}/topics")
-    ResponseEntity<Set<Topic>> getTopics(@RequestHeader int userId, @PathVariable("locationId") int locationId) {
+    ResponseEntity<?> getTopics(@RequestHeader int userId, @PathVariable("locationId") int locationId) {
 	Stash stash = Stash.getInstance();
+	try {
+	    Location location = stash.getLocation(locationId);
 
-	Location location = stash.getLocation(locationId);
+	    // Burak made me do this...
+	    // (so that he doesn't bother to set locations of users...)
+	    User user = stash.getUser(userId);
+	    user.setCurrentLocation(location);
 
-	// Burak made me do this...
-	// (so that he doesn't bother to set locations of users...)
-	User user = stash.getUser(userId);
-	user.setCurrentLocation(location);
-
-	return ResponseEntity.ok().body(location.getTopics());
+	    return ResponseEntity.ok().body(location.getTopics());
+	} catch (RuntimeException e) {
+	    return ResponseEntity.badRequest().body(e.getMessage());
+	}
     }
 
     @GetMapping("/topics/{topicId}/teams")
-    ResponseEntity<TreeSet<Team>> getTeams(@RequestHeader int userId, @PathVariable("topicId") int topicId) {
+    ResponseEntity<?> getTeams(@RequestHeader int userId, @PathVariable("topicId") int topicId) {
 	Stash stash = Stash.getInstance();
+	try {
+	    User user = stash.getUser(userId);
+	    Topic topic = stash.getTopic(topicId);
 
-	User user = stash.getUser(userId);
-	Topic topic = stash.getTopic(topicId);
+	    Set<Team> teams = topic.getTeams();
+	    TreeSet<Team> treeSet = new TreeSet<>(new Comparator<Team>() {
+		@Override
+		public int compare(Team t1, Team t2) {
+		    Integer jointUtility1 = t1.hypotheticalJointUtility(user);
+		    Integer juintUtility2 = t2.hypotheticalJointUtility(user);
 
-	Set<Team> teams = topic.getTeams();
-	TreeSet<Team> treeSet = new TreeSet<>(new Comparator<Team>() {
-	    @Override
-	    public int compare(Team t1, Team t2) {
-		Integer jointUtility1 = t1.hypotheticalJointUtility(user);
-		Integer juintUtility2 = t2.hypotheticalJointUtility(user);
+		    if (!jointUtility1.equals(juintUtility2)) {
+			// greater joint utility is favorable
+			return -jointUtility1.compareTo(juintUtility2);
+		    }
 
-		if (!jointUtility1.equals(juintUtility2)) {
-		    // greater joint utility is favorable
-		    return -jointUtility1.compareTo(juintUtility2);
+		    Integer totalUtility1 = t1.hypotheticalTotalUtility(user);
+		    Integer totalUtility2 = t2.hypotheticalTotalUtility(user);
+
+		    // less total utility is favorable
+		    return totalUtility1.compareTo(totalUtility2);
 		}
-
-		Integer totalUtility1 = t1.hypotheticalTotalUtility(user);
-		Integer totalUtility2 = t2.hypotheticalTotalUtility(user);
-
-		// less total utility is favorable
-		return totalUtility1.compareTo(totalUtility2);
-	    }
-	});
-	treeSet.addAll(teams);
-	return ResponseEntity.ok().body(treeSet);
+	    });
+	    treeSet.addAll(teams);
+	    return ResponseEntity.ok().body(treeSet);
+	} catch (RuntimeException e) {
+	    return ResponseEntity.badRequest().body(e.getMessage());
+	}
     }
 
     @PostMapping("/locations/{locationId}/topics")
-    ResponseEntity<Topic> postTopic(@PathVariable("locationId") int locationId, @RequestBody String body) {
+    ResponseEntity<?> postTopic(@PathVariable("locationId") int locationId, @RequestBody String body) {
 	Stash stash = Stash.getInstance();
+	try {
+	    JSONObject root = new JSONObject(body);
 
-	JSONObject root = new JSONObject(body);
+	    Topic topic = new Topic();
+	    topic.setTitle(root.getString("title"));
+	    Integer topicId = stash.addTopicToLocation(locationId, topic);
 
-	Topic topic = new Topic();
-	topic.setTitle(root.getString("title"));
-	Integer topicId = stash.addTopicToLocation(locationId, topic);
+	    JSONArray subtopics = root.getJSONArray("subtopics");
+	    for (int i = 0; i < subtopics.length(); i++) {
+		JSONObject subtopicObj = subtopics.getJSONObject(i);
+		SubTopic subtopic = new SubTopic();
+		subtopic.setTitle(subtopicObj.getString("title"));
+		stash.addSubTopicToTopic(topicId, subtopic);
+	    }
 
-	JSONArray subtopics = root.getJSONArray("subtopics");
-	for (int i = 0; i < subtopics.length(); i++) {
-	    JSONObject subtopicObj = subtopics.getJSONObject(i);
-	    SubTopic subtopic = new SubTopic();
-	    subtopic.setTitle(subtopicObj.getString("title"));
-	    stash.addSubTopicToTopic(topicId, subtopic);
+	    return ResponseEntity.ok().body(stash.getTopic(topicId));
+	} catch (RuntimeException e) {
+	    return ResponseEntity.badRequest().body(e.getMessage());
 	}
-
-	return ResponseEntity.ok().body(stash.getTopic(topicId));
     }
 
     @PostMapping("/topics/{topicId}/talentLevels")
-    ResponseEntity<Integer> postTalentLevels(@RequestHeader int userId, @PathVariable("topicId") int topicId,
+    ResponseEntity<?> postTalentLevels(@RequestHeader int userId, @PathVariable("topicId") int topicId,
 	    @RequestBody String body) {
 	Stash stash = Stash.getInstance();
+	try {
+	    User user = stash.getUser(userId);
 
-	User user = stash.getUser(userId);
-
-	JSONArray root = new JSONArray(body);
-	for (int i = 0; i < root.length(); i++) {
-	    JSONObject talentObj = root.getJSONObject(i);
-	    SubTopic subTopic = stash.getSubTopic(talentObj.getInt("subtopicId"));
-	    user.setTalentLevelOfSubTopic(subTopic, talentObj.getInt("talentLevel"));
+	    JSONArray root = new JSONArray(body);
+	    for (int i = 0; i < root.length(); i++) {
+		JSONObject talentObj = root.getJSONObject(i);
+		SubTopic subTopic = stash.getSubTopic(talentObj.getInt("subtopicId"));
+		user.setTalentLevelOfSubTopic(subTopic, talentObj.getInt("talentLevel"));
+	    }
+	    return ResponseEntity.ok().body(1);
+	} catch (RuntimeException e) {
+	    return ResponseEntity.badRequest().body(e.getMessage());
 	}
-	return ResponseEntity.ok().body(1);
     }
 
     @PostMapping("/topics/{topicId}/teams")
     ResponseEntity<?> postTeam(@RequestHeader int userId, @PathVariable("topicId") int topicId) {
 	Stash stash = Stash.getInstance();
-
-	User user = stash.getUser(userId);
-	Topic topic = stash.getTopic(topicId);
-
-	Team team = new Team();
-	team.setTopic(topic);
-	team.setName(RandomStringGenerator.getSentence(2));
-
 	try {
+	    User user = stash.getUser(userId);
+	    Topic topic = stash.getTopic(topicId);
+
+	    Team team = new Team();
+	    team.setTopic(topic);
+	    team.setName(RandomStringGenerator.getSentence(2));
+
 	    team.addMember(user);
+
+	    Integer teamId = stash.addTeamToTopic(topicId, team);
+	    return ResponseEntity.ok().body(teamId);
 	} catch (RuntimeException e) {
 	    return ResponseEntity.badRequest().body(e.getMessage());
 	}
-
-	Integer teamId = stash.addTeamToTopic(topicId, team);
-	return ResponseEntity.ok().body(teamId);
     }
 
     @PostMapping("/teams/{teamId}/lock")
     ResponseEntity<?> postLock(@RequestHeader int userId, @PathVariable("teamId") int teamId) {
 	Stash stash = Stash.getInstance();
+	try {
+	    User user = stash.getUser(userId);
+	    Team team = stash.getTeam(teamId);
 
-	User user = stash.getUser(userId);
-	Team team = stash.getTeam(teamId);
+	    if (!team.getMembers().contains(user)) {
+		return ResponseEntity.badRequest().body("Only members can lock team!");
+	    }
+	    if (team.isLocked()) {
+		return ResponseEntity.badRequest().body("Team is already locked!");
+	    }
 
-	if (!team.getMembers().contains(user)) {
-	    return ResponseEntity.badRequest().body("Only members can lock team!");
+	    team.lock();
+	    return ResponseEntity.ok().body(1);
+	} catch (RuntimeException e) {
+	    return ResponseEntity.badRequest().body(e.getMessage());
 	}
-	if (team.isLocked()) {
-	    return ResponseEntity.badRequest().body("Team is already locked!");
-	}
-
-	team.lock();
-
-	return ResponseEntity.ok().body(1);
     }
 
     @PostMapping("/teams/{teamId}/unlock")
     ResponseEntity<?> postUnlock(@PathVariable("teamId") int teamId, @RequestHeader int userId) {
 	Stash stash = Stash.getInstance();
+	try {
+	    User user = stash.getUser(userId);
+	    Team team = stash.getTeam(teamId);
 
-	User user = stash.getUser(userId);
-	Team team = stash.getTeam(teamId);
+	    if (!team.getMembers().contains(user)) {
+		return ResponseEntity.badRequest().body("Only members can unlock team!");
+	    }
+	    if (!team.isLocked()) {
+		return ResponseEntity.badRequest().body("Team is already unlocked!");
+	    }
 
-	if (!team.getMembers().contains(user)) {
-	    return ResponseEntity.badRequest().body("Only members can unlock team!");
+	    team.unlock();
+	    return ResponseEntity.ok().body(1);
+	} catch (RuntimeException e) {
+	    return ResponseEntity.badRequest().body(e.getMessage());
 	}
-	if (!team.isLocked()) {
-	    return ResponseEntity.badRequest().body("Team is already unlocked!");
-	}
-
-	team.unlock();
-
-	return ResponseEntity.ok().body(1);
     }
 
     @PostMapping("/teams/{teamId}/kick/{kickedUserId}")
     ResponseEntity<?> postKickUserFromTeam(@RequestHeader int userId, @PathVariable("teamId") int teamId,
 	    @PathVariable("kickedUserId") int kickedUserId) {
 	Stash stash = Stash.getInstance();
-
-	User user = stash.getUser(userId);
-	Team team = stash.getTeam(teamId);
-	User kickedUser = stash.getUser(kickedUserId);
-
-	if (!team.getMembers().contains(user)) {
-	    return ResponseEntity.badRequest().body("Only members can kick members!");
-	}
-
 	try {
+
+	    User user = stash.getUser(userId);
+	    Team team = stash.getTeam(teamId);
+	    User kickedUser = stash.getUser(kickedUserId);
+
+	    if (!team.getMembers().contains(user)) {
+		return ResponseEntity.badRequest().body("Only members can kick members!");
+	    }
+
 	    team.removeMember(kickedUser);
+	    return ResponseEntity.ok().body(1);
 	} catch (RuntimeException e) {
 	    return ResponseEntity.badRequest().body(e.getMessage());
 	}
-
-	return ResponseEntity.ok().body(1);
     }
 
     @PostMapping("/teams/{id}")
