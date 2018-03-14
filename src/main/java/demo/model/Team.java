@@ -88,7 +88,7 @@ public class Team implements Serializable {
 	    throw new RuntimeException("User is already in another team!");
 	}
 	if (isLocked()) {
-	    throw new RuntimeException("Team does not accept any more member!");
+	    throw new RuntimeException("Team is closed to new members!");
 	}
 
 	members.add(user);
@@ -145,6 +145,28 @@ public class Team implements Serializable {
     
     public Integer getSize() {
 	return getMembers().size();
+    }
+    
+    public Integer hypotheticalJointUtility(User hypotheticalMember) {
+	Integer hypotheticalJointUtility = getJointUtility();
+	for (SubTopic subTopic : topic.getSubTopics()) {
+	    Integer userTalentLevel = hypotheticalMember.getTalentLevel(subTopic);
+	    
+	    Integer teamTalentLevel = jointUtilityMap.get(subTopic);
+	    if (userTalentLevel > teamTalentLevel) {
+		hypotheticalJointUtility += (userTalentLevel - teamTalentLevel);
+	    }
+	}
+	return hypotheticalJointUtility;
+    }
+    
+    public Integer hypotheticalTotalUtility(User hypotheticalMember) {
+	Integer hypotheticalTotalUtility = getTotalUtility();
+	for (SubTopic subTopic : topic.getSubTopics()) {
+	    Integer userTalentLevel = hypotheticalMember.getTalentLevel(subTopic);
+	    hypotheticalTotalUtility += userTalentLevel;
+	}
+	return hypotheticalTotalUtility;
     }
 
     @Override
