@@ -2,20 +2,27 @@ package demo;
 
 public class APIError {
 
-    private int statusCode;
+    private Integer statusCode;
     private String message;
 
-    public APIError(int statusCode, String message) {
-	this.statusCode = statusCode;
-	this.message = message;
+    public APIError(Integer statusCode, String message) {
+	    this.statusCode = statusCode;
+	    this.message = message;
     }
 
-    public int status() {
+    public Integer getStatusCode() {
         return statusCode;
     }
 
-    public String message() {
+    public void setStatusCode(Integer statusCode) {
+        this.statusCode = statusCode;
+    }
+
+    public String getMessage() {
         return message;
     }
-    
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 }
