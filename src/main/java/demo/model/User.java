@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 public class User implements Serializable {
@@ -21,7 +22,8 @@ public class User implements Serializable {
     private Topic currentTopic;    
     @JsonIgnoreProperties("members")
     private Team currentTeam;
-    
+
+    @JsonIgnore
     private Map<SubTopic, Integer> talentLevels;
 
     public User() {

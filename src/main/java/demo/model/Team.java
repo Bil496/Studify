@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 public class Team implements Serializable {
     
@@ -18,7 +19,7 @@ public class Team implements Serializable {
     
     private Integer jointUtility;
     private Integer totalUtility;
-    
+    @JsonIgnoreProperties({"currentTopic", "currentTeam", "currentLocation"})
     private Set<User> members = new HashSet<>();
     
     private Boolean isLocked = false;
