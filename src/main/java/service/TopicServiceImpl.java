@@ -16,16 +16,12 @@ import java.util.concurrent.ScheduledFuture;
 @Transactional
 public class TopicServiceImpl implements TopicService {
 
-    @Autowired
     TopicDao topicDao;
 
-    @Autowired
     TaskScheduler taskScheduler;
 
     ScheduledFuture<?> scheduledFuture;
 
-
-    @Autowired
     UserService userService;
 
     @Override

@@ -16,10 +16,8 @@ import model.Team;
 @Transactional
 public class TeamServiceImpl implements TeamService {
 
-    @Autowired
     TeamDao teamDao;
 
-    @Autowired
     UserDao userDao;
 
     @Override

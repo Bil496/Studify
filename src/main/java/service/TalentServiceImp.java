@@ -9,7 +9,6 @@ import java.util.List;
 
 @Service
 public class TalentServiceImp implements TalentService {
-    @Autowired
     TalentDao talentDao;
 
     @Override

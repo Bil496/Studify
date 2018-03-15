@@ -60,7 +60,7 @@ public class MainController {
     ResponseEntity<?> getTeams(@RequestHeader int userId, @PathVariable("topicId") int topicId) {
 	Stash stash = Stash.getInstance();
 	try {
-	    User user = stash.getUser(userId);
+	    final User user = stash.getUser(userId);
 	    Topic topic = stash.getTopic(topicId);
 
 	    Set<Team> teams = topic.getTeams();

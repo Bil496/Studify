@@ -12,7 +12,6 @@ import model.User;
 @Service
 @Transactional
 public class UserServiceImp implements UserService {
-    @Autowired
     UserDao userDao;
 
     @Transactional

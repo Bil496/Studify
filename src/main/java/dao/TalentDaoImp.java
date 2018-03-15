@@ -18,7 +18,6 @@ import java.util.List;
 @Transactional
 @Repository
 public class TalentDaoImp implements TalentDao {
-    @Autowired
     private SessionFactory sessionFactory;
 
     @Override

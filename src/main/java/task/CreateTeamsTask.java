@@ -22,11 +22,11 @@ import service.UserService;
 @Component
 public class CreateTeamsTask implements Runnable {
     private long topicId;
-    @Autowired
+
     TopicService topicService;
-    @Autowired
+
     UserService userService;
-    @Autowired
+
     TalentService talentService;
 
     public CreateTeamsTask(long topicId) {

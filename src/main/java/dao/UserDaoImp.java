@@ -5,7 +5,6 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -15,13 +14,9 @@ import java.util.List;
 
 @Repository
 public class UserDaoImp implements UserDao {
-    @Autowired
     private SessionFactory sessionFactory;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     public long save(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
         sessionFactory.getCurrentSession().save(user);
         return user.getId();
     }
@@ -47,7 +42,7 @@ public class UserDaoImp implements UserDao {
         user2.setSurname(user.getSurname());
         user2.setEmail(user.getEmail());
         user2.setUsername(user.getUsername());
-        user2.setPassword(passwordEncoder.encode(user.getPassword()));
+        user2.setPassword(user.getPassword());
         session.flush();
     }
 

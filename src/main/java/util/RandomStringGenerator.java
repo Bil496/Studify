@@ -27,4 +27,11 @@ public class RandomStringGenerator {
         }
         return sb.toString().trim();
     }
+
+    public static void main(String args[]){
+        int wordCount = 3;
+        for (int i = 0; i < 100; i++){
+            System.out.println(getSentence(wordCount));
+        }
+    }
 }

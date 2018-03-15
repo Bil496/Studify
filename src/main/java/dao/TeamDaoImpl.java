@@ -13,7 +13,6 @@ import model.User;
 @Repository
 public class TeamDaoImpl implements TeamDao{
 
-    @Autowired
     private SessionFactory sessionFactory;
 
     @Override

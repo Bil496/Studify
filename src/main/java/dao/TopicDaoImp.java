@@ -22,7 +22,6 @@ import java.util.Set;
 @Repository
 public class TopicDaoImp implements TopicDao {
 
-    @Autowired
     private SessionFactory sessionFactory;
 
     @Override
