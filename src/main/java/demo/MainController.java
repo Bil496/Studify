@@ -122,6 +122,10 @@ public class MainController {
 	try {
 	    User user = stash.getUser(userId);
 
+	    if (user.getCurrentTeam() != null) {
+		return ResponseEntity.badRequest().body(new APIError(31, "User is in a team in another topic!"));
+	    }
+
 	    JSONArray root = new JSONArray(body);
 	    for (int i = 0; i < root.length(); i++) {
 		JSONObject talentObj = root.getJSONObject(i);
