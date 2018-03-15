@@ -1,5 +1,6 @@
 package demo;
 
+import org.json.JSONException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -10,7 +11,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class AppMain {
     public static void main(String args[]){
-        Reader.createStash();
+        try {
+	    Reader.createStash();
+	} catch (JSONException e) {
+	    e.printStackTrace();
+	}
         SpringApplication.run(AppMain.class, args);
     }
 }

@@ -1,5 +1,7 @@
 package demo;
 
+import org.json.JSONException;
+
 import demo.model.SubTopic;
 import demo.model.Team;
 import demo.model.Topic;
@@ -11,7 +13,7 @@ public class Test {
 
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws JSONException {
 	Reader.createStash();
         Stash stash = Stash.getInstance();
         

@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import demo.model.Location;
@@ -15,7 +16,7 @@ import demo.model.User;
 
 public class Reader {
 
-    private static JSONObject readFileToJSONObject() {
+    private static JSONObject readFileToJSONObject() throws JSONException {
 	String content = null;
 	try {
 	    content = new String(Files.readAllBytes(Paths.get("demoDB2.json")));
@@ -25,7 +26,7 @@ public class Reader {
 	return new JSONObject(content);
     }
 
-    public static void createStash() {
+    public static void createStash() throws JSONException {
 	JSONObject root = readFileToJSONObject();
 	Stash stash = Stash.getInstance();
 

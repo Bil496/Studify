@@ -6,6 +6,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -90,7 +91,8 @@ public class MainController {
     }
 
     @PostMapping("/locations/{locationId}/topics")
-    ResponseEntity<?> postTopic(@PathVariable("locationId") int locationId, @RequestBody String body) {
+    ResponseEntity<?> postTopic(@PathVariable("locationId") int locationId, @RequestBody String body)
+	    throws JSONException {
 	Stash stash = Stash.getInstance();
 	try {
 	    JSONObject root = new JSONObject(body);
@@ -115,7 +117,7 @@ public class MainController {
 
     @PostMapping("/topics/{topicId}/talentLevels")
     ResponseEntity<?> postTalentLevels(@RequestHeader int userId, @PathVariable("topicId") int topicId,
-	    @RequestBody String body) {
+	    @RequestBody String body) throws JSONException {
 	Stash stash = Stash.getInstance();
 	try {
 	    User user = stash.getUser(userId);
