@@ -101,6 +101,9 @@ public class MainController {
 	    JSONObject root = new JSONObject(body);
 	    topic.setTitle(root.getString("title"));
 	    
+	    Location location = stash.getLocation(locationId);
+	    topic.setLocation(location);
+	    
 	    Integer topicId = stash.addTopicToLocation(locationId, topic);
 
 	    JSONArray subtopics = root.getJSONArray("subtopics");
