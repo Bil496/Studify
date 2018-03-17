@@ -35,7 +35,19 @@ public class MainController {
 	    return ResponseEntity.badRequest().body(new APIError(401, e.getMessage()));
 	}
     }
-
+    
+    @GetMapping("/team")
+    ResponseEntity<?> getUser(@RequestHeader int userId) {
+	Stash stash = Stash.getInstance();
+	try {
+	    User user = stash.getUser(userId);
+	    Team team = user.getCurrentTeam();
+	    return ResponseEntity.ok().body(team); 
+	} catch (RuntimeException e) {
+	    return ResponseEntity.badRequest().body(new APIError(401, e.getMessage()));
+	}
+    }
+	
     @GetMapping("/locations")
     ResponseEntity<Collection<Location>> getLocations() {
 	return ResponseEntity.ok().body(Stash.getInstance().getLocations());
