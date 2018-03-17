@@ -27,6 +27,14 @@ public class Stash {
     public static Stash getInstance() {
 	return STASH;
     }
+    
+    public void clear() {
+	users.clear();
+	teams.clear();
+	topics.clear();
+	subTopics.clear();
+	locations.clear();
+    }
         
     // GET METHODS
 

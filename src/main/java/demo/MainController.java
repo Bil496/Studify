@@ -251,5 +251,18 @@ public class MainController {
 	// TODO send notification to denied user only if user has no team
 	return null;
     }
+    
+    @PostMapping("/reset/{databaseId}")
+    ResponseEntity<?> resetDemoDatabase(@PathVariable("id") int databaseId) {
+	Stash stash = Stash.getInstance();
+	stash.clear();
+	try {
+	    Reader.setPath("demoDB" + databaseId + ".json");
+	    Reader.createStash();
+	} catch (JSONException e) {
+	    return ResponseEntity.badRequest().body(new APIError(401, e.getMessage()));
+	}
+	return ResponseEntity.ok().body(1);
+    }
 
 }

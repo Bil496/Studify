@@ -15,11 +15,17 @@ import demo.model.Topic;
 import demo.model.User;
 
 public class Reader {
+    
+    private static String path = "demoDB2.json";
+    
+    public static void setPath(String path) {
+	Reader.path = path;
+    }
 
     private static JSONObject readFileToJSONObject() throws JSONException {
 	String content = null;
 	try {
-	    content = new String(Files.readAllBytes(Paths.get("demoDB2.json")));
+	    content = new String(Files.readAllBytes(Paths.get(path)));
 	} catch (IOException e) {
 	    e.printStackTrace();
 	}
