@@ -146,7 +146,7 @@ public class Stash {
 	
 	Location location = getLocation(locationId);
 	location.addTopic(topic);
-
+	
 	return index;
     }
     

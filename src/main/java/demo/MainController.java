@@ -96,10 +96,11 @@ public class MainController {
 	    throws JSONException {
 	Stash stash = Stash.getInstance();
 	try {
-	    JSONObject root = new JSONObject(body);
-
 	    Topic topic = new Topic();
+	    
+	    JSONObject root = new JSONObject(body);
 	    topic.setTitle(root.getString("title"));
+	    
 	    Integer topicId = stash.addTopicToLocation(locationId, topic);
 
 	    JSONArray subtopics = root.getJSONArray("subtopics");
@@ -220,7 +221,7 @@ public class MainController {
 	    return ResponseEntity.badRequest().body(new APIError(401, e.getMessage()));
 	}
     }
-    
+
     @PostMapping("/firebase_token")
     ResponseEntity<?> postFirebaseToken(@RequestHeader int userId, @RequestBody String token) {
 	Stash stash = Stash.getInstance();
@@ -247,20 +248,40 @@ public class MainController {
 	}
     }
 
-    @PostMapping("/teams/{teamId}/accept/{requesterId}")
-    ResponseEntity<?> postAcceptRequest(@RequestHeader int userId, @PathVariable("teamId") int teamId,
-	    @PathVariable("requesterId") int requesterId, @RequestBody String message) {
-	// TODO send notification to accepted user only if user has no team
-	return null;
+    @PostMapping("requests/{requestId}/accept")
+    ResponseEntity<?> postAcceptRequest(@RequestHeader int userId, @PathVariable("requestId") int requestId) {
+	Stash stash = Stash.getInstance();
+	try {
+	    User user = stash.getUser(userId);
+	    Request request = stash.getRequest(requestId);
+	    if (!user.getCurrentTeam().equals(request.getRequested())) {
+		return ResponseEntity.badRequest()
+			.body(new APIError(401, "This user does not have permission to accept this request!"));
+	    }
+	    request.accept();
+	    return ResponseEntity.ok().body(1);		
+	} catch (RuntimeException e) {
+	    return ResponseEntity.badRequest().body(new APIError(401, e.getMessage()));
+	}
     }
 
-    @PostMapping("/teams/{teamId}/deny/{requesterId}")
-    ResponseEntity<?> postDenyRequest(@RequestHeader int userId, @PathVariable("teamId") int teamId,
-	    @PathVariable("requesterId") int requesterId) {
-	// TODO send notification to denied user only if user has no team
-	return null;
+    @PostMapping("requests/{requestId}/deny")
+    ResponseEntity<?> postDenyRequest(@RequestHeader int userId, @PathVariable("requestId") int requestId) {
+	Stash stash = Stash.getInstance();
+	try {
+	    User user = stash.getUser(userId);
+	    Request request = stash.getRequest(requestId);
+	    if (!user.getCurrentTeam().equals(request.getRequested())) {
+		return ResponseEntity.badRequest()
+			.body(new APIError(401, "This user does not have permission to deny this request!"));
+	    }
+	    request.deny();
+	    return ResponseEntity.ok().body(1);		
+	} catch (RuntimeException e) {
+	    return ResponseEntity.badRequest().body(new APIError(401, e.getMessage()));
+	}
     }
-    
+
     @PostMapping("/reset/{databaseId}")
     ResponseEntity<?> resetDemoDatabase(@PathVariable("id") int databaseId) {
 	Stash stash = Stash.getInstance();

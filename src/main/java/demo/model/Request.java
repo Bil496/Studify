@@ -8,6 +8,9 @@ public class Request implements Serializable {
     
     private User requester;
     private Team requested;
+    
+    private boolean accepted = false;
+    private boolean denied = false;
 
     public Request(User requester, Team requested) {
 	this.requester = requester;
@@ -30,6 +33,31 @@ public class Request implements Serializable {
     
     public Team getRequested() {
 	return requested;
+    }
+    
+    public void accept() {
+	if (accepted) {
+	    throw new RuntimeException("This request is already accepted!");
+	}
+	if (denied) {
+	    throw new RuntimeException("This request is denied earlier!");
+	}
+	accepted = true;
+	requester.removeRequest(this);
+	requested.removeRequest(this);
+	requester.setCurrentTeam(requested);
+    }
+    
+    public void deny() {
+	if (accepted) {
+	    throw new RuntimeException("This request is already accepted!");
+	}
+	if (denied) {
+	    throw new RuntimeException("This request is denied earlier!");
+	}
+	accepted = true;
+	requester.removeRequest(this);
+	requested.removeRequest(this);
     }
     
     @Override
