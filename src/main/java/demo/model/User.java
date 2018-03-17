@@ -25,6 +25,8 @@ public class User implements Serializable {
 
     @JsonIgnore
     private Map<SubTopic, Integer> talentLevels;
+    
+    private String token;
 
     public User() {
 	
@@ -151,7 +153,14 @@ public class User implements Serializable {
     public Integer getTalentLevel(SubTopic subTopic) {
 	return talentLevels.get(subTopic);
     }
+    
+    public String getToken() {
+	return token;
+    }
 
+    public void setToken(String token) {
+	this.token = token;
+    }
 
     @Override
     public boolean equals(Object o) {

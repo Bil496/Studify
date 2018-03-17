@@ -205,7 +205,6 @@ public class MainController {
 	    @PathVariable("kickedUserId") int kickedUserId) {
 	Stash stash = Stash.getInstance();
 	try {
-
 	    User user = stash.getUser(userId);
 	    Team team = stash.getTeam(teamId);
 	    User kickedUser = stash.getUser(kickedUserId);
@@ -219,6 +218,18 @@ public class MainController {
 	} catch (RuntimeException e) {
 	    return ResponseEntity.badRequest().body(new APIError(401, e.getMessage()));
 	}
+    }
+    
+    @PostMapping("/firebase_token")
+    ResponseEntity<?> postFirebaseToken(@RequestHeader int userId, @RequestBody String token) {
+	Stash stash = Stash.getInstance();
+	try {
+	    User user = stash.getUser(userId);
+	    user.setToken(token);
+	} catch (RuntimeException e) {
+	    return ResponseEntity.badRequest().body(new APIError(401, e.getMessage()));
+	}
+	return ResponseEntity.ok().body(1);
     }
 
     @PostMapping("/teams/{id}")
