@@ -22,14 +22,6 @@ public class Topic implements Serializable {
 	
     }
 
-    public Topic(Integer id, String title, Integer userCount, Set<SubTopic> subTopics, Set<Team> teams) {
-        this.id = id;
-        this.title = title;
-        this.userCount = userCount;
-        this.subTopics = subTopics;
-        this.teams = teams;
-    }
-
     public Integer getId() {
         return id;
     }

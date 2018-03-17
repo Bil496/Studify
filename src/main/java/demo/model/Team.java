@@ -19,22 +19,20 @@ public class Team implements Serializable {
     
     private Integer jointUtility;
     private Integer totalUtility;
-    @JsonIgnoreProperties({"currentTopic", "currentTeam", "currentLocation"})
-    private Set<User> members = new HashSet<>();
-    
-    private Boolean isLocked = false;
     
     @JsonIgnore
     private Map<SubTopic, Integer> jointUtilityMap;
-
+    
+    @JsonIgnoreProperties({"currentTopic", "currentTeam", "currentLocation"})
+    private Set<User> members = new HashSet<>();
+    
+    @JsonIgnore
+    private Set<Request> requests = new HashSet<>();
+    
+    private Boolean isLocked = false;
+    
     public Team() {
 	
-    }
-
-    public Team(Integer id, String name, Set<User> members) {
-        this.id = id;
-        this.name = name;
-        this.members = members;
     }
 
     public Integer getId() {
@@ -76,6 +74,34 @@ public class Team implements Serializable {
     public Integer getTotalUtility() {
 	return totalUtility;
     }
+    
+    public Integer hypotheticalJointUtility(User hypotheticalMember) {
+	Integer hypotheticalJointUtility = getJointUtility();
+	for (SubTopic subTopic : topic.getSubTopics()) {
+	    Integer userTalentLevel = hypotheticalMember.getTalentLevel(subTopic);
+	    
+	    Integer teamTalentLevel = jointUtilityMap.get(subTopic);
+	    if (userTalentLevel > teamTalentLevel) {
+		hypotheticalJointUtility += (userTalentLevel - teamTalentLevel);
+	    }
+	}
+	return hypotheticalJointUtility;
+    }
+    
+    public Integer hypotheticalTotalUtility(User hypotheticalMember) {
+	Integer hypotheticalTotalUtility = getTotalUtility();
+	for (SubTopic subTopic : topic.getSubTopics()) {
+	    Integer userTalentLevel = hypotheticalMember.getTalentLevel(subTopic);
+	    hypotheticalTotalUtility += userTalentLevel;
+	}
+	return hypotheticalTotalUtility;
+    }
+    
+
+    public Integer getSize() {
+	return getMembers().size();
+    }
+    
 
     public Set<User> getMembers() {
         return members;
@@ -144,32 +170,18 @@ public class Team implements Serializable {
 	user.quitCurrentTeam();
     }
     
-    public Integer getSize() {
-	return getMembers().size();
+    public void addRequest(Request request) {
+	if (!request.getRequested().equals(this)) {
+	    throw new RuntimeException("This request does not belong to this team!");
+	}
+	requests.add(request);
+	// TODO send notitification to members
     }
     
-    public Integer hypotheticalJointUtility(User hypotheticalMember) {
-	Integer hypotheticalJointUtility = getJointUtility();
-	for (SubTopic subTopic : topic.getSubTopics()) {
-	    Integer userTalentLevel = hypotheticalMember.getTalentLevel(subTopic);
-	    
-	    Integer teamTalentLevel = jointUtilityMap.get(subTopic);
-	    if (userTalentLevel > teamTalentLevel) {
-		hypotheticalJointUtility += (userTalentLevel - teamTalentLevel);
-	    }
-	}
-	return hypotheticalJointUtility;
+    public void removeRequest(Request request) {
+	requests.remove(request);
     }
     
-    public Integer hypotheticalTotalUtility(User hypotheticalMember) {
-	Integer hypotheticalTotalUtility = getTotalUtility();
-	for (SubTopic subTopic : topic.getSubTopics()) {
-	    Integer userTalentLevel = hypotheticalMember.getTalentLevel(subTopic);
-	    hypotheticalTotalUtility += userTalentLevel;
-	}
-	return hypotheticalTotalUtility;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -180,7 +192,7 @@ public class Team implements Serializable {
         return id.equals(team.id);
 
     }
-
+    
     @Override
     public int hashCode() {
         return id.hashCode();

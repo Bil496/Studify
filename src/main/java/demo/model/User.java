@@ -2,7 +2,9 @@ package demo.model;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -17,26 +19,21 @@ public class User implements Serializable {
     private String profilePic;
     
     // studying data
-    private Location currentLocation;
-    
-    private Topic currentTopic;    
     @JsonIgnoreProperties("members")
     private Team currentTeam;
-
+    private Topic currentTopic;    
+    private Location currentLocation;
+    
     @JsonIgnore
     private Map<SubTopic, Integer> talentLevels;
     
-    private String token;
+    @JsonIgnore
+    private Set<Request> requests = new HashSet<>();
 
+    private String token;
+    
     public User() {
 	
-    }
-
-    public User(Integer id, String username, String name, String profilePic) {
-        this.id = id;
-        this.username = username;
-        this.name = name;
-        this.profilePic = profilePic;
     }
 
     public Integer getId() {
@@ -152,6 +149,17 @@ public class User implements Serializable {
     
     public Integer getTalentLevel(SubTopic subTopic) {
 	return talentLevels.get(subTopic);
+    }
+    
+    public void addRequest(Request request) {
+	if (!request.getRequester().equals(this)) {
+	    throw new RuntimeException("This request does not belong to this user!");
+	}
+	requests.add(request);
+    }
+    
+    public void removeRequest(Request request) {
+	requests.remove(request);
     }
     
     public String getToken() {

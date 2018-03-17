@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 
 import demo.model.Location;
+import demo.model.Request;
 import demo.model.SubTopic;
 import demo.model.Team;
 import demo.model.Topic;
@@ -232,9 +233,17 @@ public class MainController {
 	return ResponseEntity.ok().body(1);
     }
 
-    @PostMapping("/teams/{id}")
-    ResponseEntity<?> postJoinRequest(@PathVariable("id") int teamId, @RequestHeader int userId) {
-	// TODO send request by user to team to joing
+    @PostMapping("/teams/{teamId}")
+    ResponseEntity<?> postJoinRequest(@RequestHeader int userId, @PathVariable("teamId") int teamId) {
+	Stash stash = Stash.getInstance();
+	try {
+	    User user = stash.getUser(userId);
+	    Team team = stash.getTeam(teamId);
+	    Request request = new Request(user, team);
+	    stash.addRequest(request);
+	} catch (RuntimeException e) {
+	    return ResponseEntity.badRequest().body(new APIError(401, e.getMessage()));
+	}
 	return null;
     }
 

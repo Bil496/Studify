@@ -18,12 +18,6 @@ public class Location implements Serializable {
 	
     }
 
-    public Location(Integer id, String title, Set<Topic> topics) {
-        this.id = id;
-        this.title = title;
-        this.topics = topics;
-    }
-
     public Integer getId() {
         return id;
     }

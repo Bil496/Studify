@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import demo.model.Location;
+import demo.model.Request;
 import demo.model.SubTopic;
 import demo.model.Team;
 import demo.model.Topic;
@@ -19,6 +20,7 @@ public class Stash {
     private Map<Integer, Topic> topics = new HashMap<>();
     private Map<Integer, SubTopic> subTopics = new HashMap<>();
     private Map<Integer, Location> locations = new HashMap<>();
+    private Map<Integer, Request> requests = new HashMap<>();
         
     private Stash() {
 	
@@ -78,6 +80,14 @@ public class Stash {
 	return location;
     }
     
+    public Request getRequest(Integer requestId) {
+	Request request = requests.get(requestId);
+	if (request == null) {
+	    throw new RuntimeException("Request not found in stash!");
+	}
+	return request;
+    }
+    
     // GET COLLECTION METHODS
     
     public Collection<User> getUsers() {
@@ -100,6 +110,10 @@ public class Stash {
 	return locations.values();
     }
     
+    public Collection<Request> getRequests() {
+	return requests.values();
+    }
+    
     // ADD METHODS
 
     public Integer addUser(User user) {
@@ -113,6 +127,13 @@ public class Stash {
 	Integer index = locations.size();
 	location.setId(index);
 	locations.put(index, location);
+	return index;
+    }
+    
+    public Integer addRequest(Request request) {
+	Integer index = requests.size();
+	request.setId(index);
+	requests.put(index, request);
 	return index;
     }
     

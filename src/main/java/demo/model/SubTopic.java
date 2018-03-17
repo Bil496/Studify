@@ -11,11 +11,6 @@ public class SubTopic implements Serializable {
 	
     }
 
-    public SubTopic(Integer id, String title) {
-        this.id = id;
-        this.title = title;
-    }
-
     public Integer getId() {
         return id;
     }

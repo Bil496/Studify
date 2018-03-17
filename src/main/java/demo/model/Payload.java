@@ -23,16 +23,8 @@ public class Payload {
         return type;
     }
 
-    public void setType(Type type) {
-        this.type = type;
-    }
-
     public JSONObject getData() {
         return data;
-    }
-
-    public void setData(JSONObject data) {
-        this.data = data;
     }
 
 }
