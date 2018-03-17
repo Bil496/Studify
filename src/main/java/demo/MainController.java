@@ -37,7 +37,7 @@ public class MainController {
     }
     
     @GetMapping("/team")
-    ResponseEntity<?> getUser(@RequestHeader int userId) {
+    ResponseEntity<?> getTeam(@RequestHeader int userId) {
 	Stash stash = Stash.getInstance();
 	try {
 	    User user = stash.getUser(userId);
@@ -138,6 +138,9 @@ public class MainController {
 	Stash stash = Stash.getInstance();
 	try {
 	    User user = stash.getUser(userId);
+	    Topic topic = stash.getTopic(topicId);
+	    user.quitCurrentTopic();
+	    user.setCurrentTopic(topic);
 
 	    if (user.getCurrentTeam() != null) {
 		return ResponseEntity.badRequest().body(new APIError(31, "User is in a team in another topic!"));
