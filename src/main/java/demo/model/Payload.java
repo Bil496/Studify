@@ -1,6 +1,6 @@
 package demo.model;
 
-import net.minidev.json.JSONObject;
+import org.json.JSONObject;
 
 public class Payload {
     
