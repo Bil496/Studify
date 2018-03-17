@@ -106,7 +106,7 @@ public class MainController {
 	    
 	    Integer topicId = stash.addTopicToLocation(locationId, topic);
 
-	    JSONArray subtopics = root.getJSONArray("subtopics");
+	    JSONArray subtopics = root.getJSONArray("subTopics");
 	    for (int i = 0; i < subtopics.length(); i++) {
 		JSONObject subtopicObj = subtopics.getJSONObject(i);
 		SubTopic subtopic = new SubTopic();
