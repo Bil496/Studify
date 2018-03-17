@@ -110,7 +110,7 @@ public class MainController {
 		stash.addSubTopicToTopic(topicId, subtopic);
 	    }
 
-	    return ResponseEntity.ok().body(stash.getTopic(topicId));
+	    return ResponseEntity.ok().body(topicId);
 	} catch (RuntimeException e) {
 	    return ResponseEntity.badRequest().body(new APIError(401, e.getMessage()));
 	}
@@ -240,11 +240,11 @@ public class MainController {
 	    User user = stash.getUser(userId);
 	    Team team = stash.getTeam(teamId);
 	    Request request = new Request(user, team);
-	    stash.addRequest(request);
+	    Integer requestId = stash.addRequest(request);
+	    return ResponseEntity.ok().body(requestId);
 	} catch (RuntimeException e) {
 	    return ResponseEntity.badRequest().body(new APIError(401, e.getMessage()));
 	}
-	return null;
     }
 
     @PostMapping("/teams/{teamId}/accept/{requesterId}")

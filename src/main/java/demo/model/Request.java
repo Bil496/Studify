@@ -1,6 +1,8 @@
 package demo.model;
 
-public class Request {
+import java.io.Serializable;
+
+public class Request implements Serializable {
     
     private Integer id;
     
@@ -29,5 +31,22 @@ public class Request {
     public Team getRequested() {
 	return requested;
     }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Request request = (Request) o;
+
+        return id.equals(request.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
+    
+    private static final long serialVersionUID = 1L;
 
 }
