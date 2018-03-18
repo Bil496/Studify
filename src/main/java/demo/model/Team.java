@@ -226,17 +226,22 @@ public class Team implements Serializable {
 	
 	if (!ignoreList.contains("topic")) map.put("topic", getTopic().toJSONObject("teams"));
 	
-	List<JSONObject> membersAsJSONObjects = new ArrayList<>();
-	for (User member: members) {
-	    membersAsJSONObjects.add(member.toJSONObject("currentTopic", "currentTeam", "currentLocation", "requests"));
+	if (!ignoreList.contains("members")) {
+	    List<JSONObject> membersAsJSONObjects = new ArrayList<>();
+	    for (User member: members) {
+		membersAsJSONObjects.add(member.toJSONObject("currentTopic", "currentTeam", "currentLocation", "requests"));
+	    }
+	    map.put("members", membersAsJSONObjects);
 	}
-	if (!ignoreList.contains("members")) map.put("members", membersAsJSONObjects);
+
+	if (!ignoreList.contains("requests")) {
+	    List<JSONObject> requestsAsJSONObjects = new ArrayList<>();
+	    for (Request request: getRequests()) {
+		requestsAsJSONObjects.add(request.toJSONObject("requested"));
+	    }
+	    map.put("requests", requestsAsJSONObjects);
+	}
 	
-	List<JSONObject> requestsAsJSONObjects = new ArrayList<>();
-	for (Request request: getRequests()) {
-	    requestsAsJSONObjects.add(request.toJSONObject("requested"));
-	}
-	if (!ignoreList.contains("requests")) map.put("requests", requestsAsJSONObjects);
 	
 	return new JSONObject(map);
     }

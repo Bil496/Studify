@@ -207,12 +207,15 @@ public class User implements Serializable {
 	if (!ignoreList.contains("currentTopic")) map.put("currentTopic", getCurrentTopic().toJSONObject("location", "teams"));
 	if (!ignoreList.contains("currentLocation")) map.put("currentLocation", getCurrentLocation().toJSONObject("topics"));
 	
-	List<JSONObject> requestsAsJSONObjects = new ArrayList<>();
-	for (Request request: getRequests()) {
-	    requestsAsJSONObjects.add(request.toJSONObject("requester"));
+
+	if (!ignoreList.contains("requests")) {
+	    List<JSONObject> requestsAsJSONObjects = new ArrayList<>();
+	    for (Request request: getRequests()) {
+		requestsAsJSONObjects.add(request.toJSONObject("requester"));
+	    }
+	    map.put("requests", requestsAsJSONObjects);
 	}
-	if (!ignoreList.contains("requests")) map.put("requests", requestsAsJSONObjects);
-	
+	    
 	if (!ignoreList.contains("token")) map.put("token", getToken());
 	
 	return new JSONObject(map);

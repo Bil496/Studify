@@ -116,17 +116,21 @@ public class Topic implements Serializable {
 	if (!ignoreList.contains("title")) map.put("title", getTitle());
 	if (!ignoreList.contains("location")) map.put("location", getLocation().toJSONObject("topics"));
 	
-	List<JSONObject> teamsAsJSONObjects = new ArrayList<>();
-	for (Team team: getTeams()) {
-	    teamsAsJSONObjects.add(team.toJSONObject("topic", "members", "requests"));
+	if (!ignoreList.contains("teams")) {
+	    List<JSONObject> teamsAsJSONObjects = new ArrayList<>();
+	    for (Team team: getTeams()) {
+		teamsAsJSONObjects.add(team.toJSONObject("topic", "members", "requests"));
+	    }
+	    map.put("teams", teamsAsJSONObjects);
 	}
-	if (!ignoreList.contains("teams")) map.put("teams", teamsAsJSONObjects);
 	
-	List<JSONObject> subTopicsAsJSONObjects = new ArrayList<>();
-	for (SubTopic subTopic: getSubTopics()) {
-	    subTopicsAsJSONObjects.add(subTopic.toJSONObject());
+	if (!ignoreList.contains("subTopics")) {
+	    List<JSONObject> subTopicsAsJSONObjects = new ArrayList<>();
+	    for (SubTopic subTopic: getSubTopics()) {
+		subTopicsAsJSONObjects.add(subTopic.toJSONObject());
+	    }
+	    map.put("subTopics", subTopicsAsJSONObjects);
 	}
-	if (!ignoreList.contains("subTopics")) map.put("subTopics", subTopicsAsJSONObjects);
 	
 	return new JSONObject(map);
     }
