@@ -44,7 +44,7 @@ public class MainController {
 	try {
 	    User user = stash.getUser(userId);
 	    Team team = user.getCurrentTeam();
-	    return ResponseEntity.ok().body(team.toJSONObject());
+	    return ResponseEntity.ok().body(team.toJSONObject().toString());
 	} catch (RuntimeException e) {
 	    return ResponseEntity.badRequest().body(new APIError(401, e.getMessage()));
 	}
