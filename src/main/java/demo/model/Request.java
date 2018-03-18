@@ -15,8 +15,6 @@ public class Request implements Serializable {
     public Request(User requester, Team requested) {
 	this.requester = requester;
 	this.requested = requested;
-	requester.addRequest(this);
-	requested.addRequest(this);
     }
 
     public Integer getId() {

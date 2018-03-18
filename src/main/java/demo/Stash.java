@@ -134,6 +134,8 @@ public class Stash {
 	Integer index = requests.size();
 	request.setId(index);
 	requests.put(index, request);
+	request.getRequester().addRequest(request);
+	request.getRequested().addRequest(request);
 	return index;
     }
     
