@@ -228,7 +228,7 @@ public class Team implements Serializable {
 	
 	List<JSONObject> membersAsJSONObjects = new ArrayList<>();
 	for (User member: members) {
-	    membersAsJSONObjects.add(member.toJSONObject("currentTopic", "currentTeam", "currentLocation"));
+	    membersAsJSONObjects.add(member.toJSONObject("currentTopic", "currentTeam", "currentLocation", "requests"));
 	}
 	if (!ignoreList.contains("members")) map.put("members", membersAsJSONObjects);
 	

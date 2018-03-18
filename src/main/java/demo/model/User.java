@@ -203,7 +203,7 @@ public class User implements Serializable {
 	if (!ignoreList.contains("username")) map.put("username", getUsername());
 	if (!ignoreList.contains("profilePic")) map.put("profilePic", getProfilePic());
 	
-	if (!ignoreList.contains("currentTeam")) map.put("currentTeam", getCurrentTeam().toJSONObject("members"));
+	if (!ignoreList.contains("currentTeam")) map.put("currentTeam", getCurrentTeam().toJSONObject("members", "requests"));
 	if (!ignoreList.contains("currentTopic")) map.put("currentTopic", getCurrentTopic().toJSONObject("location", "teams"));
 	if (!ignoreList.contains("currentLocation")) map.put("currentLocation", getCurrentLocation().toJSONObject("topics"));
 	
