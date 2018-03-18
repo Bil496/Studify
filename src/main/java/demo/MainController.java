@@ -237,12 +237,14 @@ public class MainController {
 
 	    team.removeMember(kickedUser);
 
-	    String title = "You are kicked from your study group!";
-	    String message = "You are kicked from " + team.getName() + ", by " + user.getUsername() + "!";
-	    Notification notification = new Notification(title, message);
-	    Payload payload = new Payload(Payload.Type.KICKED, team.toJSONObject("members"));
-	    
-	    NotificationSender.sendNotification(kickedUser, notification, payload);
+	    if (!user.equals(kickedUser)) {
+		String title = "You are kicked from your study group!";
+		String message = "You are kicked from " + team.getName() + ", by " + user.getUsername() + "!";
+		Notification notification = new Notification(title, message);
+		Payload payload = new Payload(Payload.Type.KICKED, team.toJSONObject("members"));
+
+		NotificationSender.sendNotification(kickedUser, notification, payload);
+	    }
 
 	    return ResponseEntity.ok().body(1);
 	} catch (RuntimeException e) {
