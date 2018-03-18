@@ -238,7 +238,7 @@ public class MainController {
 	    team.removeMember(kickedUser);
 
 	    if (!user.equals(kickedUser)) {
-		String title = "You are kicked from your study group!";
+		String title = "You are kicked!";
 		String message = "You are kicked from " + team.getName() + ", by " + user.getUsername() + "!";
 		Notification notification = new Notification(title, message);
 		Payload payload = new Payload(Payload.Type.KICKED, team.toJSONObject("members"));
@@ -297,6 +297,14 @@ public class MainController {
 			.body(new APIError(401, "This user does not have permission to accept this request!"));
 	    }
 	    request.accept();
+
+	    String title = "Your request is accepted!";
+	    String message = "Your request to study with " + request.getRequested().getName() + " is accepted by "
+		    + user.getName() + "!";
+	    Notification notification = new Notification(title, message);
+	    Payload payload = new Payload(Payload.Type.ACCEPTED, request.getRequested().toJSONObject());
+	    NotificationSender.sendNotification(request.getRequester(), notification, payload);
+	    
 	    return ResponseEntity.ok().body(1);
 	} catch (RuntimeException e) {
 	    return ResponseEntity.badRequest().body(new APIError(401, e.getMessage()));
