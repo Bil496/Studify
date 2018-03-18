@@ -1,6 +1,12 @@
 package demo.model;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.json.JSONObject;
 
 public class SubTopic implements Serializable {
     
@@ -40,6 +46,17 @@ public class SubTopic implements Serializable {
     @Override
     public int hashCode() {
         return id.hashCode();
+    }
+    
+    public JSONObject toJSONObject(String... ignore) {
+	List<String> ignoreList = Arrays.asList(ignore);
+	
+	Map<String, Object> map = new HashMap<>();
+	if (!ignoreList.contains("id")) map.put("id", getId());
+	if (!ignoreList.contains("title")) map.put("title", getTitle());
+	
+	return new JSONObject(map);
+	
     }
     
     private static final long serialVersionUID = 1L;

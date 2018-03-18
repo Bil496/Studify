@@ -1,10 +1,15 @@
 package demo.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.json.JSONObject;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -29,7 +34,7 @@ public class Team implements Serializable {
     @JsonIgnore
     private Set<Request> requests = new HashSet<>();
     
-    private Boolean isLocked = false;
+    private Boolean locked = false;
     
     public Team() {
 	
@@ -199,15 +204,36 @@ public class Team implements Serializable {
     }
     
     public Boolean isLocked() {
-	return isLocked;
+	return locked;
     }
 
     public void lock() {
-	isLocked = true;
+	locked = true;
     }
     
     public void unlock() {
-	isLocked = false;
+	locked = false;
+    }
+    
+    public JSONObject toJSONObject(String... ignore) {
+	List<String> ignoreList = Arrays.asList(ignore);
+	
+	Map<String, Object> map = new HashMap<>();
+	if (!ignoreList.contains("id")) map.put("id", getId());
+	if (!ignoreList.contains("name")) map.put("name", getName());
+	if (!ignoreList.contains("jointUtility")) map.put("jointUtility", getJointUtility());
+	if (!ignoreList.contains("totalUtility")) map.put("totalUtility", getTotalUtility());
+	if (!ignoreList.contains("locked")) map.put("locked", isLocked());
+	
+	if (!ignoreList.contains("topic")) map.put("topic", getTopic().toJSONObject("teams"));
+	
+	List<JSONObject> membersAsJSONObjects = new ArrayList<>();
+	for (User member: members) {
+	    membersAsJSONObjects.add(member.toJSONObject("currentTopic", "currentTeam", "currentLocation"));
+	}
+	if (!ignoreList.contains("members")) map.put("members", membersAsJSONObjects);
+	
+	return new JSONObject(map);
     }
 
     private static final long serialVersionUID = 1L;

@@ -1,10 +1,14 @@
 package demo.model;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.json.JSONObject;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -46,11 +50,11 @@ public class User implements Serializable {
 
     // --- profile data --- //
     
-    public String getUserName() {
+    public String getUsername() {
         return username;
     }
 
-    public void setUserName(String username) {
+    public void setUsername(String username) {
         this.username = username;
     }
 
@@ -183,6 +187,24 @@ public class User implements Serializable {
     @Override
     public int hashCode() {
         return id.hashCode();
+    }
+    
+    public JSONObject toJSONObject(String... ignore) {
+	List<String> ignoreList = Arrays.asList(ignore);
+	
+	Map<String, Object> map = new HashMap<>();
+	if (!ignoreList.contains("id")) map.put("id", getId());
+	if (!ignoreList.contains("name")) map.put("name", getName());
+	if (!ignoreList.contains("username")) map.put("username", getUsername());
+	if (!ignoreList.contains("profilePic")) map.put("profilePic", getProfilePic());
+	
+	if (!ignoreList.contains("currentTeam")) map.put("currentTeam", getCurrentTeam().toJSONObject("members"));
+	if (!ignoreList.contains("currentTopic")) map.put("currentTopic", getCurrentTopic().toJSONObject("location", "teams"));
+	if (!ignoreList.contains("currentLocation")) map.put("currentLocation", getCurrentLocation().toJSONObject("topics"));
+	
+	if (!ignoreList.contains("token")) map.put("token", getToken());
+	
+	return new JSONObject(map);
     }
     
     private static final long serialVersionUID = 1L;

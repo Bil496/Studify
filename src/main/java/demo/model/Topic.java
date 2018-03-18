@@ -1,10 +1,17 @@
 package demo.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
+
+import org.json.JSONObject;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class Topic implements Serializable {
     
@@ -99,6 +106,29 @@ public class Topic implements Serializable {
     @Override
     public int hashCode() {
         return id.hashCode();
+    }
+    
+    public JSONObject toJSONObject(String... ignore) {
+	List<String> ignoreList = Arrays.asList(ignore);
+	
+	Map<String, Object> map = new HashMap<>();
+	if (!ignoreList.contains("id")) map.put("id", getId());
+	if (!ignoreList.contains("title")) map.put("title", getTitle());
+	if (!ignoreList.contains("location")) map.put("location", getLocation().toJSONObject("topics"));
+	
+	List<JSONObject> teamsAsJSONObjects = new ArrayList<>();
+	for (Team team: getTeams()) {
+	    teamsAsJSONObjects.add(team.toJSONObject("topic", "members"));
+	}
+	if (!ignoreList.contains("teams")) map.put("teams", teamsAsJSONObjects);
+	
+	List<JSONObject> subTopicsAsJSONObjects = new ArrayList<>();
+	for (SubTopic subTopic: getSubTopics()) {
+	    subTopicsAsJSONObjects.add(subTopic.toJSONObject());
+	}
+	if (!ignoreList.contains("subTopics")) map.put("subTopics", subTopicsAsJSONObjects);
+	
+	return new JSONObject(map);
     }
     
     private static final long serialVersionUID = 1L;
