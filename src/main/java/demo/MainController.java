@@ -253,10 +253,12 @@ public class MainController {
     }
 
     @PostMapping("/firebase_token")
-    ResponseEntity<?> postFirebaseToken(@RequestHeader int userId, @RequestBody String token) {
+    ResponseEntity<?> postFirebaseToken(@RequestHeader int userId, @RequestBody String body) throws JSONException {
 	Stash stash = Stash.getInstance();
 	try {
 	    User user = stash.getUser(userId);
+	    JSONObject root = new JSONObject(body);
+	    String token = root.getString("token");
 	    user.setToken(token);
 	} catch (RuntimeException e) {
 	    return ResponseEntity.badRequest().body(new APIError(401, e.getMessage()));
@@ -292,7 +294,7 @@ public class MainController {
 	try {
 	    User user = stash.getUser(userId);
 	    Request request = stash.getRequest(requestId);
-	    	    
+
 	    User requester = request.getRequester();
 	    Team requested = request.getRequested();
 
@@ -303,12 +305,12 @@ public class MainController {
 	    request.accept();
 
 	    String title = "Your request is accepted!";
-	    String message = "Your request to study with " + requested.getName() + " is accepted by "
-		    + user.getName() + "!";
+	    String message = "Your request to study with " + requested.getName() + " is accepted by " + user.getName()
+		    + "!";
 	    Notification notification = new Notification(title, message);
 	    Payload payload = new Payload(Payload.Type.ACCEPTED, requested.toJSONObject());
 	    NotificationSender.sendNotification(requester, notification, payload);
-	    
+
 	    return ResponseEntity.ok().body(1);
 	} catch (RuntimeException e) {
 	    return ResponseEntity.badRequest().body(new APIError(401, e.getMessage()));
@@ -321,23 +323,23 @@ public class MainController {
 	try {
 	    User user = stash.getUser(userId);
 	    Request request = stash.getRequest(requestId);
-	    
+
 	    User requester = request.getRequester();
 	    Team requested = request.getRequested();
-	    
+
 	    if (!user.getCurrentTeam().equals(requested)) {
 		return ResponseEntity.badRequest()
 			.body(new APIError(401, "This user does not have permission to deny this request!"));
 	    }
 	    request.deny();
-	    
+
 	    String title = "Your request is denied!";
-	    String message = "Your request to study with " + requested.getName() + " is denied by "
+	    String message = "Your request to study with " + requested.getName() + " is denied by " 
 		    + user.getName() + "!";
 	    Notification notification = new Notification(title, message);
 	    Payload payload = new Payload(Payload.Type.DENIED, null);
 	    NotificationSender.sendNotification(requester, notification, payload);
-	    
+
 	    return ResponseEntity.ok().body(1);
 	} catch (RuntimeException e) {
 	    return ResponseEntity.badRequest().body(new APIError(401, e.getMessage()));
@@ -357,4 +359,27 @@ public class MainController {
 	return ResponseEntity.ok().body(1);
     }
 
+    @PostMapping("/sendMessage")
+    ResponseEntity<?> sendMessage(@RequestHeader int userId, @RequestBody String body) throws JSONException {
+	Stash stash = Stash.getInstance();
+	try {
+	    User user = stash.getUser(userId);
+	    Team team = user.getCurrentTeam();
+
+	    String title = "New message!";
+	    String message = new JSONObject(body).getString("chatMessage");
+	    Notification notification = new Notification(title, message);
+
+	    JSONObject data = new JSONObject();
+	    data.put("chatMessage", message);
+	    Payload payload = new Payload(Payload.Type.CHAT_MESSAGE, data);
+
+	    NotificationSender.sendNotification(team.getMembers(), notification, payload);
+	    
+	    return ResponseEntity.ok().body(1);
+	} catch (RuntimeException e) {
+	    return ResponseEntity.badRequest().body(new APIError(401, e.getMessage()));
+	}
+    }
+    
 }

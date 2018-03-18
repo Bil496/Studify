@@ -137,8 +137,6 @@ public class Team implements Serializable {
 	    }
 	}
 	
-	// TODO send notitification to other members
-	
 	if (user.getCurrentTeam() == null) {
 	    user.setCurrentTeam(this);
 	}
@@ -170,8 +168,7 @@ public class Team implements Serializable {
 	if (getSize() == 0) {
 	    getTopic().removeTeam(this);
 	}
-	// TODO else send notitification to other members
-
+	
 	user.quitCurrentTeam();
     }
     
@@ -180,7 +177,6 @@ public class Team implements Serializable {
 	    throw new RuntimeException("This request does not belong to this team!");
 	}
 	requests.add(request);
-	// TODO send notitification to members
     }
     
     public void removeRequest(Request request) {
