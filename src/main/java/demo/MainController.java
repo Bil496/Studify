@@ -272,6 +272,14 @@ public class MainController {
 	    Team team = stash.getTeam(teamId);
 	    Request request = new Request(user, team);
 	    Integer requestId = stash.addRequest(request);
+
+	    String title = "Join Request!";
+	    String message = user.getUsername() + " wants to join to your study group!";
+	    Notification notification = new Notification(title, message);
+	    Payload payload = new Payload(Payload.Type.JOIN_REQUEST,
+		    user.toJSONObject("currentTeam", "currentTopic", "currentLocation"));
+	    NotificationSender.sendNotification(team.getMembers(), notification, payload);
+
 	    return ResponseEntity.ok().body(requestId);
 	} catch (RuntimeException e) {
 	    return ResponseEntity.badRequest().body(new APIError(401, e.getMessage()));
