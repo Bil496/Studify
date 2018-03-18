@@ -31,7 +31,6 @@ public class Team implements Serializable {
     @JsonIgnoreProperties({"currentTopic", "currentTeam", "currentLocation"})
     private Set<User> members = new HashSet<>();
     
-    @JsonIgnore
     private Set<Request> requests = new HashSet<>();
     
     private Boolean locked = false;
@@ -183,6 +182,10 @@ public class Team implements Serializable {
 	requests.remove(request);
     }
     
+    public Set<Request> getRequests() {
+	return requests;
+    }
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -228,6 +231,12 @@ public class Team implements Serializable {
 	    membersAsJSONObjects.add(member.toJSONObject("currentTopic", "currentTeam", "currentLocation"));
 	}
 	if (!ignoreList.contains("members")) map.put("members", membersAsJSONObjects);
+	
+	List<JSONObject> requestsAsJSONObjects = new ArrayList<>();
+	for (Request request: getRequests()) {
+	    requestsAsJSONObjects.add(request.toJSONObject("requested"));
+	}
+	if (!ignoreList.contains("requests")) map.put("requests", requestsAsJSONObjects);
 	
 	return new JSONObject(map);
     }

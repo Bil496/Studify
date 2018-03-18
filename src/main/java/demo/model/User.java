@@ -1,6 +1,7 @@
 package demo.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -166,6 +167,10 @@ public class User implements Serializable {
 	requests.remove(request);
     }
     
+    public Set<Request> getRequests() {
+	return requests;
+    }
+    
     public String getToken() {
 	return token;
     }
@@ -201,6 +206,12 @@ public class User implements Serializable {
 	if (!ignoreList.contains("currentTeam")) map.put("currentTeam", getCurrentTeam().toJSONObject("members"));
 	if (!ignoreList.contains("currentTopic")) map.put("currentTopic", getCurrentTopic().toJSONObject("location", "teams"));
 	if (!ignoreList.contains("currentLocation")) map.put("currentLocation", getCurrentLocation().toJSONObject("topics"));
+	
+	List<JSONObject> requestsAsJSONObjects = new ArrayList<>();
+	for (Request request: getRequests()) {
+	    requestsAsJSONObjects.add(request.toJSONObject("requester"));
+	}
+	if (!ignoreList.contains("requests")) map.put("requests", requestsAsJSONObjects);
 	
 	if (!ignoreList.contains("token")) map.put("token", getToken());
 	
