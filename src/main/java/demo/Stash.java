@@ -177,7 +177,7 @@ public class Stash {
 
     public User findUserByUsername(String username) {
 	for (User user : users.values()) {
-	    if (user.getUserName().equals(username))
+	    if (user.getUsername().equals(username))
 		return user;
 	}
 	throw new RuntimeException("User does not exist!");

@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 
 import demo.model.Location;
+import demo.model.Notification;
+import demo.model.Payload;
 import demo.model.Request;
 import demo.model.SubTopic;
 import demo.model.Team;
@@ -35,19 +37,19 @@ public class MainController {
 	    return ResponseEntity.badRequest().body(new APIError(401, e.getMessage()));
 	}
     }
-    
+
     @GetMapping("/team")
     ResponseEntity<?> getTeam(@RequestHeader int userId) {
 	Stash stash = Stash.getInstance();
 	try {
 	    User user = stash.getUser(userId);
 	    Team team = user.getCurrentTeam();
-	    return ResponseEntity.ok().body(team); 
+	    return ResponseEntity.ok().body(team);
 	} catch (RuntimeException e) {
 	    return ResponseEntity.badRequest().body(new APIError(401, e.getMessage()));
 	}
     }
-	
+
     @GetMapping("/locations")
     ResponseEntity<Collection<Location>> getLocations() {
 	return ResponseEntity.ok().body(Stash.getInstance().getLocations());
@@ -109,13 +111,13 @@ public class MainController {
 	Stash stash = Stash.getInstance();
 	try {
 	    Topic topic = new Topic();
-	    
+
 	    JSONObject root = new JSONObject(body);
 	    topic.setTitle(root.getString("title"));
-	    
+
 	    Location location = stash.getLocation(locationId);
 	    topic.setLocation(location);
-	    
+
 	    Integer topicId = stash.addTopicToLocation(locationId, topic);
 
 	    JSONArray subtopics = root.getJSONArray("subTopics");
@@ -234,6 +236,14 @@ public class MainController {
 	    }
 
 	    team.removeMember(kickedUser);
+
+	    String title = "You are kicked from your study group!";
+	    String message = "You are kicked from " + team.getName() + ", by " + user.getUsername() + "!";
+	    Notification notification = new Notification(title, message);
+	    Payload payload = new Payload(Payload.Type.KICKED, team.toJSONObject("members"));
+	    
+	    NotificationSender.sendNotification(kickedUser, notification, payload);
+
 	    return ResponseEntity.ok().body(1);
 	} catch (RuntimeException e) {
 	    return ResponseEntity.badRequest().body(new APIError(401, e.getMessage()));
@@ -277,7 +287,7 @@ public class MainController {
 			.body(new APIError(401, "This user does not have permission to accept this request!"));
 	    }
 	    request.accept();
-	    return ResponseEntity.ok().body(1);		
+	    return ResponseEntity.ok().body(1);
 	} catch (RuntimeException e) {
 	    return ResponseEntity.badRequest().body(new APIError(401, e.getMessage()));
 	}
@@ -294,7 +304,7 @@ public class MainController {
 			.body(new APIError(401, "This user does not have permission to deny this request!"));
 	    }
 	    request.deny();
-	    return ResponseEntity.ok().body(1);		
+	    return ResponseEntity.ok().body(1);
 	} catch (RuntimeException e) {
 	    return ResponseEntity.badRequest().body(new APIError(401, e.getMessage()));
 	}

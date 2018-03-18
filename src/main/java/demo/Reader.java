@@ -66,7 +66,7 @@ public class Reader {
 
 	    User user = new User();
 	    user.setName(userObj.getString("name"));
-	    user.setUserName(userObj.getString("username"));
+	    user.setUsername(userObj.getString("username"));
 	    user.setProfilePic(userObj.getString("profile_pic"));
 
 	    Integer locationId = userObj.getInt("locationId");

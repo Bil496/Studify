@@ -1,5 +1,9 @@
 package demo;
 
+import java.io.IOException;
+
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.json.JSONException;
 
 import demo.model.SubTopic;
@@ -13,7 +17,7 @@ public class Test {
 
     }
 
-    public static void main(String[] args) throws JSONException {
+    public static void main(String[] args) throws JSONException, JsonGenerationException, JsonMappingException, IOException {
 	Reader.createStash();
         Stash stash = Stash.getInstance();
         
@@ -21,13 +25,17 @@ public class Test {
         User oyildiz = stash.findUserByUsername("oyildiz");
         Team team1 = stash.findTeamByName("Team 1");
         
+        //System.out.println(ferdem.toJSONObject());
+        //System.out.println(team1.toJSONObject());
+        
         team1.removeMember(ferdem);
         oyildiz.quitCurrentTeam();
+        
         
         System.out.println("USERS");
         System.out.println("------------------------------------------------------------");
         for (User user: stash.getUsers()) {
-            System.out.println("Username: " + user.getUserName());
+            System.out.println("Username: " + user.getUsername());
             System.out.println("Location: " + user.getCurrentLocation().getTitle());
             System.out.println("Topic: " + user.getCurrentTopic().getTitle());
             if (user.getCurrentTeam() != null) {
@@ -65,7 +73,7 @@ public class Test {
             System.out.println("Total Utility: " + team.getTotalUtility());
             System.out.println("Members: ");
             for (User user: team.getMembers()) {
-        	System.out.println(user.getUserName());
+        	System.out.println(user.getUsername());
             }
             System.out.println();
         }
