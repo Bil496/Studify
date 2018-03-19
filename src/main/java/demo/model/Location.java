@@ -71,15 +71,22 @@ public class Location implements Serializable {
 	List<String> ignoreList = Arrays.asList(ignore);
 	
 	Map<String, Object> map = new HashMap<>();
-	if (!ignoreList.contains("id")) map.put("id", getId());
-	if (!ignoreList.contains("title")) map.put("title", getTitle());
+	if (!ignoreList.contains("id"))
+	    map.put("id", getId() != null ? getId() : JSONObject.NULL);
+	
+	if (!ignoreList.contains("title")) 
+	    map.put("title", getTitle() != null ? getTitle() : JSONObject.NULL);
 	
 	if (!ignoreList.contains("topics")) {
-	    List<JSONObject> topicsAsJSONObjects = new ArrayList<>();
-	    for (Topic topic: getTopics()) {
-		topicsAsJSONObjects.add(topic.toJSONObject("location", "teams", "subTopics"));
+	    if (getTopics() == null) {
+		map.put("topics", JSONObject.NULL);
+	    } else {
+    	    	List<JSONObject> topicsAsJSONObjects = new ArrayList<>();
+    	    	for (Topic topic: getTopics()) {
+    	    	    topicsAsJSONObjects.add(topic.toJSONObject("location", "teams", "subTopics"));
+    	    	}
+    	    	map.put("topics", getTopics());
 	    }
-	    map.put("topics", topicsAsJSONObjects);
 	}
 	
 	return new JSONObject(map);

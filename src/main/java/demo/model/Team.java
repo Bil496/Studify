@@ -15,44 +15,44 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 public class Team implements Serializable {
-    
+
     private Integer id;
-    
+
     @JsonIgnore
     private Topic topic;
     private String name;
-    
+
     private Integer jointUtility;
     private Integer totalUtility;
-    
+
     @JsonIgnore
     private Map<SubTopic, Integer> jointUtilityMap;
-    
-    @JsonIgnoreProperties({"currentTopic", "currentTeam", "currentLocation"})
+
+    @JsonIgnoreProperties({ "currentTopic", "currentTeam", "currentLocation" })
     private Set<User> members = new HashSet<>();
-    
+
     private Set<Request> requests = new HashSet<>();
-    
+
     private Boolean locked = false;
-    
+
     public Team() {
-	
+
     }
 
     public Integer getId() {
-        return id;
+	return id;
     }
 
     public void setId(Integer id) {
-        this.id = id;
+	this.id = id;
     }
 
     public String getName() {
-        return name;
+	return name;
     }
 
     public void setName(String name) {
-        this.name = name;
+	this.name = name;
     }
 
     public Topic getTopic() {
@@ -61,29 +61,29 @@ public class Team implements Serializable {
 
     public void setTopic(Topic topic) {
 	this.topic = topic;
-	
+
 	jointUtilityMap = new HashMap<>();
 	for (SubTopic subTopic : topic.getSubTopics()) {
 	    jointUtilityMap.put(subTopic, 0);
 	}
-	
+
 	jointUtility = 0;
 	totalUtility = 0;
     }
 
     public Integer getJointUtility() {
-        return jointUtility;
+	return jointUtility;
     }
-    
+
     public Integer getTotalUtility() {
 	return totalUtility;
     }
-    
+
     public Integer hypotheticalJointUtility(User hypotheticalMember) {
 	Integer hypotheticalJointUtility = getJointUtility();
 	for (SubTopic subTopic : topic.getSubTopics()) {
 	    Integer userTalentLevel = hypotheticalMember.getTalentLevel(subTopic);
-	    
+
 	    Integer teamTalentLevel = jointUtilityMap.get(subTopic);
 	    if (userTalentLevel > teamTalentLevel) {
 		hypotheticalJointUtility += (userTalentLevel - teamTalentLevel);
@@ -91,7 +91,7 @@ public class Team implements Serializable {
 	}
 	return hypotheticalJointUtility;
     }
-    
+
     public Integer hypotheticalTotalUtility(User hypotheticalMember) {
 	Integer hypotheticalTotalUtility = getTotalUtility();
 	for (SubTopic subTopic : topic.getSubTopics()) {
@@ -100,17 +100,15 @@ public class Team implements Serializable {
 	}
 	return hypotheticalTotalUtility;
     }
-    
 
     public Integer getSize() {
 	return getMembers().size();
     }
-    
 
     public Set<User> getMembers() {
-        return members;
+	return members;
     }
-    
+
     public void addMember(User user) {
 	if (!user.getCurrentTopic().equals(getTopic())) {
 	    throw new RuntimeException("Topic of user and team does not match!");
@@ -123,31 +121,31 @@ public class Team implements Serializable {
 	}
 
 	members.add(user);
-	
+
 	// update utilities
 	for (SubTopic subTopic : topic.getSubTopics()) {
 	    Integer userTalentLevel = user.getTalentLevel(subTopic);
 	    totalUtility += userTalentLevel;
-	    
+
 	    Integer teamTalentLevel = jointUtilityMap.get(subTopic);
 	    if (userTalentLevel > teamTalentLevel) {
 		jointUtilityMap.put(subTopic, userTalentLevel);
 		jointUtility += (userTalentLevel - teamTalentLevel);
 	    }
 	}
-	
+
 	if (user.getCurrentTeam() == null) {
 	    user.setCurrentTeam(this);
 	}
     }
-    
+
     public void removeMember(User user) {
 	if (!getMembers().contains(user)) {
 	    return;
 	}
-	
+
 	members.remove(user);
-	
+
 	// update utilities
 	jointUtility = 0;
 	for (SubTopic subTopic : topic.getSubTopics()) {
@@ -157,51 +155,53 @@ public class Team implements Serializable {
 		Integer memberTalentLevel = member.getTalentLevel(subTopic);
 		Integer teamTalentLevel = jointUtilityMap.get(subTopic);
 		if (memberTalentLevel > teamTalentLevel) {
-		    jointUtilityMap.put(subTopic, memberTalentLevel);	 
+		    jointUtilityMap.put(subTopic, memberTalentLevel);
 		}
 	    }
 	    jointUtility += jointUtilityMap.get(subTopic);
 	}
-	
+
 	// if no member left delete team
 	if (getSize() == 0) {
 	    getTopic().removeTeam(this);
 	}
-	
+
 	user.quitCurrentTeam();
     }
-    
+
     public void addRequest(Request request) {
 	if (!request.getRequested().equals(this)) {
 	    throw new RuntimeException("This request does not belong to this team!");
 	}
 	requests.add(request);
     }
-    
+
     public void removeRequest(Request request) {
 	requests.remove(request);
     }
-    
+
     public Set<Request> getRequests() {
 	return requests;
     }
-    
+
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+	if (this == o)
+	    return true;
+	if (o == null || getClass() != o.getClass())
+	    return false;
 
-        Team team = (Team) o;
+	Team team = (Team) o;
 
-        return id.equals(team.id);
+	return id.equals(team.id);
 
     }
-    
+
     @Override
     public int hashCode() {
-        return id.hashCode();
+	return id.hashCode();
     }
-    
+
     public Boolean isLocked() {
 	return locked;
     }
@@ -209,39 +209,58 @@ public class Team implements Serializable {
     public void lock() {
 	locked = true;
     }
-    
+
     public void unlock() {
 	locked = false;
     }
-    
+
     public JSONObject toJSONObject(String... ignore) {
 	List<String> ignoreList = Arrays.asList(ignore);
-	
+
 	Map<String, Object> map = new HashMap<>();
-	if (!ignoreList.contains("id")) map.put("id", getId());
-	if (!ignoreList.contains("name")) map.put("name", getName());
-	if (!ignoreList.contains("jointUtility")) map.put("jointUtility", getJointUtility());
-	if (!ignoreList.contains("totalUtility")) map.put("totalUtility", getTotalUtility());
-	if (!ignoreList.contains("locked")) map.put("locked", isLocked());
-	
-	if (!ignoreList.contains("topic")) map.put("topic", getTopic().toJSONObject("teams"));
-	
+	if (!ignoreList.contains("id"))
+	    map.put("id", getId() != null ? getId() : JSONObject.NULL);
+
+	if (!ignoreList.contains("name"))
+	    map.put("name", getName() != null ? getName() : JSONObject.NULL);
+
+	if (!ignoreList.contains("jointUtility"))
+	    map.put("jointUtility", getJointUtility() != null ? getJointUtility() : JSONObject.NULL);
+
+	if (!ignoreList.contains("totalUtility"))
+	    map.put("totalUtility", getTotalUtility() != null ? getTotalUtility() : JSONObject.NULL);
+
+	if (!ignoreList.contains("locked"))
+	    map.put("locked", isLocked() != null ? isLocked() : JSONObject.NULL);
+
+	if (!ignoreList.contains("topic"))
+	    map.put("topic", getTopic() != null ? getTopic().toJSONObject("teams") : JSONObject.NULL);
+
 	if (!ignoreList.contains("members")) {
-	    List<JSONObject> membersAsJSONObjects = new ArrayList<>();
-	    for (User member: members) {
-		membersAsJSONObjects.add(member.toJSONObject("currentTopic", "currentTeam", "currentLocation", "requests"));
+	    if (getMembers() == null) {
+		map.put("members", JSONObject.NULL);
+	    } else {
+		List<JSONObject> membersAsJSONObjects = new ArrayList<>();
+		for (User member : getMembers()) {
+		    membersAsJSONObjects
+			    .add(member.toJSONObject("currentTopic", "currentTeam", "currentLocation", "requests"));
+		}
+		map.put("members", membersAsJSONObjects);
 	    }
-	    map.put("members", membersAsJSONObjects);
 	}
 
 	if (!ignoreList.contains("requests")) {
-	    List<JSONObject> requestsAsJSONObjects = new ArrayList<>();
-	    for (Request request: getRequests()) {
-		requestsAsJSONObjects.add(request.toJSONObject("requested"));
+	    if (getRequests() == null) {
+		map.put("requests", JSONObject.NULL);
+	    } else {
+		List<JSONObject> requestsAsJSONObjects = new ArrayList<>();
+		for (Request request : getRequests()) {
+		    requestsAsJSONObjects.add(request.toJSONObject("requested"));
+		}
+		map.put("requests", requestsAsJSONObjects);
 	    }
-	    map.put("requests", requestsAsJSONObjects);
 	}
-	
+
 	return new JSONObject(map);
     }
 
