@@ -9,12 +9,12 @@ import java.util.Map;
 import org.json.JSONObject;
 
 public class Request implements Serializable {
-    
+
     private Integer id;
-    
+
     private User requester;
     private Team requested;
-    
+
     private boolean accepted = false;
     private boolean denied = false;
 
@@ -34,11 +34,11 @@ public class Request implements Serializable {
     public User getRequester() {
 	return requester;
     }
-    
+
     public Team getRequested() {
 	return requested;
     }
-    
+
     public void accept() {
 	if (accepted) {
 	    throw new RuntimeException("This request is already accepted!");
@@ -51,7 +51,7 @@ public class Request implements Serializable {
 	requested.removeRequest(this);
 	requester.setCurrentTeam(requested);
     }
-    
+
     public void deny() {
 	if (accepted) {
 	    throw new RuntimeException("This request is already accepted!");
@@ -63,33 +63,40 @@ public class Request implements Serializable {
 	requester.removeRequest(this);
 	requested.removeRequest(this);
     }
-    
+
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+	if (this == o)
+	    return true;
+	if (o == null || getClass() != o.getClass())
+	    return false;
 
-        Request request = (Request) o;
+	Request request = (Request) o;
 
-        return id.equals(request.id);
+	return id.equals(request.id);
     }
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+	return id.hashCode();
     }
-    
+
     public JSONObject toJSONObject(String... ignore) {
 	List<String> ignoreList = Arrays.asList(ignore);
-	
+
 	Map<String, Object> map = new HashMap<>();
-	if (!ignoreList.contains("id")) map.put("id", getId());
-	if (!ignoreList.contains("requester")) map.put("requester", getRequester().toJSONObject());
-	if (!ignoreList.contains("requested")) map.put("requested", getRequested().toJSONObject("members"));
-	
+	if (!ignoreList.contains("id"))
+	    map.put("id", getId() != null ? getId() : JSONObject.NULL);
+
+	if (!ignoreList.contains("requester"))
+	    map.put("requester", getRequester() != null ? getRequester().toJSONObject("requests") : JSONObject.NULL);
+	if (!ignoreList.contains("requested"))
+	    map.put("requested",
+		    getRequested() != null ? getRequested().toJSONObject("members", "requests") : JSONObject.NULL);
+
 	return new JSONObject(map);
     }
-    
+
     private static final long serialVersionUID = 1L;
 
 }

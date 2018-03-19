@@ -253,13 +253,12 @@ public class MainController {
     }
 
     @PostMapping("/firebase_token")
-    ResponseEntity<?> postFirebaseToken(@RequestHeader int userId, @RequestBody String body) throws JSONException {
+    ResponseEntity<?> postFirebaseToken(@RequestHeader int userId, @RequestBody String token) throws JSONException {
 	Stash stash = Stash.getInstance();
 	try {
 	    User user = stash.getUser(userId);
-	    JSONObject root = new JSONObject(body);
-	    String token = root.getString("token");
-	    user.setToken(token);
+	    String trimedToken = token.substring(1, token.length() - 1);
+	    user.setToken(trimedToken);
 	} catch (RuntimeException e) {
 	    return ResponseEntity.badRequest().body(new APIError(401, e.getMessage()));
 	}

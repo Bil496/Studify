@@ -52,11 +52,13 @@ public class SubTopic implements Serializable {
 	List<String> ignoreList = Arrays.asList(ignore);
 	
 	Map<String, Object> map = new HashMap<>();
-	if (!ignoreList.contains("id")) map.put("id", getId());
-	if (!ignoreList.contains("title")) map.put("title", getTitle());
+	if (!ignoreList.contains("id"))
+	    map.put("id", getId() != null ? getId() : JSONObject.NULL);
 	
-	return new JSONObject(map);
+	if (!ignoreList.contains("title")) 
+	    map.put("title", getTitle() != null ? getTitle() : JSONObject.NULL);
 	
+	return new JSONObject(map);	
     }
     
     private static final long serialVersionUID = 1L;
