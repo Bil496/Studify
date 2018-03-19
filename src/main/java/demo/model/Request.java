@@ -63,7 +63,7 @@ public class Request implements Serializable {
 	if (denied) {
 	    throw new RuntimeException("This request is denied earlier!");
 	}
-	accepted = true;
+	denied = true;
 	requester.removeRequest(this);
 	requested.removeRequest(this);
     }
