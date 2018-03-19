@@ -1,8 +1,6 @@
 package demo;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import demo.model.Notification;
@@ -13,21 +11,14 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 
 public class NotificationSender {
 
-    @Autowired
-    static
-    AndroidPushNotificationsService androidPushNotificationsService;
+    static AndroidPushNotificationsService androidPushNotificationsService = new AndroidPushNotificationsService();
     
     public static void sendNotification(User user, Notification notification, Payload payload) {
 	Set<User> users = new HashSet<>();
@@ -42,7 +33,8 @@ public class NotificationSender {
 
         JSONArray usersTokenList = new JSONArray();
         for (User user: users) {
-            usersTokenList.put(user.getToken());
+            if(user.getToken() != null)
+                usersTokenList.put(user.getToken());
         }
         requestBody.put("registration_ids", usersTokenList);
 
@@ -52,8 +44,8 @@ public class NotificationSender {
         requestBody.put("notification", bodysNotification);
 
         JSONObject data = new JSONObject();
-        data.put("type", payload.getType());
-        data.put("payload", payload.getData());
+        data.put("type", payload.getType().toString());
+        data.put("payload", payload.getData().toString());
         requestBody.put("data", data);
 
         HttpEntity<String> request = new HttpEntity<>(requestBody.toString());
