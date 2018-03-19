@@ -84,8 +84,8 @@ public class Request implements Serializable {
 	
 	Map<String, Object> map = new HashMap<>();
 	if (!ignoreList.contains("id")) map.put("id", getId());
-	if (!ignoreList.contains("requester")) map.put("requester", getRequester().toJSONObject());
-	if (!ignoreList.contains("requested")) map.put("requested", getRequested().toJSONObject("members"));
+	if (!ignoreList.contains("requester")) map.put("requester", getRequester().toJSONObject("requests"));
+	if (!ignoreList.contains("requested")) map.put("requested", getRequested().toJSONObject("members", "requests"));
 	
 	return new JSONObject(map);
     }

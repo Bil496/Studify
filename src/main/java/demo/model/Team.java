@@ -242,7 +242,6 @@ public class Team implements Serializable {
 	    map.put("requests", requestsAsJSONObjects);
 	}
 	
-	
 	return new JSONObject(map);
     }
 
