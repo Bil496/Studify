@@ -25,8 +25,8 @@ public class Test {
         User oyildiz = stash.findUserByUsername("oyildiz");
         Team team1 = stash.findTeamByName("Team 1");
         
-        System.out.println(ferdem.toJSONObject());
-        //System.out.println(team1.toJSONObject());
+        //System.out.println(ferdem.toJSONObject());
+        System.out.println(team1.toJSONObject());
         
         team1.removeMember(ferdem);
         oyildiz.quitCurrentTeam();
