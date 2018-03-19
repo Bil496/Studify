@@ -19,11 +19,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class NotificationSender {
 
     static AndroidPushNotificationsService androidPushNotificationsService = new AndroidPushNotificationsService();
-    
+
     public static void sendNotification(User user, Notification notification, Payload payload) {
-	Set<User> users = new HashSet<>();
-	users.add(user);
-	sendNotification(users, notification, payload);
+        Set<User> users = new HashSet<>();
+        users.add(user);
+        sendNotification(users, notification, payload);
     }
 
     @RequestMapping(value = "/send", method = RequestMethod.GET, produces = "application/json")
@@ -32,10 +32,12 @@ public class NotificationSender {
         JSONObject requestBody = new JSONObject();
 
         JSONArray usersTokenList = new JSONArray();
-        for (User user: users) {
-            if(user.getToken() != null)
+        for (User user : users) {
+            if (user.getToken() != null)
                 usersTokenList.put(user.getToken());
         }
+        if (usersTokenList.length() == 0)
+            return;
         requestBody.put("registration_ids", usersTokenList);
 
         JSONObject bodysNotification = new JSONObject();
@@ -55,11 +57,9 @@ public class NotificationSender {
 
         try {
             String firebaseResponse = pushNotification.get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
+        } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
     }
-    
+
 }
