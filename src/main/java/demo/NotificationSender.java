@@ -29,8 +29,8 @@ public class NotificationSender {
     @RequestMapping(value = "/send", method = RequestMethod.GET, produces = "application/json")
     public static void sendNotification(Set<User> users, Notification notification, Payload payload) {
 
-	JSONObject requestBody = new JSONObject();
-	
+    JSONObject requestBody = new JSONObject();
+    
         JSONArray usersTokenList = new JSONArray();
         for (User user : users) {
             if (user.getToken() != null)
@@ -39,26 +39,27 @@ public class NotificationSender {
         if (usersTokenList.length() == 0)
             return;
 
-	try {
-	    requestBody.put("registration_ids", usersTokenList);
+    try {
+        requestBody.put("registration_ids", usersTokenList);
 
-	    JSONObject bodysNotification = new JSONObject();
-	    bodysNotification.put("title", notification.getTitle());
-	    bodysNotification.put("body", notification.getMessage());
-	    requestBody.put("notification", bodysNotification);
+        JSONObject bodysNotification = new JSONObject();
+        bodysNotification.put("title", notification.getTitle());
+        bodysNotification.put("body", notification.getMessage());
+        requestBody.put("notification", bodysNotification);
 
-	    JSONObject data = new JSONObject();
-	    data.put("type", payload.getType().toString());
-	    data.put("payload", payload.getData().toString());
-	    requestBody.put("data", data);
-	} catch (JSONException e) {
-	    e.printStackTrace();
-	}
+        JSONObject data = new JSONObject();
+        data.put("type", payload.getType().toString());
+        if(payload.getData() != null)
+            data.put("payload", payload.getData().toString());
+        requestBody.put("data", data);
+    } catch (JSONException e) {
+        e.printStackTrace();
+    }
 
-	HttpEntity<String> request = new HttpEntity<>(requestBody.toString());
+    HttpEntity<String> request = new HttpEntity<>(requestBody.toString());
 
-	CompletableFuture<String> pushNotification = androidPushNotificationsService.send(request);
-	CompletableFuture.allOf(pushNotification).join();
+    CompletableFuture<String> pushNotification = androidPushNotificationsService.send(request);
+    CompletableFuture.allOf(pushNotification).join();
 
         try {
             String firebaseResponse = pushNotification.get();
