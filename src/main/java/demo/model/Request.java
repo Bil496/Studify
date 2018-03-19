@@ -14,10 +14,10 @@ public class Request implements Serializable {
 
     private Integer id;
 
-	@JsonIgnoreProperties({"currentTopic", "currentTeam", "currentLocation"})
-	private User requester;
-	@JsonIgnore
-	private Team requested;
+    @JsonIgnoreProperties({"currentTopic", "currentTeam", "currentLocation"})
+    private User requester;
+    @JsonIgnore
+    private Team requested;
 
     private boolean accepted = false;
     private boolean denied = false;

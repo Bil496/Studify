@@ -286,7 +286,8 @@ public class MainController {
 	    String message = user.getUsername() + " wants to join to your study group!";
 	    Notification notification = new Notification(title, message);
 	    Payload payload = new Payload(Payload.Type.JOIN_REQUEST,
-		    user.toJSONObject("currentTeam", "currentTopic", "currentLocation"));
+		    //user.toJSONObject("currentTeam", "currentTopic", "currentLocation"));
+		    request.toJSONObject());
 	    NotificationSender.sendNotification(team.getMembers(), notification, payload);
 
 	    return ResponseEntity.ok().body(requestId);
