@@ -8,11 +8,14 @@ import java.util.Map;
 
 import org.json.JSONObject;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Request implements Serializable {
 
     private Integer id;
 
     private User requester;
+    @JsonIgnore
     private Team requested;
 
     private boolean accepted = false;
