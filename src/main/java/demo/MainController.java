@@ -234,6 +234,10 @@ public class MainController {
 	    if (!team.getMembers().contains(user)) {
 		return ResponseEntity.badRequest().body("Only members can kick members!");
 	    }
+	    
+	    if (!team.getMembers().contains(kickedUser)) {
+		return ResponseEntity.badRequest().body("User is not already in team!");
+	    }
 
 	    team.removeMember(kickedUser);
 
