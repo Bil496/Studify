@@ -6,14 +6,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.json.JSONObject;
 
 public class Request implements Serializable {
 
     private Integer id;
 
-    private User requester;
-    private Team requested;
+	@JsonIgnoreProperties({"currentTopic", "currentTeam", "currentLocation"})
+	private User requester;
+	@JsonIgnore
+	private Team requested;
 
     private boolean accepted = false;
     private boolean denied = false;
@@ -66,33 +70,26 @@ public class Request implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-	if (this == o)
-	    return true;
-	if (o == null || getClass() != o.getClass())
-	    return false;
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-	Request request = (Request) o;
+        Request request = (Request) o;
 
-	return id.equals(request.id);
+        return id.equals(request.id);
     }
 
     @Override
     public int hashCode() {
-	return id.hashCode();
+        return id.hashCode();
     }
 
     public JSONObject toJSONObject(String... ignore) {
 	List<String> ignoreList = Arrays.asList(ignore);
 
 	Map<String, Object> map = new HashMap<>();
-	if (!ignoreList.contains("id"))
-	    map.put("id", getId() != null ? getId() : JSONObject.NULL);
-
-	if (!ignoreList.contains("requester"))
-	    map.put("requester", getRequester() != null ? getRequester().toJSONObject("requests") : JSONObject.NULL);
-	if (!ignoreList.contains("requested"))
-	    map.put("requested",
-		    getRequested() != null ? getRequested().toJSONObject("members", "requests") : JSONObject.NULL);
+	if (!ignoreList.contains("id")) map.put("id", getId());
+	if (!ignoreList.contains("requester")) map.put("requester", getRequester().toJSONObject("requests"));
+	if (!ignoreList.contains("requested")) map.put("requested", getRequested().toJSONObject("members", "requests"));
 
 	return new JSONObject(map);
     }
