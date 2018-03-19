@@ -95,7 +95,11 @@ public class MainController {
 		    Integer totalUtility2 = t2.hypotheticalTotalUtility(user);
 
 		    // less total utility is favorable
-		    return totalUtility1.compareTo(totalUtility2);
+
+            int diff = totalUtility1.compareTo(totalUtility2);
+            if(diff == 0)
+                return t1.getId().compareTo(t2.getId());
+		    return diff;
 		}
 	    });
 	    treeSet.addAll(teams);
