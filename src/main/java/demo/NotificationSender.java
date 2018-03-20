@@ -1,5 +1,6 @@
 package demo;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
@@ -27,17 +28,19 @@ public class NotificationSender {
     }
 
     @RequestMapping(value = "/send", method = RequestMethod.GET, produces = "application/json")
-    public static void sendNotification(Set<User> users, Notification notification, Payload payload) {
+    public static void sendNotification(Set<User> users, Notification notification, Payload payload, User... exclude) {
 
     JSONObject requestBody = new JSONObject();
     
-        JSONArray usersTokenList = new JSONArray();
-        for (User user : users) {
-            if (user.getToken() != null)
-                usersTokenList.put(user.getToken());
-        }
-        if (usersTokenList.length() == 0)
-            return;
+    JSONArray usersTokenList = new JSONArray();
+    Set<User> usersExcluded = (HashSet)((HashSet)users).clone();
+    usersExcluded.removeAll(Arrays.asList(exclude));
+    for (User user : usersExcluded) {
+        if (user.getToken() != null)
+            usersTokenList.put(user.getToken());
+    }
+    if (usersTokenList.length() == 0)
+        return;
 
     try {
         requestBody.put("registration_ids", usersTokenList);

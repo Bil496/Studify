@@ -375,14 +375,16 @@ public class MainController {
 	    Team team = user.getCurrentTeam();
 
 	    String title = "New message!";
-	    String message = new JSONObject(body).getString("chatMessage");
+	    String message = body.substring(1, body.length() - 1);
 	    Notification notification = new Notification(title, message);
 
 	    JSONObject data = new JSONObject();
 	    data.put("chatMessage", message);
+	    data.put("senderName", user.getName());
+	    data.put("senderImage", user.getProfilePic());
 	    Payload payload = new Payload(Payload.Type.CHAT_MESSAGE, data);
 
-	    NotificationSender.sendNotification(team.getMembers(), notification, payload);
+	    NotificationSender.sendNotification(team.getMembers(), notification, payload, user);
 	    
 	    return ResponseEntity.ok().body(1);
 	} catch (RuntimeException e) {
