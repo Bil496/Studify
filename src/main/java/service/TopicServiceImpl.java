@@ -3,13 +3,15 @@ package service;
 import dao.TopicDao;
 import model.Topic;
 import model.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import task.CreateTeamsTask;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
 import java.util.concurrent.ScheduledFuture;
 
 @Service

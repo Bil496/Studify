@@ -1,9 +1,9 @@
 package service;
 
-import java.util.List;
-
 import model.Topic;
 import model.User;
+
+import java.util.List;
 
 public interface TopicService {
 
@@ -14,6 +14,6 @@ public interface TopicService {
     Topic get(long id);
 
     void enroll(Topic topic, User user);
-    
+
     List<User> getUsersWithoutTeam(Topic topic);
 }

@@ -10,13 +10,13 @@ import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
 
 @PropertySource("classpath:db.properties")
-@ComponentScans(value = { @ComponentScan("dao"), @ComponentScan("service") })
+@ComponentScans(value = {@ComponentScan("dao"), @ComponentScan("service")})
 public class AppConfig {
     @Autowired
     private Environment env;
-    
+
     @Bean
     public TaskScheduler taskScheduler() {
-	return new ConcurrentTaskScheduler();
+        return new ConcurrentTaskScheduler();
     }
 }

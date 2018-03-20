@@ -1,8 +1,8 @@
 package dao;
 
-import java.util.List;
-
 import model.Team;
+
+import java.util.List;
 
 public interface TeamDao {
     List<Team> teamsOfUser(long userId);

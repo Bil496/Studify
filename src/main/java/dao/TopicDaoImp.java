@@ -8,16 +8,13 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 import org.hibernate.type.LongType;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Repository
 public class TopicDaoImp implements TopicDao {
@@ -54,13 +51,13 @@ public class TopicDaoImp implements TopicDao {
         topic.setEnrolledNumber(topic.getEnrolledNumber() + 1);
         topic.setWaitingToGrouped(topic.getWaitingToGrouped() + 1);
         session.update(topic);
-        for (Talent talent : user.getTalents()){
+        for (Talent talent : user.getTalents()) {
             session.save(talent);
         }
     }
 
     @Override
-    public List<User> getUsersWithoutTeam(Topic topic){
+    public List<User> getUsersWithoutTeam(Topic topic) {
         List<User> users = new ArrayList<>();
         Session session = sessionFactory.getCurrentSession();
 

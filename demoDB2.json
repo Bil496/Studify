@@ -38,8 +38,8 @@
     	"id": 0, 
     	"username": "root", 
     	"name": "Root Account",
-    	"profile_pic" : "https://s3.amazonaws.com/uifaces/faces/twitter/vc27/128.jpg", 
-    	"teamId" : 1,
+    	"profile_pic" : "https://s3.amazonaws.com/uifaces/faces/twitter/vc27/128.jpg",
+    	"teamId" : 0,
     	"locationId" : 1,
     	"topicId" : 0
     },

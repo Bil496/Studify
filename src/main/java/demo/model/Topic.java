@@ -1,17 +1,10 @@
 package demo.model;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.json.JSONObject;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.io.Serializable;
+import java.util.*;
 
 public class Topic implements Serializable {
 
@@ -30,124 +23,124 @@ public class Topic implements Serializable {
     }
 
     public Integer getId() {
-	return id;
+        return id;
     }
 
     public void setId(Integer id) {
-	this.id = id;
+        this.id = id;
     }
 
     public String getTitle() {
-	return title;
+        return title;
     }
 
     public void setTitle(String title) {
-	this.title = title;
+        this.title = title;
     }
 
     public Location getLocation() {
-	return location;
+        return location;
     }
 
     public void setLocation(Location location) {
-	this.location = location;
+        this.location = location;
     }
 
     public Set<SubTopic> getSubTopics() {
-	return subTopics;
+        return subTopics;
     }
 
     public void addSubTopic(SubTopic subTopic) {
-	subTopics.add(subTopic);
+        subTopics.add(subTopic);
     }
 
     public Set<Team> getTeams() {
-	return teams;
+        return teams;
     }
 
     public void setTeams(Set<Team> teams) {
-	this.teams = teams;
+        this.teams = teams;
     }
 
     public void addTeam(Team team) {
-	if (!team.getTopic().equals(this)) {
-	    throw new RuntimeException("Topic of team does not match!");
-	}
-	teams.add(team);
+        if (!team.getTopic().equals(this)) {
+            throw new RuntimeException("Topic of team does not match!");
+        }
+        teams.add(team);
     }
 
     public void removeTeam(Team team) {
-	teams.remove(team);
+        teams.remove(team);
     }
 
     public Integer getUserCount() {
-	return userCount;
+        return userCount;
     }
 
     public void incrementUserCount() {
-	userCount++;
+        userCount++;
     }
 
     public void decrementUserCount() {
-	userCount--;
+        userCount--;
     }
 
     @Override
     public boolean equals(Object o) {
-	if (this == o)
-	    return true;
-	if (o == null || getClass() != o.getClass())
-	    return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
 
-	Topic topic = (Topic) o;
+        Topic topic = (Topic) o;
 
-	return id.equals(topic.id);
+        return id.equals(topic.id);
 
     }
 
     @Override
     public int hashCode() {
-	return id.hashCode();
+        return id.hashCode();
     }
 
     public JSONObject toJSONObject(String... ignore) {
-	List<String> ignoreList = Arrays.asList(ignore);
+        List<String> ignoreList = Arrays.asList(ignore);
 
-	Map<String, Object> map = new HashMap<>();
-	if (!ignoreList.contains("id"))
-	    map.put("id", getId() != null ? getId() : JSONObject.NULL);
+        Map<String, Object> map = new HashMap<>();
+        if (!ignoreList.contains("id"))
+            map.put("id", getId() != null ? getId() : JSONObject.NULL);
 
-	if (!ignoreList.contains("title"))
-	    map.put("title", getTitle() != null ? getTitle() : JSONObject.NULL);
+        if (!ignoreList.contains("title"))
+            map.put("title", getTitle() != null ? getTitle() : JSONObject.NULL);
 
-	if (!ignoreList.contains("location"))
-	    map.put("location", getLocation() != null ? getLocation().toJSONObject("topics") : JSONObject.NULL);
+        if (!ignoreList.contains("location"))
+            map.put("location", getLocation() != null ? getLocation().toJSONObject("topics") : JSONObject.NULL);
 
-	if (!ignoreList.contains("teams")) {
-	    if (getTeams() == null) {
-		map.put("teams", JSONObject.NULL);
-	    } else {
-		List<JSONObject> teamsAsJSONObjects = new ArrayList<>();
-		for (Team team : getTeams()) {
-		    teamsAsJSONObjects.add(team.toJSONObject("topic", "members", "requests"));
-		}
-		map.put("teams", teamsAsJSONObjects);
-	    }
-	}
+        if (!ignoreList.contains("teams")) {
+            if (getTeams() == null) {
+                map.put("teams", JSONObject.NULL);
+            } else {
+                List<JSONObject> teamsAsJSONObjects = new ArrayList<>();
+                for (Team team : getTeams()) {
+                    teamsAsJSONObjects.add(team.toJSONObject("topic", "members", "requests"));
+                }
+                map.put("teams", teamsAsJSONObjects);
+            }
+        }
 
-	if (!ignoreList.contains("subTopics")) {
-	    if (getSubTopics() == null) {
-		map.put("subTopics", JSONObject.NULL);
-	    } else {
-		List<JSONObject> subTopicsAsJSONObjects = new ArrayList<>();
-		for (SubTopic subTopic : getSubTopics()) {
-		    subTopicsAsJSONObjects.add(subTopic.toJSONObject());
-		}
-		map.put("subTopics", subTopicsAsJSONObjects);
-	    }
-	}
+        if (!ignoreList.contains("subTopics")) {
+            if (getSubTopics() == null) {
+                map.put("subTopics", JSONObject.NULL);
+            } else {
+                List<JSONObject> subTopicsAsJSONObjects = new ArrayList<>();
+                for (SubTopic subTopic : getSubTopics()) {
+                    subTopicsAsJSONObjects.add(subTopic.toJSONObject());
+                }
+                map.put("subTopics", subTopicsAsJSONObjects);
+            }
+        }
 
-	return new JSONObject(map);
+        return new JSONObject(map);
     }
 
     private static final long serialVersionUID = 1L;

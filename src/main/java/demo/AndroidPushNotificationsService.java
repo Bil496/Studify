@@ -1,12 +1,12 @@
 package demo;
 
-import java.util.ArrayList;
-import java.util.concurrent.CompletableFuture;
-
 import org.springframework.http.HttpEntity;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.ArrayList;
+import java.util.concurrent.CompletableFuture;
 
 public class AndroidPushNotificationsService {
     private static final String FIREBASE_SERVER_KEY = "AAAAhz4Ewxo:APA91bGQlN138cNpx_GzCFlQmKYTI5W03-4zoslN2Lb4THeyg6NEzW6qD70L62np9K-U_ClwqUcZ1FxUXUlkrHVxNVBuep6IP9WSyNwD2HCiOQjo2fcJ_EATzJrL6jevVNClX3nynr7R";

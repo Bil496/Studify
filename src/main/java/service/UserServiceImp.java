@@ -1,13 +1,11 @@
 package service;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import dao.UserDao;
+import model.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import dao.UserDao;
-import model.User;
+import java.util.List;
 
 @Service
 @Transactional
@@ -16,25 +14,25 @@ public class UserServiceImp implements UserService {
 
     @Transactional
     public long save(User user) {
-	return userDao.save(user);
+        return userDao.save(user);
     }
 
     public User get(long id) {
-	return userDao.get(id);
+        return userDao.get(id);
     }
 
     public List<User> list() {
-	return userDao.list();
+        return userDao.list();
     }
 
     @Transactional
     public void update(long id, User user) {
-	userDao.update(id, user);
+        userDao.update(id, user);
 
     }
 
     @Transactional
     public void delete(long id) {
-	userDao.delete(id);
+        userDao.delete(id);
     }
 }

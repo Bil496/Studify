@@ -1,20 +1,20 @@
 package demo.model;
 
+import org.json.JSONObject;
+
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.json.JSONObject;
-
 public class SubTopic implements Serializable {
-    
+
     private Integer id;
     private String title;
 
     public SubTopic() {
-	
+
     }
 
     public Integer getId() {
@@ -47,20 +47,20 @@ public class SubTopic implements Serializable {
     public int hashCode() {
         return id.hashCode();
     }
-    
+
     public JSONObject toJSONObject(String... ignore) {
-	List<String> ignoreList = Arrays.asList(ignore);
-	
-	Map<String, Object> map = new HashMap<>();
-	if (!ignoreList.contains("id"))
-	    map.put("id", getId() != null ? getId() : JSONObject.NULL);
-	
-	if (!ignoreList.contains("title")) 
-	    map.put("title", getTitle() != null ? getTitle() : JSONObject.NULL);
-	
-	return new JSONObject(map);	
+        List<String> ignoreList = Arrays.asList(ignore);
+
+        Map<String, Object> map = new HashMap<>();
+        if (!ignoreList.contains("id"))
+            map.put("id", getId() != null ? getId() : JSONObject.NULL);
+
+        if (!ignoreList.contains("title"))
+            map.put("title", getTitle() != null ? getTitle() : JSONObject.NULL);
+
+        return new JSONObject(map);
     }
-    
+
     private static final long serialVersionUID = 1L;
-    
+
 }
