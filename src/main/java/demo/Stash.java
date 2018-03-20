@@ -126,14 +126,6 @@ public class Stash {
     }
 
     public Integer addRequest(Request request) {
-        if (request.getRequested().isLocked()) {
-            throw new RuntimeException("Team is currently locked!");
-        }
-        for (Request req : request.getRequester().getRequests()) {
-            if (req.getRequested().getId().equals(request.getRequested().getId())) {
-                throw new RuntimeException("Waiting for the team to respond...");
-            }
-        }
         Integer index = requests.size();
         request.setId(index);
         requests.put(index, request);

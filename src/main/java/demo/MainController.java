@@ -253,8 +253,7 @@ public class MainController {
         Stash stash = Stash.getInstance();
         try {
             User user = stash.getUser(userId);
-            String trimedToken = token.substring(1, token.length() - 1);
-            user.setToken(trimedToken);
+            user.setToken(token);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(new APIError(401, e.getMessage()));
         }
@@ -267,6 +266,20 @@ public class MainController {
         try {
             User user = stash.getUser(userId);
             Team team = stash.getTeam(teamId);
+            if(user.getCurrentTeam() != null){
+                throw new RuntimeException("You already belong to a team.!");
+            }
+            if(user.getCurrentTopic().equals(team.getTopic()) == false){
+                throw new RuntimeException("Team you want to join is in a different topic than you!");
+            }
+            if (team.isLocked()) {
+                throw new RuntimeException("Team is currently locked!");
+            }
+            for (Request req : user.getRequests()) {
+                if (req.getRequested().getId().equals(teamId)) {
+                    throw new RuntimeException("Waiting for the team to respond...");
+                }
+            }
             Request request = new Request(user, team);
             Integer requestId = stash.addRequest(request);
 
@@ -297,6 +310,12 @@ public class MainController {
             if (!user.getCurrentTeam().equals(requested)) {
                 return ResponseEntity.badRequest()
                         .body(new APIError(401, "This user does not have permission to accept this request!"));
+            }
+            if(requester.getCurrentTeam() != null){
+                throw new RuntimeException("User already belongs to a team.!");
+            }
+            if(requester.getCurrentTopic().equals(requested.getTopic()) == false){
+                throw new RuntimeException("User is in another topic right now!");
             }
             request.accept();
 
@@ -329,12 +348,14 @@ public class MainController {
             }
             request.deny();
 
-            String title = "Your request is denied!";
-            String message = "Your request to study with " + requested.getName() + " is denied by "
-                    + user.getName() + "!";
-            Notification notification = new Notification(title, message);
-            Payload payload = new Payload(Payload.Type.DENIED, null);
-            NotificationSender.sendNotification(requester, notification, payload);
+            if(requester.getCurrentTeam() == null && requester.getCurrentTopic().equals(requested.getTopic()) == true){
+                String title = "Your request is denied!";
+                String message = "Your request to study with " + requested.getName() + " is denied by "
+                        + user.getName() + "!";
+                Notification notification = new Notification(title, message);
+                Payload payload = new Payload(Payload.Type.DENIED, null);
+                NotificationSender.sendNotification(requester, notification, payload);
+            }
 
             return ResponseEntity.ok().body(1);
         } catch (RuntimeException e) {
@@ -363,7 +384,7 @@ public class MainController {
             Team team = user.getCurrentTeam();
 
             String title = "New message!";
-            String message = body.substring(1, body.length() - 1);
+            String message = body;
             Notification notification = new Notification(title, message);
 
             JSONObject data = new JSONObject();
