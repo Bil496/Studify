@@ -24,7 +24,6 @@ public class Team implements Serializable {
     @JsonIgnoreProperties({"currentTopic", "currentTeam", "currentLocation"})
     private Set<User> members = new HashSet<>();
 
-    @JsonIgnore
     private Set<Request> requests = new HashSet<>();
 
     private Boolean locked = false;
