@@ -47,9 +47,10 @@ public class NotificationSender {
             JSONObject bodysNotification = new JSONObject();
             bodysNotification.put("title", notification.getTitle());
             bodysNotification.put("body", notification.getMessage());
-            requestBody.put("notification", bodysNotification);
+            //requestBody.put("notification", bodysNotification);
 
             JSONObject data = new JSONObject();
+            data.put("notification", bodysNotification.toString());
             data.put("type", payload.getType().toString());
             if (payload.getData() != null)
                 data.put("payload", payload.getData().toString());

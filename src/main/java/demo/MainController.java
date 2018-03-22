@@ -363,8 +363,8 @@ public class MainController {
         }
     }
 
-    @PostMapping("/reset/{databaseId}")
-    ResponseEntity<?> resetDemoDatabase(@PathVariable("id") int databaseId) {
+    @GetMapping("/reset/{databaseId}")
+    ResponseEntity<?> resetDemoDatabase(@PathVariable("databaseId") int databaseId) {
         Stash stash = Stash.getInstance();
         stash.clear();
         try {
