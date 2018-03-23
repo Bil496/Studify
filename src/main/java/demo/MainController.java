@@ -1,18 +1,33 @@
 package demo;
 
-import demo.model.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-import util.RandomStringGenerator;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.Set;
-import java.util.TreeSet;
+import demo.model.Location;
+import demo.model.MergeRequest;
+import demo.model.Notification;
+import demo.model.Payload;
+import demo.model.Request;
+import demo.model.SubTopic;
+import demo.model.Team;
+import demo.model.Topic;
+import demo.model.User;
+import util.RandomStringGenerator;
 
 @Controller
 public class MainController {
@@ -53,6 +68,11 @@ public class MainController {
             // (so that he doesn't bother to set locations of users...)
             User user = stash.getUser(userId);
             user.setCurrentLocation(location);
+            
+            List<Topic> topic = new ArrayList<>(location.getTopics());
+            topic.sort((t1, t2) -> {
+        	return -t1.getUserCount().compareTo(t2.getUserCount());
+            });
 
             return ResponseEntity.ok().body(location.getTopics());
         } catch (RuntimeException e) {
