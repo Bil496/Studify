@@ -58,10 +58,10 @@ public class GreedyStrongNashEquilibriumAlgorithm extends MatchingAlgorithm {
 
             // Calculate joint talent vector
             for (int i : memberIndices) {
+                User user = users.get(i);
+                int[] talents = user.getTalents().stream().mapToInt(t -> t.getScore()).toArray();
                 for (int j = 0; j < m; j++) {
-                    User user = users.get(i);
                     //List<Talent> talents = user.getTalents();
-                    int[] talents = user.getTalents().stream().mapToInt(t -> t.getScore()).toArray();
 
                     if (talents[i] > jointTalent[j]) {
                         jointTalent[j] = talents[i];
