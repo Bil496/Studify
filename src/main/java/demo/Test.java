@@ -1,36 +1,45 @@
 package demo;
 
-import demo.model.SubTopic;
-import demo.model.Team;
-import demo.model.Topic;
-import demo.model.User;
+import java.io.IOException;
+
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.json.JSONException;
 
-import java.io.IOException;
+import demo.model.SubTopic;
+import demo.model.Team;
+import demo.model.Topic;
+import demo.model.User;
 
 public class Test {
-
-    public Test() {
-
-    }
 
     public static void main(String[] args) throws JSONException, JsonGenerationException, JsonMappingException, IOException {
         Reader.createStash();
         Stash stash = Stash.getInstance();
 
-        User ferdem = stash.findUserByUsername("ferdem");
-        User oyildiz = stash.findUserByUsername("oyildiz");
-        Team team1 = stash.findTeamByName("Team 1");
-
-        //System.out.println(ferdem.toJSONObject());
-        System.out.println(team1.toJSONObject());
-
-        team1.removeMember(ferdem);
-        oyildiz.quitCurrentTeam();
-
-
+//        User ferdem = stash.findUserByUsername("ferdem");
+//        Team team1 = stash.findTeamByName("Kurucu Tim");
+//
+//        System.out.println(ferdem.toJSONObject());
+//        System.out.println(team1.toJSONObject());
+//        
+//        ferdem.quitCurrentTeam();
+//        ferdem.quitCurrentTopic();
+//        ferdem.setCurrentTopic(stash.getTopic(5));
+//        
+//        ferdem.setTalentLevelOfSubTopic(stash.getSubTopic(14), Float.floatToIntBits(4f));
+//        ferdem.setTalentLevelOfSubTopic(stash.getSubTopic(15), Float.floatToIntBits(4f));
+//        ferdem.setTalentLevelOfSubTopic(stash.getSubTopic(16), Float.floatToIntBits(4f));
+//        ferdem.setTalentLevelOfSubTopic(stash.getSubTopic(17), Float.floatToIntBits(4f));
+//        
+//        Team team = new Team();
+//        team.setTopic(ferdem.getCurrentTopic());
+//        team.setName(RandomStringGenerator.getSentence(2));
+//        System.out.println(team.getJointUtility());
+//        
+//        team.addMember(ferdem);
+//        System.out.println(team.getJointUtility());
+        
         System.out.println("USERS");
         System.out.println("------------------------------------------------------------");
         for (User user : stash.getUsers()) {

@@ -11,7 +11,7 @@ public class RandomStringGenerator {
 
     static {
         try {
-            FileInputStream fileIs = new FileInputStream("src\\main\\resources\\words.bin");
+            FileInputStream fileIs = new FileInputStream("words.bin");
             ObjectInputStream is = new ObjectInputStream(fileIs);
             words = (String[]) is.readObject();
             is.close();
