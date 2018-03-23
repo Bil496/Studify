@@ -400,5 +400,99 @@ public class MainController {
             return ResponseEntity.badRequest().body(new APIError(401, e.getMessage()));
         }
     }
+    
+    @PostMapping("/teams/{teamId}/merge")
+    ResponseEntity<?> postMergeRequest(@RequestHeader int userId, @PathVariable("teamId") int teamId) {
+        Stash stash = Stash.getInstance();
+        try {
+            User user = stash.getUser(userId);
+            Team requesterTeam = user.getCurrentTeam();
+            Team requestedTeam = stash.getTeam(teamId);
+            
+            if(user.getCurrentTopic().equals(requestedTeam.getTopic()) == false){
+                throw new RuntimeException("These teams belong to different topics!");
+            }
+            if (requestedTeam.isLocked()) {
+                throw new RuntimeException("Team is currently locked!");
+            }
+            for (MergeRequest req : requestedTeam.getMergeRequests()) {
+                if (req.getRequested().getId().equals(teamId)) {
+                    throw new RuntimeException("Waiting for the team to respond...");
+                }
+            }
+            MergeRequest mergeRequest = new MergeRequest(requesterTeam, requestedTeam);
+            Integer mergeRequestId = stash.addMergeRequest(mergeRequest);
+
+            String title = "Merge Request!";
+            String message = requesterTeam.getName() + " wants to merge with your study group!";
+            Notification notification = new Notification(title, message);
+            Payload payload = new Payload(Payload.Type.MERGE_REQUEST, mergeRequest.toJSONObject());
+            NotificationSender.sendNotification(requestedTeam.getMembers(), notification, payload);
+
+            return ResponseEntity.ok().body(mergeRequestId);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(new APIError(401, e.getMessage()));
+        }
+    }
+    
+    @PostMapping("requests/{requestId}/accept/merge")
+    ResponseEntity<?> postMergeAcceptRequest(@RequestHeader int userId, @PathVariable("mergeRequestId") int mergeRequestId) {
+        Stash stash = Stash.getInstance();
+        try {
+            User user = stash.getUser(userId);
+            MergeRequest mergeRequest = stash.getMergeRequest(mergeRequestId);
+
+            Team requester = mergeRequest.getRequester();
+            Team requested = mergeRequest.getRequested();
+
+            if (!user.getCurrentTeam().equals(requested)) {
+                return ResponseEntity.badRequest()
+                        .body(new APIError(401, "This user does not have permission to accept this request!"));
+            }
+            mergeRequest.accept();
+
+            String title = "Your merge request is accepted!";
+            String message = "Your request to merge with " + requested.getName() + " is accepted by " + user.getName()
+                    + "!";
+            Notification notification = new Notification(title, message);
+            Payload payload = new Payload(Payload.Type.MERGE_ACCEPTED, requested.toJSONObject());
+            NotificationSender.sendNotification(requester.getMembers(), notification, payload);
+
+            return ResponseEntity.ok().body(1);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(new APIError(401, e.getMessage()));
+        }
+    }
+
+    @PostMapping("requests/{requestId}/deny/merge")
+    ResponseEntity<?> postMergeDenyRequest(@RequestHeader int userId, @PathVariable("mergeRequestId") int mergeRequestId) {
+        Stash stash = Stash.getInstance();
+        try {
+            User user = stash.getUser(userId);
+            MergeRequest mergeRequest = stash.getMergeRequest(mergeRequestId);
+
+            Team requester = mergeRequest.getRequester();
+            Team requested = mergeRequest.getRequested();
+
+            if (!user.getCurrentTeam().equals(requested)) {
+                return ResponseEntity.badRequest()
+                        .body(new APIError(401, "This user does not have permission to deny this request!"));
+            }
+            mergeRequest.deny();
+
+            if(requester.getTopic() != null){
+                String title = "Your merge request is denied!";
+                String message = "Your request to merge with " + requested.getName() + " is denied by "
+                        + user.getName() + "!";
+                Notification notification = new Notification(title, message);
+                Payload payload = new Payload(Payload.Type.MERGE_DENIED, null);
+                NotificationSender.sendNotification(requester.getMembers(), notification, payload);
+            }
+
+            return ResponseEntity.ok().body(1);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(new APIError(401, e.getMessage()));
+        }
+    }
 
 }

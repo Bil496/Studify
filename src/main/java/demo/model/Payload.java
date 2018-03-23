@@ -5,9 +5,10 @@ import org.json.JSONObject;
 public class Payload {
 
     public enum Type {
-        JOIN_REQUEST, ACCEPTED, DENIED, KICKED,
-        // not supported yet
-        FOLLOWED, CHAT_MESSAGE
+        JOIN_REQUEST, ACCEPTED, DENIED, 
+        MERGE_REQUEST, MERGE_ACCEPTED, MERGE_DENIED,
+        KICKED, 
+        CHAT_MESSAGE
     }
 
     private Type type;

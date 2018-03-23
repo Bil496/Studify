@@ -24,7 +24,10 @@ public class Team implements Serializable {
     @JsonIgnoreProperties({"currentTopic", "currentTeam", "currentLocation"})
     private Set<User> members = new HashSet<>();
 
+    @JsonIgnore
     private Set<Request> requests = new HashSet<>();
+    @JsonIgnore
+    private Set<MergeRequest> mergeRequests = new HashSet<>();
 
     private Boolean locked = false;
 
@@ -157,6 +160,7 @@ public class Team implements Serializable {
         // if no member left delete team
         if (getSize() == 0) {
             getTopic().removeTeam(this);
+            topic = null;
         }
 
         user.quitCurrentTeam();
@@ -175,6 +179,31 @@ public class Team implements Serializable {
 
     public Set<Request> getRequests() {
         return requests;
+    }
+    
+    
+    public void addMergeRequest(MergeRequest mergeRequest) {
+        if (!mergeRequest.getRequester().equals(this) ||
+        	!mergeRequest.getRequested().equals(this)) {
+            throw new RuntimeException("This request does not belong to this team!");
+        }
+        mergeRequests.add(mergeRequest);
+    }
+
+    public void removeMergeRequest(MergeRequest mergeRequest) {
+        mergeRequests.remove(mergeRequest);
+    }
+    
+    public Set<MergeRequest> getMergeRequests() {
+	return mergeRequests;
+    }
+    
+    
+    public void merge(Team team) {
+	for (User member: team.getMembers()) {
+	    member.quitCurrentTeam();
+	    member.setCurrentTeam(this);
+	}
     }
 
     @Override

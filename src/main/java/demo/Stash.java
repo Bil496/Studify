@@ -16,6 +16,7 @@ public class Stash {
     private Map<Integer, SubTopic> subTopics = new HashMap<>();
     private Map<Integer, Location> locations = new HashMap<>();
     private Map<Integer, Request> requests = new HashMap<>();
+    private Map<Integer, MergeRequest> mergeRequests = new HashMap<>();
 
     private Stash() {
 
@@ -82,6 +83,14 @@ public class Stash {
         }
         return request;
     }
+    
+    public MergeRequest getMergeRequest(Integer mergeRequestId) {
+        MergeRequest mergeRequest = mergeRequests.get(mergeRequestId);
+        if (mergeRequest == null) {
+            throw new RuntimeException("Merge request not found in stash!");
+        }
+        return mergeRequest;
+    }
 
     // GET COLLECTION METHODS
 
@@ -108,6 +117,10 @@ public class Stash {
     public Collection<Request> getRequests() {
         return requests.values();
     }
+    
+    public Collection<MergeRequest> getMergeRequests() {
+        return mergeRequests.values();
+    }
 
     // ADD METHODS
 
@@ -131,6 +144,15 @@ public class Stash {
         requests.put(index, request);
         request.getRequester().addRequest(request);
         request.getRequested().addRequest(request);
+        return index;
+    }
+    
+    public Integer addMergeRequest(MergeRequest mergeRequest) {
+        Integer index = mergeRequests.size();
+        mergeRequest.setId(index);
+        mergeRequests.put(index, mergeRequest);
+        mergeRequest.getRequester().addMergeRequest(mergeRequest);
+        mergeRequest.getRequested().addMergeRequest(mergeRequest);
         return index;
     }
 
