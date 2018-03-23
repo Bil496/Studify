@@ -282,9 +282,17 @@ public class MainController {
             }
             Request request = new Request(user, team);
             Integer requestId = stash.addRequest(request);
-
-            String title = "Join Request!";
-            String message = user.getUsername() + " wants to join to your study group!";
+            
+            Integer difference = team.getJointUtility() - team.hypotheticalJointUtility(user); 
+            
+            String title = user.getUsername() + " sended a join request!";
+            String message;
+            if (difference > 0) {
+        	message = "Increases your score by " + difference;
+            } else {
+        	message = "Does not increase your score";
+            }
+            
             Notification notification = new Notification(title, message);
             Payload payload = new Payload(Payload.Type.JOIN_REQUEST,
                     //user.toJSONObject("currentTeam", "currentTopic", "currentLocation"));
@@ -406,28 +414,36 @@ public class MainController {
         Stash stash = Stash.getInstance();
         try {
             User user = stash.getUser(userId);
-            Team requesterTeam = user.getCurrentTeam();
-            Team requestedTeam = stash.getTeam(teamId);
+            Team requester = user.getCurrentTeam();
+            Team requested = stash.getTeam(teamId);
             
-            if(user.getCurrentTopic().equals(requestedTeam.getTopic()) == false){
+            if(user.getCurrentTopic().equals(requested.getTopic()) == false){
                 throw new RuntimeException("These teams belong to different topics!");
             }
-            if (requestedTeam.isLocked()) {
+            if (requested.isLocked()) {
                 throw new RuntimeException("Team is currently locked!");
             }
-            for (MergeRequest req : requestedTeam.getMergeRequests()) {
+            for (MergeRequest req : requested.getMergeRequests()) {
                 if (req.getRequested().getId().equals(teamId)) {
                     throw new RuntimeException("Waiting for the team to respond...");
                 }
             }
-            MergeRequest mergeRequest = new MergeRequest(requesterTeam, requestedTeam);
+            MergeRequest mergeRequest = new MergeRequest(requester, requested);
             Integer mergeRequestId = stash.addMergeRequest(mergeRequest);
+            
+            Integer difference = requested.getJointUtility() - requested.hypotheticalJointUtility(requester.getMembers()); 
+            
+            String title = user.getUsername() + " sended a merge request!";
+            String message;
+            if (difference > 0) {
+        	message = "Increases your score by " + difference;
+            } else {
+        	message = "Does not increase your score";
+            }
 
-            String title = "Merge Request!";
-            String message = requesterTeam.getName() + " wants to merge with your study group!";
             Notification notification = new Notification(title, message);
             Payload payload = new Payload(Payload.Type.MERGE_REQUEST, mergeRequest.toJSONObject());
-            NotificationSender.sendNotification(requestedTeam.getMembers(), notification, payload);
+            NotificationSender.sendNotification(requested.getMembers(), notification, payload);
 
             return ResponseEntity.ok().body(mergeRequestId);
         } catch (RuntimeException e) {

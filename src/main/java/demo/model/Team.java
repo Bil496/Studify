@@ -87,6 +87,21 @@ public class Team implements Serializable {
         }
         return hypotheticalJointUtility;
     }
+    
+    public Integer hypotheticalJointUtility(Set<User> hypotheticalMembers) {
+	Integer hypotheticalJointUtility = getJointUtility();
+        for (User hypotheticalMember: hypotheticalMembers) {
+            for (SubTopic subTopic : topic.getSubTopics()) {
+                Integer userTalentLevel = hypotheticalMember.getTalentLevel(subTopic);
+
+                Integer teamTalentLevel = jointUtilityMap.get(subTopic);
+                if (userTalentLevel > teamTalentLevel) {
+                    hypotheticalJointUtility += (userTalentLevel - teamTalentLevel);
+                }
+            }
+        }
+        return hypotheticalJointUtility;
+    }
 
     public Integer hypotheticalTotalUtility(User hypotheticalMember) {
         Integer hypotheticalTotalUtility = getTotalUtility();
