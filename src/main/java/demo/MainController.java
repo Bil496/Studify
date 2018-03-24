@@ -70,9 +70,7 @@ public class MainController {
             user.setCurrentLocation(location);
             
             List<Topic> topics = new ArrayList<>(location.getTopics());
-            topics.sort((t1, t2) -> {
-        	return -t1.getUserCount().compareTo(t2.getUserCount());
-            });
+            topics.sort((t1, t2) -> -t1.getUserCount().compareTo(t2.getUserCount()));
 
             return ResponseEntity.ok().body(topics);
         } catch (RuntimeException e) {
@@ -88,27 +86,24 @@ public class MainController {
             Topic topic = stash.getTopic(topicId);
 
             Set<Team> teams = topic.getTeams();
-            TreeSet<Team> treeSet = new TreeSet<>(new Comparator<Team>() {
-                @Override
-                public int compare(Team t1, Team t2) {
-                    Integer jointUtility1 = t1.hypotheticalJointUtility(user);
-                    Integer juintUtility2 = t2.hypotheticalJointUtility(user);
+            TreeSet<Team> treeSet = new TreeSet<>((t1, t2) -> {
+                Integer jointUtility1 = t1.hypotheticalJointUtility(user);
+                Integer juintUtility2 = t2.hypotheticalJointUtility(user);
 
-                    if (!jointUtility1.equals(juintUtility2)) {
-                        // greater joint utility is favorable
-                        return -jointUtility1.compareTo(juintUtility2);
-                    }
-
-                    Integer totalUtility1 = t1.hypotheticalTotalUtility(user);
-                    Integer totalUtility2 = t2.hypotheticalTotalUtility(user);
-
-                    // less total utility is favorable
-
-                    int diff = totalUtility1.compareTo(totalUtility2);
-                    if (diff == 0)
-                        return t1.getId().compareTo(t2.getId());
-                    return diff;
+                if (!jointUtility1.equals(juintUtility2)) {
+                    // greater joint utility is favorable
+                    return -jointUtility1.compareTo(juintUtility2);
                 }
+
+                Integer totalUtility1 = t1.hypotheticalTotalUtility(user);
+                Integer totalUtility2 = t2.hypotheticalTotalUtility(user);
+
+                // less total utility is favorable
+
+                int diff = totalUtility1.compareTo(totalUtility2);
+                if (diff == 0)
+                    return t1.getId().compareTo(t2.getId());
+                return diff;
             });
             treeSet.addAll(teams);
             return ResponseEntity.ok().body(treeSet);
@@ -243,7 +238,7 @@ public class MainController {
             Payload payload = new Payload(Payload.Type.TEAM_UNLOCKED, team.toJSONObject("members"));
 
             NotificationSender.sendNotification(team.getMembers(), notification, payload);
-            
+
             return ResponseEntity.ok().body(1);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(new APIError(401, e.getMessage()));
@@ -312,7 +307,7 @@ public class MainController {
             if(user.getCurrentTeam() != null){
                 throw new RuntimeException("You already belong to a team.!");
             }
-            if(user.getCurrentTopic().equals(team.getTopic()) == false){
+            if(!user.getCurrentTopic().equals(team.getTopic())){
                 throw new RuntimeException("Team you want to join is in a different topic than you!");
             }
             if (team.isLocked()) {
@@ -365,7 +360,7 @@ public class MainController {
             if(requester.getCurrentTeam() != null){
                 throw new RuntimeException("User already belongs to a team.!");
             }
-            if(requester.getCurrentTopic().equals(requested.getTopic()) == false){
+            if(!requester.getCurrentTopic().equals(requested.getTopic())){
                 throw new RuntimeException("User is in another topic right now!");
             }
             request.accept();
@@ -399,7 +394,7 @@ public class MainController {
             }
             request.deny();
 
-            if(requester.getCurrentTeam() == null && requester.getCurrentTopic().equals(requested.getTopic()) == true){
+            if(requester.getCurrentTeam() == null && requester.getCurrentTopic().equals(requested.getTopic())){
                 String title = "Your request is denied!";
                 String message = "Your request to study with " + requested.getName() + " is denied by "
                         + user.getName() + "!";
@@ -435,11 +430,10 @@ public class MainController {
             Team team = user.getCurrentTeam();
 
             String title = "New message!";
-            String message = body;
-            Notification notification = new Notification(title, message);
+            Notification notification = new Notification(title, body);
 
             JSONObject data = new JSONObject();
-            data.put("chatMessage", message);
+            data.put("chatMessage", body);
             data.put("senderName", user.getName());
             data.put("senderImage", user.getProfilePic());
             Payload payload = new Payload(Payload.Type.CHAT_MESSAGE, data);
@@ -460,7 +454,7 @@ public class MainController {
             Team requester = user.getCurrentTeam();
             Team requested = stash.getTeam(teamId);
             
-            if(user.getCurrentTopic().equals(requested.getTopic()) == false){
+            if(!user.getCurrentTopic().equals(requested.getTopic())){
                 throw new RuntimeException("These teams belong to different topics!");
             }
             if (requested.isLocked()) {
