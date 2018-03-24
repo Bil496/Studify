@@ -27,7 +27,7 @@ public class Topic {
     private Integer maxSize = 5;
 
     @JsonFormat
-    (shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss.0")
+            (shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss.0")
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     @Column
@@ -43,7 +43,7 @@ public class Topic {
     private Integer totalGroupNumber = 0;
 
     @JsonFormat
-    (shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss.0")
+            (shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss.0")
     @Temporal(TemporalType.TIMESTAMP)
     @Column
     private Date nextGroupingTime;
@@ -57,7 +57,7 @@ public class Topic {
     private Set<User> users = new HashSet<User>();
 
     @OneToMany(mappedBy = "topic", fetch = FetchType.EAGER)
-    @org.hibernate.annotations.Cascade( {org.hibernate.annotations.CascadeType.SAVE_UPDATE})
+    @org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
     private List<SubTopic> subTopics = new ArrayList<>();
 
     public Long getId() {
@@ -91,18 +91,22 @@ public class Topic {
     public void setTitle(String title) {
         this.title = title;
     }
+
     @JsonIgnore
     public User getCreator() {
         return creator;
     }
+
     @JsonProperty
     public void setCreator(User creator) {
         this.creator = creator;
     }
+
     @JsonIgnore
     public Set<User> getUsers() {
         return users;
     }
+
     @JsonProperty
     public void setUsers(Set<User> users) {
         this.users = users;

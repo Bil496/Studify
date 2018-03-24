@@ -1,28 +1,28 @@
 package demo.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.json.JSONObject;
-
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Request implements Serializable {
+import org.json.JSONObject;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+public class MergeRequest implements Serializable {
+    
     private Integer id;
 
-    @JsonIgnoreProperties({"currentTopic", "currentTeam", "currentLocation"})
-    private User requester;
+    @JsonIgnore
+    private Team requester;
     @JsonIgnore
     private Team requested;
 
     private boolean accepted = false;
     private boolean denied = false;
 
-    public Request(User requester, Team requested) {
+    public MergeRequest(Team requester, Team requested) {
         this.requester = requester;
         this.requested = requested;
     }
@@ -35,7 +35,7 @@ public class Request implements Serializable {
         this.id = id;
     }
 
-    public User getRequester() {
+    public Team getRequester() {
         return requester;
     }
 
@@ -51,9 +51,9 @@ public class Request implements Serializable {
             throw new RuntimeException("This request is denied earlier!");
         }
         accepted = true;
-        requester.removeRequest(this);
-        requested.removeRequest(this);
-        requester.setCurrentTeam(requested);
+        requester.removeMergeRequest(this);
+        requested.removeMergeRequest(this);
+        requested.merge(requester);
     }
 
     public void deny() {
@@ -64,8 +64,8 @@ public class Request implements Serializable {
             throw new RuntimeException("This request is denied earlier!");
         }
         denied = true;
-        requester.removeRequest(this);
-        requested.removeRequest(this);
+        requester.removeMergeRequest(this);
+        requested.removeMergeRequest(this);
     }
 
     @Override
@@ -73,9 +73,9 @@ public class Request implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Request request = (Request) o;
+        MergeRequest mergeRequest = (MergeRequest) o;
 
-        return id.equals(request.id);
+        return id.equals(mergeRequest.id);
     }
 
     @Override
@@ -88,7 +88,7 @@ public class Request implements Serializable {
 
         Map<String, Object> map = new HashMap<>();
         if (!ignoreList.contains("id")) map.put("id", getId());
-        if (!ignoreList.contains("requester")) map.put("requester", getRequester().toJSONObject("requests"));
+        if (!ignoreList.contains("requester")) map.put("requester", getRequester().toJSONObject("members", "requests"));
         if (!ignoreList.contains("requested")) map.put("requested", getRequested().toJSONObject("members", "requests"));
 
         return new JSONObject(map);

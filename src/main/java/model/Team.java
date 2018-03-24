@@ -1,20 +1,11 @@
 package model;
 
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
 @Entity
-@Table(name = "Team", indexes = { @Index(columnList = "utility") })
+@Table(name = "Team", indexes = {@Index(columnList = "utility")})
 public class Team {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,42 +24,42 @@ public class Team {
     private Set<User> users = new HashSet<User>();
 
     public Long getId() {
-	return id;
+        return id;
     }
 
     public void setId(Long id) {
-	this.id = id;
+        this.id = id;
     }
 
     public Topic getTopic() {
-	return topic;
+        return topic;
     }
 
     public void setTopic(Topic topic) {
-	this.topic = topic;
+        this.topic = topic;
     }
 
     public String getName() {
-	return name;
+        return name;
     }
 
     public void setName(String name) {
-	this.name = name;
+        this.name = name;
     }
 
     public Integer getSize() {
-	return size;
+        return size;
     }
 
     public void setSize(Integer size) {
-	this.size = size;
+        this.size = size;
     }
 
     public Set<User> getUsers() {
-	return users;
+        return users;
     }
 
     public void setUsers(Set<User> users) {
-	this.users = users;
+        this.users = users;
     }
 }

@@ -6,8 +6,8 @@ public class APIError {
     private String message;
 
     public APIError(Integer statusCode, String message) {
-	    this.statusCode = statusCode;
-	    this.message = message;
+        this.statusCode = statusCode;
+        this.message = message;
     }
 
     public Integer getStatusCode() {

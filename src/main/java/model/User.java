@@ -3,22 +3,11 @@ package model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 
 // TODO: Fetch types for collections has to change to Lazy after.
 @Entity(name = "User")
@@ -44,9 +33,9 @@ public class User {
     private String password;
 
     @JsonIgnore
-    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
-    @JoinTable(name = "User_Topic", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = {
-	    @JoinColumn(name = "topic_id") })
+    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+    @JoinTable(name = "User_Topic", joinColumns = {@JoinColumn(name = "user_id")}, inverseJoinColumns = {
+            @JoinColumn(name = "topic_id")})
     private Set<Topic> topics = new HashSet<Topic>();
 
     @JsonIgnore
@@ -54,80 +43,80 @@ public class User {
     private List<Talent> talents = new ArrayList<Talent>();
 
     @JsonIgnore
-    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
-    @JoinTable(name = "User_Team", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = {
-	    @JoinColumn(name = "team_id") })
+    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+    @JoinTable(name = "User_Team", joinColumns = {@JoinColumn(name = "user_id")}, inverseJoinColumns = {
+            @JoinColumn(name = "team_id")})
     private Set<Team> teams = new HashSet<Team>();
 
     public Long getId() {
-	return id;
+        return id;
     }
 
     public void setId(Long id) {
-	this.id = id;
+        this.id = id;
     }
 
     public String getName() {
-	return name;
+        return name;
     }
 
     public void setName(String name) {
-	this.name = name;
+        this.name = name;
     }
 
     public String getSurname() {
-	return surname;
+        return surname;
     }
 
     public void setSurname(String surname) {
-	this.surname = surname;
+        this.surname = surname;
     }
 
     public String getEmail() {
-	return email;
+        return email;
     }
 
     public void setEmail(String email) {
-	this.email = email;
+        this.email = email;
     }
 
     public String getUsername() {
-	return username;
+        return username;
     }
 
     public void setUsername(String username) {
-	this.username = username;
+        this.username = username;
     }
 
     public String getPassword() {
-	return password;
+        return password;
     }
 
     public void setPassword(String password) {
-	this.password = password;
+        this.password = password;
     }
 
     public Set<Topic> getTopics() {
-	return topics;
+        return topics;
     }
 
     public void setTopics(Set<Topic> topics) {
-	this.topics = topics;
+        this.topics = topics;
     }
 
     public List<Talent> getTalents() {
-	return talents;
+        return talents;
     }
 
     public void setTalents(List<Talent> talents) {
-	this.talents = talents;
+        this.talents = talents;
     }
 
     public Set<Team> getTeams() {
-	return teams;
+        return teams;
     }
 
     public void setTeams(Set<Team> teams) {
-	this.teams = teams;
+        this.teams = teams;
     }
 }

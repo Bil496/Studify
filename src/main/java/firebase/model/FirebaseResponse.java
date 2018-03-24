@@ -1,9 +1,9 @@
 package firebase.model;
 
+import org.apache.log4j.Logger;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-import org.apache.log4j.Logger;
 
 /**
  * Created by ask on 13.03.2018
@@ -18,25 +18,26 @@ public class FirebaseResponse {
     private final Map<String, Object> body;
     private final String rawBody;
 
-    public FirebaseResponse( boolean success, int code, Map<String, Object> body, String rawBody ) {
+    public FirebaseResponse(boolean success, int code, Map<String, Object> body, String rawBody) {
 
         this.success = success;
         this.code = code;
 
-        if( body == null ) {
-            LOGGER.info( "body was null; replacing with empty map" );
+        if (body == null) {
+            LOGGER.info("body was null; replacing with empty map");
             body = new LinkedHashMap<>();
         }
         this.body = body;
 
-        if( rawBody == null ) {
-            LOGGER.info( "rawBody was null; replacing with empty string" );
+        if (rawBody == null) {
+            LOGGER.info("rawBody was null; replacing with empty string");
             rawBody = "";
         }
         this.rawBody = rawBody.trim();
     }
 
     // PUBLIC API
+
     /**
      * Returns whether or not the response from the Firebase-client was successful
      *

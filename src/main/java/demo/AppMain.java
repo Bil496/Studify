@@ -10,12 +10,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class AppMain {
-    public static void main(String args[]){
+    public static void main(String args[]) {
         try {
-	    Reader.createStash();
-	} catch (JSONException e) {
-	    e.printStackTrace();
-	}
+            Reader.createStash();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         SpringApplication.run(AppMain.class, args);
     }
 }

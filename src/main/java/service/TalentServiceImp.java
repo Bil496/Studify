@@ -2,7 +2,6 @@ package service;
 
 import dao.TalentDao;
 import model.Talent;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
