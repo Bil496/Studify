@@ -260,6 +260,13 @@ public class MainController {
                 Payload payload = new Payload(Payload.Type.KICKED, team.toJSONObject("members"));
 
                 NotificationSender.sendNotification(kickedUser, notification, payload);
+
+                String titleForTeam = "A user kicked!";
+                String messageForTeam = "You kicked the " + kickedUser.getName() + "!";
+                Notification notificationForTeam = new Notification(titleForTeam, messageForTeam);
+                Payload payloadForTeam = new Payload(Payload.Type.NOTIFY_GROUP_FOR_KICKING, team.toJSONObject("members"));
+
+                NotificationSender.sendNotification(team.getMembers(), notificationForTeam, payloadForTeam);
             }
 
             return ResponseEntity.ok().body(1);
