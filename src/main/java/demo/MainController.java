@@ -236,6 +236,14 @@ public class MainController {
             }
 
             team.unlock();
+
+            String title = "The team is unlocked!";
+            String message = "The team is unlocked to recruit new members!";
+            Notification notification = new Notification(title, message);
+            Payload payload = new Payload(Payload.Type.TEAM_UNLOCKED, team.toJSONObject("members"));
+
+            NotificationSender.sendNotification(team.getMembers(), notification, payload);
+            
             return ResponseEntity.ok().body(1);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(new APIError(401, e.getMessage()));
