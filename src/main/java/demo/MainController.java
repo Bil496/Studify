@@ -372,6 +372,13 @@ public class MainController {
             Payload payload = new Payload(Payload.Type.ACCEPTED, requested.toJSONObject());
             NotificationSender.sendNotification(requester, notification, payload);
 
+            String titleForTeam = "A user joined!";
+            String messageForTeam = "The user  " + requester.getName() + " joined on your team!";
+            Notification notificationForTeam = new Notification(titleForTeam, messageForTeam);
+            Payload payloadForTeam = new Payload(Payload.Type.NOTIFY_GROUP_FOR_JOINING, requested.toJSONObject("members"));
+
+            NotificationSender.sendNotification(requested.getMembers(), notificationForTeam, payloadForTeam);
+
             return ResponseEntity.ok().body(1);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(new APIError(401, e.getMessage()));
