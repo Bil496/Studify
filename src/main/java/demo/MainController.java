@@ -69,12 +69,12 @@ public class MainController {
             User user = stash.getUser(userId);
             user.setCurrentLocation(location);
             
-            List<Topic> topic = new ArrayList<>(location.getTopics());
-            topic.sort((t1, t2) -> {
+            List<Topic> topics = new ArrayList<>(location.getTopics());
+            topics.sort((t1, t2) -> {
         	return -t1.getUserCount().compareTo(t2.getUserCount());
             });
 
-            return ResponseEntity.ok().body(location.getTopics());
+            return ResponseEntity.ok().body(topics);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(new APIError(401, e.getMessage()));
         }
