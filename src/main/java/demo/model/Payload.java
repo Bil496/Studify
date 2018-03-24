@@ -7,7 +7,7 @@ public class Payload {
     public enum Type {
 	JOIN_REQUEST, ACCEPTED, DENIED, KICKED,
 	// not supported yet
-	FOLLOWED, CHAT_MESSAGE
+	FOLLOWED, CHAT_MESSAGE, NOTIFY_GROUP_FOR_QUITING, NOTIFY_GROUP_FOR_JOINING, TEAM_LOCKED, TEAM_UNLOCKED
     }
     
     private Type type;

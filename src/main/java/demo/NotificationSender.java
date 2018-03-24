@@ -30,7 +30,7 @@ public class NotificationSender {
     public static void sendNotification(Set<User> users, Notification notification, Payload payload) {
 
 	JSONObject requestBody = new JSONObject();
-	
+
         JSONArray usersTokenList = new JSONArray();
         for (User user : users) {
             if (user.getToken() != null)
